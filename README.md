@@ -7,8 +7,8 @@ For details, please see Disclaimer inside the tool.
 
 Minimum requirements:
 
-iOS 10.3+ / Android 6.0+
+iOS 10.3+ / Android 6.0+ / Windows 7+ / Any other OS which can run:
 
-Windows 7 with Chrome 55+ / Firefox 52+ / Edge 15+
+Chrome 55+ / Firefox 52+ / Edge 15+ / Safari 10.1+
 
 CPU with high single thread efficiency
