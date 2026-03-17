@@ -5,7 +5,7 @@ Based on reverse-engineered database, dq9tmap101.exe's ElistOfs logic, and some 
 
 Improvements from legacy DQ9 Grotto search tools
 - Fixed misjudgments (such as misjudging Single Monster Floor into No-enemy Floor, etc.) by fixing ElistOfs logic by TKG
-- Fixed Softlock (危険？ハマる地図 in Japanese, floor Seed 0x5BC7)'s by referring Yab's DQ9 Tool then fixing reverse-engineered database by Claude
+- Fundamentally fixed Softlock (危険？ハマる地図 in Japanese, floor Seed 0x5BC7)'s by referring Yab's DQ9 Tool's result then fixing reverse-engineered database by Claude
 - Deciphered Multibug phenomenon and implemented Multibug special floor searching by Claude and Gemini
 
 For details, please see Disclaimer inside the tool.
