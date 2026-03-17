@@ -28,7 +28,7 @@ Other searches
 - Quickload B9 same item x2 (B9F)
 - Quickload + 3rd Chest Sainted Soma (J-Fire)
 - 4-player Multiplay Bug (Multibug)
-- AT search for player developing Map Method (AT)
+- AT search for player's Map Method self-development (AT)
 
 # Minimum requirements
 
