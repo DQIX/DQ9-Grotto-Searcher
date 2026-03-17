@@ -17,7 +17,7 @@ Ultimate search
 - Environment, SMR(B1 Monster Rank), Depth, Boss
 - Location, Base Quality
 - Chest counts by various Chest rank
-- ElistOfs (Wandering Monster bugged floor Status)
+- Wandering Monster bugged floor Status (ElistOfs)
 - Single monster floor (Only)
 
 Other searches
