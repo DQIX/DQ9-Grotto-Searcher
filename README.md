@@ -7,7 +7,7 @@ For details, please see Disclaimer inside the tool.
 
 Minimum requirements:
 
-iOS 10.3+
+iOS 10.3+ / Android 6.0+
 
 Windows 7 with Chrome 55+ / Firefox 52+ / Edge 15+
 
