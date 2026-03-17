@@ -17,7 +17,7 @@ Ultimate search
 - Environment, SMR(B1 Monster Rank), Depth, Boss
 - Location, Base Quality
 - Chest counts by various Chest rank
-- ElistOfs (Wandering Monster Floor Status)
+- ElistOfs (Wandering Monster bugged floor Status)
 - Single monster floor (Only)
 
 Other searches
@@ -28,7 +28,7 @@ Other searches
 - Quickload B9 same item x2 (B9F)
 - Quickload + 3rd Chest Sainted Soma (J-Fire)
 - 4-player Multiplay Bug (Multibug)
-- AT search for Map Method (AT)
+- AT search for player developing Map Method (AT)
 
 # Minimum requirements
 
