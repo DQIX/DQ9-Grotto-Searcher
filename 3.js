@@ -1,34 +1,69 @@
+function getUltimateConds(){
+const reqBox={
+10:parseInt(document.getElementById('cond_box_S')?document.getElementById('cond_box_S').value:0)||0,
+9:parseInt(document.getElementById('cond_box_A')?document.getElementById('cond_box_A').value:0)||0,
+8:parseInt(document.getElementById('cond_box_B')?document.getElementById('cond_box_B').value:0)||0,
+7:parseInt(document.getElementById('cond_box_C')?document.getElementById('cond_box_C').value:0)||0,
+6:parseInt(document.getElementById('cond_box_D')?document.getElementById('cond_box_D').value:0)||0,
+5:parseInt(document.getElementById('cond_box_E')?document.getElementById('cond_box_E').value:0)||0,
+4:parseInt(document.getElementById('cond_box_F')?document.getElementById('cond_box_F').value:0)||0,
+3:parseInt(document.getElementById('cond_box_G')?document.getElementById('cond_box_G').value:0)||0,
+2:parseInt(document.getElementById('cond_box_H')?document.getElementById('cond_box_H').value:0)||0,
+1:parseInt(document.getElementById('cond_box_I')?document.getElementById('cond_box_I').value:0)||0
+};
+return{
+prefix:document.getElementById('cond_prefix')?document.getElementById('cond_prefix').value:"",
+suffix:document.getElementById('cond_suffix')?document.getElementById('cond_suffix').value:"",
+locale:document.getElementById('cond_locale')?document.getElementById('cond_locale').value:"",
+lv:document.getElementById('cond_lv')?document.getElementById('cond_lv').value:"",
+location:document.getElementById('cond_location')?document.getElementById('cond_location').value:"",
+bq:document.getElementById('cond_bq')?document.getElementById('cond_bq').value:"",
+env:document.getElementById('cond_env')?document.getElementById('cond_env').value:"",
+monster:document.getElementById('cond_monster')?document.getElementById('cond_monster').value:"",
+depth:document.getElementById('cond_depth')?document.getElementById('cond_depth').value:"",
+boss:document.getElementById('cond_boss')?document.getElementById('cond_boss').value:"",
+elist:document.getElementById('cond_elist')?document.getElementById('cond_elist').value:"",
+onlyMon:document.getElementById('cond_only_mon')?document.getElementById('cond_only_mon').value:"",
+anomaly:document.getElementById('cond_anomaly')?document.getElementById('cond_anomaly').value:"",
+reqBox:reqBox,
+hasBoxCond:Object.values(reqBox).some(v=>v>0)
+};
+}
+function checkUltimateCondsMatch(engine,seed,targetRankKey,conds,searchFilterLoc){
+if(conds.prefix&&engine._details[5]!=conds.prefix)return false;
+if(conds.suffix&&engine._details[6]!=conds.suffix)return false;
+if(conds.locale&&(engine.MapLocale)!=conds.locale)return false;
+if(conds.lv&&engine._details[4]!=conds.lv)return false;
+if(conds.env&&engine._details[3]!=conds.env)return false;
+if(conds.monster&&engine._details[2]!=conds.monster)return false;
+if(conds.depth&&engine._details[1]!=conds.depth)return false;
+if(conds.boss&&engine._details[0]!=conds.boss)return false;
+let targetLocNum=conds.location?parseInt(conds.location,16):null;
+let targetBqNum=conds.bq?parseInt(conds.bq):null;
+if(targetLocNum!==null||targetBqNum!==null||searchFilterLoc){
+if(targetRankKey!==null&&typeof calcLocations==='function'){
+let locData=calcLocations(seed,targetRankKey);
+if(locData.outputOrder.length===0)return false;
+if(targetLocNum!==null){
+if(!locData.seenLocations[targetLocNum])return false;
+if(targetBqNum!==null &&!locData.seenLocations[targetLocNum].has(targetBqNum))return false;
+}else if(targetBqNum!==null){
+let bqFound=false;
+for(let loc in locData.seenLocations){
+if(locData.seenLocations[loc].has(targetBqNum)){bqFound=true;break;}
+}
+if(!bqFound)return false;
+}
+}
+}
+return true;
+}
 async function startUltimateSearch(){
 if(isSearching){searchCancel=true;return;}
-const conds={
-prefix:document.getElementById('cond_prefix').value,
-suffix:document.getElementById('cond_suffix').value,
-locale:document.getElementById('cond_locale').value,
-lv:document.getElementById('cond_lv').value,
-location:document.getElementById('cond_location').value,
-bq:document.getElementById('cond_bq').value,
-env:document.getElementById('cond_env').value,
-monster:document.getElementById('cond_monster').value,
-depth:document.getElementById('cond_depth').value,
-boss:document.getElementById('cond_boss').value,
-elist:document.getElementById('cond_elist').value,
-onlyMon:document.getElementById('cond_only_mon').value,
-anomaly:document.getElementById('cond_anomaly')?document.getElementById('cond_anomaly').value:""
-};
-const reqBox={
-10:parseInt(document.getElementById('cond_box_S').value)||0,
-9:parseInt(document.getElementById('cond_box_A').value)||0,
-8:parseInt(document.getElementById('cond_box_B').value)||0,
-7:parseInt(document.getElementById('cond_box_C').value)||0,
-6:parseInt(document.getElementById('cond_box_D').value)||0,
-5:parseInt(document.getElementById('cond_box_E').value)||0,
-4:parseInt(document.getElementById('cond_box_F').value)||0,
-3:parseInt(document.getElementById('cond_box_G').value)||0,
-2:parseInt(document.getElementById('cond_box_H').value)||0,
-1:parseInt(document.getElementById('cond_box_I').value)||0
-};
-const hasBasicCond=Object.values(conds).some(v=>v!=="");
-const hasBoxCond=Object.values(reqBox).some(v=>v>0);
+const conds=getUltimateConds();
+const reqBox=conds.reqBox;
+const hasBasicCond=Object.keys(conds).some(k=>k!=='reqBox'&&k!=='hasBoxCond'&&conds[k]!=="");
+const hasBoxCond=conds.hasBoxCond;
 if(!hasBasicCond &&!hasBoxCond){
 alert("Please choose at least one condition.");
 return;
@@ -162,13 +197,9 @@ if(needMapGeneration){
 searchEngine.cDungeonDetail();
 }
 if(match&&hasBoxCond){
-let boxCounts={10:0,9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0};
-for(let f=2;f<searchEngine.floorCount;f++){
-let boxes=searchEngine.getTreasureBoxCount(f);
-for(let b=0;b<boxes;b++)boxCounts[searchEngine.getTreasureBoxInfo(f,b).rank]++;
-}
+let boxCounts=searchEngine.getMapBoxCounts();
 for(let r=10;r>=1;r--){
-if(reqBox[r]>0&&boxCounts[r]<reqBox[r]){match=false;break;}
+if(reqBox[r]>0&&boxCounts[r]!==reqBox[r]){match=false;break;}
 }
 }
 let specialHitDetails=[];
@@ -253,13 +284,12 @@ let anomalyDetails=[];
 if(match&&conds.anomaly!==""){
 let hasAnyChestAnomaly=false;
 let hasAnyCorridorAnomaly=false;
-let hasAnyStairAnomaly=false;
 let hasAnyNoChestAnomaly=false;
 let hasAnyMultiRegionAnomaly=false;
+let hasAnyChestCorridorCombo=false;
 let corridorFloorCount=0;
 let firstChestFloor=-1;
 let firstCorridorFloor=-1;
-let firstStairFloor=-1;
 let firstNoChestFloor=-1;
 let firstMultiRegionFloor=-1;
 for(let f=0;f<searchEngine.floorCount;f++){
@@ -284,11 +314,14 @@ let countBadges=anom.isolatedRegions.map(size=>`<span style="background:#FF69B4;
 anomalyDetails.push(`<span style="color:#ffaa00;font-size:11px;">B${f+1}F Chamber ${countBadges}</span>`);
 if(firstCorridorFloor===-1)firstCorridorFloor=f;
 }
+if(anom.hasInaccessibleChest && anom.hasIsolatedCorridor){
+hasAnyChestCorridorCombo=true;
+}
 }
 if(conds.anomaly==='chest'&&!hasAnyChestAnomaly)match=false;
 else if(conds.anomaly==='nochest'&&!hasAnyNoChestAnomaly)match=false;
 else if(conds.anomaly==='corridor'&&!hasAnyCorridorAnomaly)match=false; 
-else if(conds.anomaly==='chest_corridor'&&(!hasAnyChestAnomaly||!hasAnyCorridorAnomaly))match=false;
+else if(conds.anomaly==='chest_corridor'&&!hasAnyChestCorridorCombo)match=false;
 else if(conds.anomaly==='multi_corridor'&&corridorFloorCount<2)match=false;
 else if(conds.anomaly==='multi_region'&&!hasAnyMultiRegionAnomaly)match=false;
 if(match){
@@ -296,7 +329,6 @@ if(conds.anomaly==='chest')jumpToFloor=firstChestFloor;
 else if(conds.anomaly==='nochest')jumpToFloor=firstNoChestFloor;
 else if(conds.anomaly==='corridor'||conds.anomaly==='multi_corridor')jumpToFloor=firstCorridorFloor;
 else if(conds.anomaly==='multi_region')jumpToFloor=firstMultiRegionFloor;
-else if(conds.anomaly==='stair')jumpToFloor=firstStairFloor;
 else if(conds.anomaly==='chest_corridor')jumpToFloor=(firstChestFloor!==-1)?firstChestFloor:firstCorridorFloor;
 if(jumpToFloor===-1){
 if(firstStairFloor!==-1)jumpToFloor=firstStairFloor;

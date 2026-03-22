@@ -60,15 +60,9 @@ atValues.push((currentSeed>>>16)& 0x7FFF);
 }
 }
 const atHtmlString=`[35] ${atValues[0]}<br>[36] ${atValues[1]}<br>[37] ${atValues[2]}`;
-let boxCounts={10:0,9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0};
-let totalBoxes=0;
-for(let f=2;f<mapData.floorCount;f++){
-let boxes=mapData.getTreasureBoxCount(f);
-for(let b=0;b<boxes;b++){
-boxCounts[mapData.getTreasureBoxInfo(f,b).rank]++;
-totalBoxes++;
-}
-}
+const boxData=mapData.getMapBoxCounts();
+const boxCounts=boxData.counts;
+const totalBoxes=boxData.total;
 let boxCountHtmlArr=[];
 for(let r=10;r>=1;r--){
 if(boxCounts[r]>0){
@@ -77,7 +71,7 @@ if(r===10)color="#ffd700";
 else if(r>=8)color="#ff4444";
 else if(r>=4)color="#44cc44";
 else if(r===3)color="#62a1ff";
-boxCountHtmlArr.push(`<span style="margin-right:14px;display:inline-block;background:#000;padding:2px 8px;border-radius:4px;border:1px solid #333;"><strong style="color:${color};font-size:14px;text-shadow:1px 1px 1px #000;">${RANK_NAMES[r]}</strong><span style="color:#fff;font-weight:bold;">${boxCounts[r]}</span></span>`);
+boxCountHtmlArr.push(`<span style="margin-right:14px;display:inline-block;background:#000;padding:2px 8px;border-radius:4px;border:1px solid #333;"><strong style="color:${color};font-size:14px;text-shadow:1px 1px 1px #000;">${CHEST_RANK[r]}</strong><span style="color:#fff;font-weight:bold;">${boxCounts[r]}</span></span>`);
 }
 }
 let boxString=boxCountHtmlArr.length>0?boxCountHtmlArr.join(''):'<span style="color:#888;">None</span>';
@@ -161,7 +155,7 @@ if(boxCount>0){
 infoHtml+=`<tr><td>Chest</td><td>${boxCount}<font color=666666>(Tap to see Chest Timer)</font></td></tr>`;
 for(let i=0;i<boxCount;i++){
 const box=mapData.getTreasureBoxInfo(f,i);
-const rn=RANK_NAMES[box.rank]||box.rank;
+const rn=CHEST_RANK[box.rank]||box.rank;
 const soloEN=mapData.getBoxItem(f,i,1)||'?';
 const soloJP=mapData.getBoxItemJP(f,i,1)||'?';
 const partyEN=mapData.getBoxItem(f,i,2)||'?';
@@ -276,7 +270,7 @@ const modal=document.getElementById('chestModal');
 const title=document.getElementById('chestModalTitle');
 const body=document.getElementById('chestModalBody');
 const boxInfo=mapData.getTreasureBoxInfo(floorIndex,boxIndex);
-const rn=RANK_NAMES[boxInfo.rank]||boxInfo.rank;
+const rn=CHEST_RANK[boxInfo.rank]||boxInfo.rank;
 title.textContent=`B${floorIndex+1}F Chest ${boxIndex+1}(Rank ${rn})@(${x},${y})`;
 let results=[];
 let currentStart=0;

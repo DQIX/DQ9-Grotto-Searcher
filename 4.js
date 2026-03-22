@@ -25,66 +25,6 @@ if(typeof checkBQStatus==='function'){
 checkBQStatus();
 }
 }
-function getUltimateConds(){
-const reqBox={
-10:parseInt(document.getElementById('cond_box_S')?document.getElementById('cond_box_S').value:0)||0,
-9:parseInt(document.getElementById('cond_box_A')?document.getElementById('cond_box_A').value:0)||0,
-8:parseInt(document.getElementById('cond_box_B')?document.getElementById('cond_box_B').value:0)||0,
-7:parseInt(document.getElementById('cond_box_C')?document.getElementById('cond_box_C').value:0)||0,
-6:parseInt(document.getElementById('cond_box_D')?document.getElementById('cond_box_D').value:0)||0,
-5:parseInt(document.getElementById('cond_box_E')?document.getElementById('cond_box_E').value:0)||0,
-4:parseInt(document.getElementById('cond_box_F')?document.getElementById('cond_box_F').value:0)||0,
-3:parseInt(document.getElementById('cond_box_G')?document.getElementById('cond_box_G').value:0)||0,
-2:parseInt(document.getElementById('cond_box_H')?document.getElementById('cond_box_H').value:0)||0,
-1:parseInt(document.getElementById('cond_box_I')?document.getElementById('cond_box_I').value:0)||0
-};
-return{
-prefix:document.getElementById('cond_prefix')?document.getElementById('cond_prefix').value:"",
-suffix:document.getElementById('cond_suffix')?document.getElementById('cond_suffix').value:"",
-locale:document.getElementById('cond_locale')?document.getElementById('cond_locale').value:"",
-lv:document.getElementById('cond_lv')?document.getElementById('cond_lv').value:"",
-location:document.getElementById('cond_location')?document.getElementById('cond_location').value:"",
-bq:document.getElementById('cond_bq')?document.getElementById('cond_bq').value:"",
-env:document.getElementById('cond_env')?document.getElementById('cond_env').value:"",
-monster:document.getElementById('cond_monster')?document.getElementById('cond_monster').value:"",
-depth:document.getElementById('cond_depth')?document.getElementById('cond_depth').value:"",
-boss:document.getElementById('cond_boss')?document.getElementById('cond_boss').value:"",
-elist:document.getElementById('cond_elist')?document.getElementById('cond_elist').value:"",
-onlyMon:document.getElementById('cond_only_mon')?document.getElementById('cond_only_mon').value:"",
-anomaly:document.getElementById('cond_anomaly')?document.getElementById('cond_anomaly').value:"",
-reqBox:reqBox,
-hasBoxCond:Object.values(reqBox).some(v=>v>0)
-};
-}
-function checkUltimateCondsMatch(engine,seed,targetRankKey,conds,searchFilterLoc){
-if(conds.prefix&&engine._details[5]!=conds.prefix)return false;
-if(conds.suffix&&engine._details[6]!=conds.suffix)return false;
-if(conds.locale&&(engine.MapLocale)!=conds.locale)return false;
-if(conds.lv&&engine._details[4]!=conds.lv)return false;
-if(conds.env&&engine._details[3]!=conds.env)return false;
-if(conds.monster&&engine._details[2]!=conds.monster)return false;
-if(conds.depth&&engine._details[1]!=conds.depth)return false;
-if(conds.boss&&engine._details[0]!=conds.boss)return false;
-let targetLocNum=conds.location?parseInt(conds.location,16):null;
-let targetBqNum=conds.bq?parseInt(conds.bq):null;
-if(targetLocNum!==null||targetBqNum!==null||searchFilterLoc){
-if(targetRankKey!==null&&typeof calcLocations==='function'){
-let locData=calcLocations(seed,targetRankKey);
-if(locData.outputOrder.length===0)return false;
-if(targetLocNum!==null){
-if(!locData.seenLocations[targetLocNum])return false;
-if(targetBqNum!==null &&!locData.seenLocations[targetLocNum].has(targetBqNum))return false;
-}else if(targetBqNum!==null){
-let bqFound=false;
-for(let loc in locData.seenLocations){
-if(locData.seenLocations[loc].has(targetBqNum)){bqFound=true;break;}
-}
-if(!bqFound)return false;
-}
-}
-}
-return true;
-}
 async function executeCustomSearch(config){
 if(isSearching){searchCancel=true;return;}
 isSearching=true;searchCancel=false;
@@ -134,11 +74,7 @@ if(!checkUltimateCondsMatch(searchEngine,seed,targetRankKey,conds,searchFilterLo
 searchEngine.cDungeonDetail();
 let boxHtml="";
 if(conds.hasBoxCond){
-let boxCounts={10:0,9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0};
-for(let f=2;f<searchEngine.floorCount;f++){
-let boxes=searchEngine.getTreasureBoxCount(f);
-for(let b=0;b<boxes;b++)boxCounts[searchEngine.getTreasureBoxInfo(f,b).rank]++;
-}
+let boxCounts=searchEngine.getMapBoxCounts();
 let boxMatch=true;
 let boxStr=[];
 for(let r=10;r>=1;r--){
@@ -146,7 +82,7 @@ if(conds.reqBox[r]>0){
 if(boxCounts[r]!==conds.reqBox[r]){
 boxMatch=false;break;
 }
-boxStr.push(`${RANK_NAMES[r]}x${conds.reqBox[r]}`);
+boxStr.push(`${CHEST_RANK[r]}x${conds.reqBox[r]}`);
 }
 }
 if(!boxMatch){processed++;continue;}
@@ -306,8 +242,8 @@ checkDungeon:(eng)=>{
 if(eng.getTreasureBoxCount(2)>=3&&eng.getTreasureBoxCount(3)>=3){
 let p3=eng.getBoxItem(2,2,2);
 let p4=eng.getBoxItem(3,2,2);
-let r3=RANK_NAMES[eng.getTreasureBoxInfo(2,2).rank]||'?';
-let r4=RANK_NAMES[eng.getTreasureBoxInfo(3,2).rank]||'?';
+let r3=CHEST_RANK[eng.getTreasureBoxInfo(2,2).rank]||'?';
+let r4=CHEST_RANK[eng.getTreasureBoxInfo(3,2).rank]||'?';
 if(checkItems.includes(p3)&&checkItems.includes(p4)){
 return{isHit:true,jumpFloor:2,displayHtml:`<span style="color:#cc66cc;font-size:11px">B3F ${r3}3: ${p3}<br>B4F ${r4}3: ${p4}</span>`};
 }
@@ -475,7 +411,7 @@ let s=eng.getBoxItem(fIdx,b,1),p=eng.getBoxItem(fIdx,b,2);
 if(wpTargets.includes(s)||wpTargets.includes(p)){
 let t=(wpTargets.includes(s)&&wpTargets.includes(p))?"Solo+Party":(wpTargets.includes(p)?"Party":"Solo");
 let hitItem=wpTargets.includes(p)?p:s;
-let rName=RANK_NAMES[eng.getTreasureBoxInfo(fIdx,b).rank]||'?';
+let rName=CHEST_RANK[eng.getTreasureBoxInfo(fIdx,b).rank]||'?';
 wpDet=`B${fIdx+1}F ${rName}${b+1}: ${hitItem} (${t})`;
 wpMet=true;wpFloor=fIdx;return true;
 }
@@ -486,7 +422,7 @@ if(isMonsterBox){
 if(!checkWp(2))return{isHit:false};
 let c1Met=false,matDet="",b3Rank="";
 if(eng.floorCount>2&&eng.getTreasureBoxCount(2)>=3){
-b3Rank=RANK_NAMES[eng.getTreasureBoxInfo(2,2).rank]||'?';
+b3Rank=CHEST_RANK[eng.getTreasureBoxInfo(2,2).rank]||'?';
 let foundSec=-1;
 for(let s=minSec;s<=maxSec;s++){
 if(eng.getBoxItem(2,2,s)===targetItem){
@@ -516,7 +452,7 @@ let checkSec=isMillionaire?2:8;
 let labelText=isMillionaire?"":"(13s)";
 if(eng.floorCount>2&&eng.getTreasureBoxCount(2)>=3){
 pB3=eng.getBoxItem(2,2,checkSec);
-b3Rank=RANK_NAMES[eng.getTreasureBoxInfo(2,2).rank]||'?';
+b3Rank=CHEST_RANK[eng.getTreasureBoxInfo(2,2).rank]||'?';
 if(currentB3Targets.includes(pB3)){
 let pB3_25s=eng.getBoxItem(2,2,20);
 if(!isMillionaire){
@@ -528,7 +464,7 @@ if(!strictMatTargets.includes(pB3_25s))b3V=true;
 }
 if(eng.floorCount>3&&eng.getTreasureBoxCount(3)>=3){
 pB4=eng.getBoxItem(3,2,checkSec);
-b4Rank=RANK_NAMES[eng.getTreasureBoxInfo(3,2).rank]||'?';
+b4Rank=CHEST_RANK[eng.getTreasureBoxInfo(3,2).rank]||'?';
 if(currentB4Targets.includes(pB4)){
 let pB4_25s=eng.getBoxItem(3,2,20);
 if(!isMillionaire){
@@ -635,7 +571,7 @@ let startStep=step-extractLen+1;
 let formattedVals=[];
 for(let i=extractLen-1;i>=0;i--){
 let s=step-i;
-let v=valsBuffer[s % 10];
+let v=valsBuffer[s%10];
 let m=(hb &(1<<i))!==0;
 if(m){
 formattedVals.push(`<strong style="color:#ff4444;">${v}</strong>`);
@@ -654,9 +590,10 @@ if(foundOffsets.length>0){
 hitCount++;
 let seedHex=seed.toString(16).toUpperCase().padStart(4,'0');
 let offsetsHtml=foundOffsets.map(o=>
-`<span style="color:#00ffff;font-size:12px;">AT+${o.start}<span style="color:#888;">[${o.valsHtml}]</span></span>`
+`<span style="color:#00ffff;font-size:12px;">AT+${o.start} <span style="color:#888;">[${o.valsHtml}]</span></span>`
 ).join('<br>');
-let probText=threshold===127?'1/256':'1/128';
+let probSel=document.getElementById('atConsecutiveThreshold');
+let probText=probSel.options[probSel.selectedIndex].text;
 let sel=document.getElementById('atConsecutiveCount');
 let patternName=sel.options[sel.selectedIndex].text;
 let specificAtHtml='';
@@ -671,7 +608,7 @@ itemNode.className='search-result-item';
 itemNode.innerHTML=`
 <span style="color:#ffd700;font-weight:bold;font-size:15px;">${seedHex}</span><br>
 <div style="background:#111;padding:4px 8px;border-radius:4px;margin:4px 0;border:1px solid #333;">
-<span style="color:#ffaa00;font-size:12px;font-weight:bold;">${patternName}(${probText})</span>
+<span style="color:#ffaa00;font-size:12px;font-weight:bold;">${patternName} (${probText})</span>
 </div>
 <div style="padding-top:2px;">
 ${offsetsHtml}
@@ -827,18 +764,14 @@ searchEngine.calculateDetail();
 let boxHtml="";
 let boxMatch=true;
 if(conds.hasBoxCond){
-let boxCounts={10:0,9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0};
-for(let f=2;f<bugFloors;f++){
-let boxes=searchEngine.getTreasureBoxCount(f);
-for(let b=0;b<boxes;b++)boxCounts[searchEngine.getTreasureBoxInfo(f,b).rank]++;
-}
+let boxCounts=searchEngine.getMapBoxCounts();
 let boxStr=[];
 for(let r=10;r>=1;r--){
 if(conds.reqBox[r]>0){
 if(boxCounts[r]!==conds.reqBox[r]){
 boxMatch=false;break;
 }
-boxStr.push(`${RANK_NAMES[r]}x${conds.reqBox[r]}`);
+boxStr.push(`${CHEST_RANK[r]}x${conds.reqBox[r]}`);
 }
 }
 if(!boxMatch){processed++;continue;}
