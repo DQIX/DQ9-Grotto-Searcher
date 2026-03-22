@@ -112,7 +112,6 @@ return;
 let totalCombos=ranksToSearch.length *(maxSeed+1);
 let processed=0;
 let hitCount=0;
-const rankNames={10:'S',9:'A',8:'B',7:'C',6:'D',5:'E',4:'F',3:'G',2:'H',1:'I'};
 let searchEngine=new GrottoDetail();
 let fragment=document.createDocumentFragment();
 try{
@@ -147,7 +146,7 @@ if(conds.reqBox[r]>0){
 if(boxCounts[r]!==conds.reqBox[r]){
 boxMatch=false;break;
 }
-boxStr.push(`${rankNames[r]}x${conds.reqBox[r]}`);
+boxStr.push(`${RANK_NAMES[r]}x${conds.reqBox[r]}`);
 }
 }
 if(!boxMatch){processed++;continue;}
@@ -304,12 +303,11 @@ btnId:'searchBtnBox3',btnText:'3rd',btnBg:'linear-gradient(135deg,#cc44cc,#88008
 filterRanks:(ranks,conds)=>filterMapRanksBySMRAndChest(ranks,conds,[chestRanks]),
 checkBasicReq:(eng,conds)=>eng.floorCount>=4&&filterMapRanksBySMRAndChest([eng.MapRank],conds,[chestRanks]).length>0,
 checkDungeon:(eng)=>{
-const rankNames={10:'S',9:'A',8:'B',7:'C',6:'D',5:'E',4:'F',3:'G',2:'H',1:'I'};
 if(eng.getTreasureBoxCount(2)>=3&&eng.getTreasureBoxCount(3)>=3){
 let p3=eng.getBoxItem(2,2,2);
 let p4=eng.getBoxItem(3,2,2);
-let r3=rankNames[eng.getTreasureBoxInfo(2,2).rank]||'?';
-let r4=rankNames[eng.getTreasureBoxInfo(3,2).rank]||'?';
+let r3=RANK_NAMES[eng.getTreasureBoxInfo(2,2).rank]||'?';
+let r4=RANK_NAMES[eng.getTreasureBoxInfo(3,2).rank]||'?';
 if(checkItems.includes(p3)&&checkItems.includes(p4)){
 return{isHit:true,jumpFloor:2,displayHtml:`<span style="color:#cc66cc;font-size:11px">B3F ${r3}3: ${p3}<br>B4F ${r4}3: ${p4}</span>`};
 }
@@ -425,7 +423,6 @@ return{isHit:false};
 }
 function startSearchMillionaireCombo(){
 const targetItem=document.getElementById('searchItem').value;
-const rankNames={10:'S',9:'A',8:'B',7:'C',6:'D',5:'E',4:'F',3:'G',2:'H',1:'I'};
 let wpTargets=[];
 let strictMatTargets=[];
 let broadMatTargets=[];
@@ -478,7 +475,7 @@ let s=eng.getBoxItem(fIdx,b,1),p=eng.getBoxItem(fIdx,b,2);
 if(wpTargets.includes(s)||wpTargets.includes(p)){
 let t=(wpTargets.includes(s)&&wpTargets.includes(p))?"Solo+Party":(wpTargets.includes(p)?"Party":"Solo");
 let hitItem=wpTargets.includes(p)?p:s;
-let rName=rankNames[eng.getTreasureBoxInfo(fIdx,b).rank]||'?';
+let rName=RANK_NAMES[eng.getTreasureBoxInfo(fIdx,b).rank]||'?';
 wpDet=`B${fIdx+1}F ${rName}${b+1}: ${hitItem} (${t})`;
 wpMet=true;wpFloor=fIdx;return true;
 }
@@ -489,7 +486,7 @@ if(isMonsterBox){
 if(!checkWp(2))return{isHit:false};
 let c1Met=false,matDet="",b3Rank="";
 if(eng.floorCount>2&&eng.getTreasureBoxCount(2)>=3){
-b3Rank=rankNames[eng.getTreasureBoxInfo(2,2).rank]||'?';
+b3Rank=RANK_NAMES[eng.getTreasureBoxInfo(2,2).rank]||'?';
 let foundSec=-1;
 for(let s=minSec;s<=maxSec;s++){
 if(eng.getBoxItem(2,2,s)===targetItem){
@@ -519,7 +516,7 @@ let checkSec=isMillionaire?2:8;
 let labelText=isMillionaire?"":"(13s)";
 if(eng.floorCount>2&&eng.getTreasureBoxCount(2)>=3){
 pB3=eng.getBoxItem(2,2,checkSec);
-b3Rank=rankNames[eng.getTreasureBoxInfo(2,2).rank]||'?';
+b3Rank=RANK_NAMES[eng.getTreasureBoxInfo(2,2).rank]||'?';
 if(currentB3Targets.includes(pB3)){
 let pB3_25s=eng.getBoxItem(2,2,20);
 if(!isMillionaire){
@@ -531,7 +528,7 @@ if(!strictMatTargets.includes(pB3_25s))b3V=true;
 }
 if(eng.floorCount>3&&eng.getTreasureBoxCount(3)>=3){
 pB4=eng.getBoxItem(3,2,checkSec);
-b4Rank=rankNames[eng.getTreasureBoxInfo(3,2).rank]||'?';
+b4Rank=RANK_NAMES[eng.getTreasureBoxInfo(3,2).rank]||'?';
 if(currentB4Targets.includes(pB4)){
 let pB4_25s=eng.getBoxItem(3,2,20);
 if(!isMillionaire){
@@ -788,7 +785,6 @@ const maxSeed=0x7FFF;
 let totalCombos=ranksToSearch.length*(maxSeed-minSeed+1);
 let processed=0;
 let hitCount=0;
-const rankNames={10:'S',9:'A',8:'B',7:'C',6:'D',5:'E',4:'F',3:'G',2:'H',1:'I'};
 let searchEngine=new GrottoDetail();
 let fragment=document.createDocumentFragment();
 for(let rank of ranksToSearch){
@@ -842,7 +838,7 @@ if(conds.reqBox[r]>0){
 if(boxCounts[r]!==conds.reqBox[r]){
 boxMatch=false;break;
 }
-boxStr.push(`${rankNames[r]}x${conds.reqBox[r]}`);
+boxStr.push(`${RANK_NAMES[r]}x${conds.reqBox[r]}`);
 }
 }
 if(!boxMatch){processed++;continue;}

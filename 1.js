@@ -1,3 +1,4 @@
+const RANK_NAMES={10:'S',9:'A',8:'B',7:'C',6:'D',5:'E',4:'F',3:'G',2:'H',1:'I'};
 const ENV_NAMES={1:['Caves','洞窟'],2:['Ruins','遺跡'],3:['Ice','氷'],4:['Water','水'],5:['Fire','火山']};
 const BOSS_NAMES={
 1:['Equinox','馬','黒竜丸'],2:['Nemean','爪','ハヌマーン'],3:['Shogum','髭','スライムジェネラル'],4:['Trauminator','機','Sキラーマシン'],

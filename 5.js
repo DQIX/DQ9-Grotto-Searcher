@@ -69,7 +69,6 @@ boxCounts[mapData.getTreasureBoxInfo(f,b).rank]++;
 totalBoxes++;
 }
 }
-const rankNames={10:'S',9:'A',8:'B',7:'C',6:'D',5:'E',4:'F',3:'G',2:'H',1:'I'};
 let boxCountHtmlArr=[];
 for(let r=10;r>=1;r--){
 if(boxCounts[r]>0){
@@ -78,7 +77,7 @@ if(r===10)color="#ffd700";
 else if(r>=8)color="#ff4444";
 else if(r>=4)color="#44cc44";
 else if(r===3)color="#62a1ff";
-boxCountHtmlArr.push(`<span style="margin-right:14px;display:inline-block;background:#000;padding:2px 8px;border-radius:4px;border:1px solid #333;"><strong style="color:${color};font-size:14px;text-shadow:1px 1px 1px #000;">${rankNames[r]}</strong><span style="color:#fff;font-weight:bold;">${boxCounts[r]}</span></span>`);
+boxCountHtmlArr.push(`<span style="margin-right:14px;display:inline-block;background:#000;padding:2px 8px;border-radius:4px;border:1px solid #333;"><strong style="color:${color};font-size:14px;text-shadow:1px 1px 1px #000;">${RANK_NAMES[r]}</strong><span style="color:#fff;font-weight:bold;">${boxCounts[r]}</span></span>`);
 }
 }
 let boxString=boxCountHtmlArr.length>0?boxCountHtmlArr.join(''):'<span style="color:#888;">None</span>';
@@ -158,7 +157,6 @@ const elistInfo=getFloorElistInfo(mapData,f);
 let stateHtml=elistInfo.state?`<span style="background:#ff44cc;color:#fff;padding:1px 5px;border-radius:3px;font-size:10px;margin-left:6px;white-space:nowrap;">${elistInfo.state}</span>`:'';
 let dHtml=elistInfo.dValue>0?`<span style="background:#ffaa00;color:#000;padding:1px 5px;border-radius:3px;font-size:10px;margin-left:4px;white-space:nowrap;">${elistInfo.dValue}</span>`:'';
 infoHtml+=`<tr><td style="padding:6px 10px;border-bottom:1px solid #222;color:#8888bb;">ElistOfs</td><td style="padding:6px 10px;border-bottom:1px solid #222;font-family:monospace;color:#44cc44;">${elistInfo.hex}${stateHtml}${dHtml}</td></tr>`;
-const RANK_NAMES={1:'I',2:'H',3:'G',4:'F',5:'E',6:'D',7:'C',8:'B',9:'A',10:'S'};
 if(boxCount>0){
 infoHtml+=`<tr><td>Chest</td><td>${boxCount}<font color=666666>(Tap to see Chest Timer)</font></td></tr>`;
 for(let i=0;i<boxCount;i++){
@@ -278,7 +276,6 @@ const modal=document.getElementById('chestModal');
 const title=document.getElementById('chestModalTitle');
 const body=document.getElementById('chestModalBody');
 const boxInfo=mapData.getTreasureBoxInfo(floorIndex,boxIndex);
-const RANK_NAMES={1:'I',2:'H',3:'G',4:'F',5:'E',6:'D',7:'C',8:'B',9:'A',10:'S'};
 const rn=RANK_NAMES[boxInfo.rank]||boxInfo.rank;
 title.textContent=`B${floorIndex+1}F Chest ${boxIndex+1}(Rank ${rn})@(${x},${y})`;
 let results=[];
