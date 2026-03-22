@@ -14,12 +14,12 @@ For details, please see Disclaimer inside the tool.
 
 Ultimate search
 - Grotto Name, Level
-- Environment, SMR(B1 Monster Rank), Depth, Boss
+- Environment, SMR (B1 Monster Rank), Depth, Boss
 - Location, Base Quality
 - Chest amount in each Chest rank
 - Wandering Monster bugged floor status (ElistOfs)
 - Single monster floor (Only)
-- Nipple (inaccessible chest), Chamber (inaccessible area)
+- Nipple Map (乳首, inaccessible chest), Chamber Map (イケない通路, inaccessible area)
 
 Other searches
 - Quickload B3/B4 same item x2 (QL)
