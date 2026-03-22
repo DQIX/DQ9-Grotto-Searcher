@@ -19,6 +19,7 @@ Ultimate search
 - Chest amount in each Chest rank
 - Wandering Monster bugged floor status (ElistOfs)
 - Single monster floor (Only)
+- Nipple (inaccessible chest), Chamber (inaccessible area)
 
 Other searches
 - Quickload B3/B4 same item x2 (QL)
@@ -30,7 +31,7 @@ Other searches
 - 4-player Multiplay Bug (Multibug)
 - AT search for player's Map Method self-development (AT)
 
-# Minimum requirements
+# Requirements
 
 iOS 10.3+ / Android 6.0+ / Windows 7+ / Any other OS which can run:
 
