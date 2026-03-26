@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="JP">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DQ9 Grotto Searcher</title>
 <link rel=stylesheet href=1.css>
 </head>
@@ -10,10 +10,10 @@
 <div class="header">
 <h1>DQ9 GROTTO SEARCHER (CELESTIA VERSION)</h1>
 </div>
-<div id="controls_container" style="display:flex;justify-content:center;padding-bottom:20px;border-bottom:2px solid #4a4a8a;">
-<div id="single_map_controls" style="display:flex;align-items:center;gap:10px;background:#0a0a15;padding:6px 12px;border-radius:6px;border:1px solid #333355;">
-<label style="color:#aaa;font-size:13px;font-weight:bold;">Rank</label>
-<select id="rank" style="background:#000;color:#0f0;border:1px solid #555;padding:4px;font-size:14px;width:65px;">
+<div id="controls_container" style="display:flex; justify-content:center; padding-bottom: 20px; border-bottom: 2px solid #4a4a8a;">
+<div id="single_map_controls" style="display:flex; align-items:center; background:#0a0a15; padding:6px 12px; border-radius:6px; border:1px solid #333355;">
+<label style="color:#aaa; font-size:13px; font-weight:bold;">Rank</label>
+<select id="rank" style="background:#000; color:#0f0; border:1px solid #555; padding:4px; font-size:14px; width:65px;">
 <option value="0x02">02</option>
 <option value="0x38">38</option>
 <option value="0x3D">3D</option>
@@ -27,9 +27,9 @@
 <option value="0xC9">C9</option>
 <option value="0xDD" selected>DD</option>
 </select>
-<label style="color:#aaa;font-size:13px;font-weight:bold;margin-left:4px;">Seed</label>
-<input type="text" id="seed" value="263C" maxlength="4" placeholder="Hex" style="text-transform:uppercase;font-family:monospace;font-size:14px;width:60px;text-align:center;background:#000;color:#0f0;border:1px solid #555;padding:4px;">
-<button class="go" onclick="calculate()" style="background:linear-gradient(135deg,#00ffff,#0088aa);color:#000;border:none;padding:6px 16px;font-size:13px;font-weight:bold;border-radius:4px;cursor:pointer;margin-left:8px;">Go</button>
+<label style="color:#aaa; font-size:13px; font-weight:bold; margin-left:4px;">Seed</label>
+<input type="text" id="seed" value="263C" maxlength="4" placeholder="Hex" style="text-transform:uppercase; font-family:monospace; font-size:14px; width:60px; text-align:center; background:#000; color:#0f0; border:1px solid #555; padding:4px;">
+<button class="go" onclick="calculate()" style="background:linear-gradient(135deg, #00ffff, #0088aa); color:#000; border:none; padding:6px 16px; font-size:13px; font-weight:bold; border-radius:4px; cursor:pointer; margin-left:8px;">Go</button>
 </div>
 </div>
 <script src=1.js></script>
@@ -40,130 +40,170 @@
 <div id="chestModal" class="modal-overlay" onclick="closeChestModal(event)">
 <div class="modal-content" onclick="event.stopPropagation()">
 <div class="modal-header">
-<h3 id="chestModalTitle">Chest items</h3>
+<h3 id="chestModalTitle">寶箱內容物</h3>
 <button class="modal-close" onclick="closeChestModal()">×</button>
 </div>
 <div class="modal-body" id="chestModalBody"></div>
 </div>
 </div>
-<div id="disclaimerModal" class="modal-overlay" onclick="closeDisclaimerModal(event)" style="z-index:1001;">
-<div class="modal-content" onclick="event.stopPropagation()" style="max-width:600px;">
+
+<div id="disclaimerModal" class="modal-overlay" onclick="closeDisclaimerModal(event)" style="z-index: 1001;">
+<div class="modal-content" onclick="event.stopPropagation()" style="max-width: 600px;">
 <div class="modal-header">
-<h3 id="disclaimerModalTitle">Disclaimer</h3>
+<h3 id="disclaimerModalTitle">聲明 / Credits &amp; Disclaimer</h3>
 <button class="modal-close" onclick="closeDisclaimerModal()">×</button>
 </div>
-<div class="modal-body" id="disclaimerModalBody" style="padding:0;display:flex;flex-direction:column;overflow-y:hidden;max-height:70vh;">
-<div style="display:flex;gap:4px;background:#111128;padding:12px 16px 0 16px;border-bottom:2px solid #4a4a8a;flex-shrink:0;">
-<div id="discTabTW" style="padding:6px 16px;background:#1a1a3a;color:#ffd700;border:1px solid #4a4a8a;border-bottom:none;border-radius:6px 6px 0 0;cursor:pointer;font-size:13px;font-weight:bold;margin-bottom:-2px;transition:all 0.2s;" onclick="switchDisclaimerTab('TW')">繁體中文</div>
-<div id="discTabEN" style="padding:6px 16px;background:#222244;color:#888;border:1px solid #333;border-bottom:none;border-radius:6px 6px 0 0;cursor:pointer;font-size:13px;font-weight:bold;margin-bottom:-2px;transition:all 0.2s;" onclick="switchDisclaimerTab('EN')">English</div>
-<div id="discTabJP" style="padding:6px 16px;background:#222244;color:#888;border:1px solid #333;border-bottom:none;border-radius:6px 6px 0 0;cursor:pointer;font-size:13px;font-weight:bold;margin-bottom:-2px;transition:all 0.2s;" onclick="switchDisclaimerTab('JP')">日本語</div>
+<div class="modal-body" id="disclaimerModalBody" style="padding:0; display: flex; flex-direction: column; overflow-y: hidden; max-height: 70vh;">
+
+<div class="modal-tabs">
+<div id="discTabTW" style="padding:6px 16px; background: #1a1a3a; color: #ffd700; border: 1px solid #4a4a8a; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; font-size: 13px; font-weight: bold; margin-bottom: -2px; transition: all 0.2s;" onclick="switchDisclaimerTab('TW')">繁體中文</div>
+<div id="discTabEN" style="padding:6px 16px; background: #222244; color: #888; border: 1px solid #333; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; font-size: 13px; font-weight: bold; margin-bottom: -2px; transition: all 0.2s;" onclick="switchDisclaimerTab('EN')">English</div>
+<div id="discTabJP" style="padding:6px 16px; background: #222244; color: #888; border: 1px solid #333; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; font-size: 13px; font-weight: bold; margin-bottom: -2px; transition: all 0.2s;" onclick="switchDisclaimerTab('JP')">日本語</div>
 </div>
-<div style="padding:16px 20px;overflow-y:auto;flex:1;font-size:13px;line-height:1.6;color:#ccc;">
-<div id="discListTW" style="display:block;">
+
+<div style="padding:16px 20px; overflow-y: auto; flex: 1; font-size: 13px; line-height: 1.6; color: #ccc;">
+
+<div id="discListTW" style="display: block;">
 <p>本專案為非商業性質的 Dragon Quest IX 藏寶圖玩家工具，不隸屬於、不獲授權於 Square Enix。</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">社群公知的 DQ9 遊戲解析知識</h3>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">社群公知的 DQ9 遊戲解析知識</h3>
 <p>由玩家社群長期研究所累積的公共成果。</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">TKG 的貢獻</h3>
-<ul style="padding-left:20px;margin-bottom:12px;color:#fff;">
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">TKG 的貢獻</h3>
+<ul style="padding-left:20px; margin-bottom:12px; color:#fff;">
 <li>對 dq9tmap101.exe 進行反編譯，發現 ElistOfs 的計算公式</li>
 <li>透過記憶體檢查修正公式，並提出原作者因未察覺而遺漏的新概念：超大特殊樓層的右下角存在鄰接邊數不為零、卻因記憶體溢出而被當作零處理的白方格</li>
 <li>整理並列出完整邏輯供後續實作</li>
 </ul>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">dq9tmap101.exe 的 ElistOfs 邏輯（僅抽取邏輯，非代碼移植）</h3>
-<p>原作者為匿名人士(2ch ID:43)，曾明確表示無權阻止他人重新上傳本工具。概念名稱 ElistOfs 予以沿用，以便曾使用過 dq9tmap101.exe 的用戶理解其含義與來源。如有版權疑問，歡迎聯絡本專案。</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">一個反編譯資料庫</h3>
-<ul style="padding-left:20px;margin-bottom:12px;color:#fff;">依原作者條款使用：
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">dq9tmap101.exe 的 ElistOfs 邏輯（僅抽取邏輯，非代碼移植）</h3>
+<p>原作者為匿名人士 (2ch ID: 43)，曾明確表示無權阻止他人重新上傳本工具。概念名稱 ElistOfs 予以沿用，以便曾使用過 dq9tmap101.exe 的用戶理解其含義與來源。如有版權疑問，歡迎聯絡本專案。</p>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">一個反編譯資料庫</h3>
+<ul style="padding-left:20px; margin-bottom:12px; color:#fff;">依原作者條款使用：
 <li>已轉換為 JavaScript</li>
 <li>不主張對來源的原創性</li>
 <li>非商業用途</li>
 <li>已賦予非獨佔性使用許可證</li>
 <li>作者不要求署名</li>
 </ul>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">「危険？ハマる地図」對應樓層(5BC7,DF70)的樓梯與寶箱位置修正</h3>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">「危険？ハマる地図」對應樓層 (5BC7, DF70) 的樓梯與寶箱位置修正</h3>
 <p>原反編譯資料庫對此二樓層的資料有誤。本專案作者委託 Claude 解謎，完成修正。</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">實作分工</h3>
-<ul style="padding-left:20px;margin-bottom:12px;color:#fff;">
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">實作分工</h3>
+<ul style="padding-left:20px; margin-bottom:12px; color:#fff;">
 <li>反編譯資料庫 → JavaScript 轉譯：由 Claude 執行，本專案作者負責 debug</li>
 <li>ElistOfs 相關邏輯：本專案作者轉述 TKG 整理的邏輯，由 Gemini 實作</li>
 <li>其餘所有功能及代碼：由 Gemini 實作，本專案作者負責提供想法和 debug</li>
 </ul>
-<p style="color:#888;border-top:1px dashed #333;padding-top:8px;"><small>本專案不主張對以上任何來源的原創性。本專案採<strong><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant" target="_blank" style="color:#8cc8ff;">CC BY-NC-SA 4.0(創用 CC 姓名標示-非商業性-相同方式分享)</a></strong>授權，代碼嚴禁任何形式之商業使用。</small></p>
+<p style="color:#888; border-top:1px dashed #333; padding-top:8px;"><small>本專案不主張對以上任何來源的原創性。本專案採 <strong><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant" target="_blank" style="color:#8cc8ff;">CC BY-NC-SA 4.0 (創用 CC 姓名標示-非商業性-相同方式分享)</a></strong> 授權，代碼嚴禁任何形式之商業使用。</small></p>
 </div>
-<div id="discListEN" style="display:none;">
-<p>This is a non-commercial fan tool for Grottoes(treasure maps)from Dragon Quest IX:Sentinels of the Starry Skies. It is not affiliated with or endorsed by Square Enix Co. Ltd.</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">Community-documented DQ9 game mechanics</h3>
+
+<div id="discListEN" style="display: none;">
+<p>This is a non-commercial fan tool for Grottoes (treasure maps) from Dragon Quest IX: Sentinels of the Starry Skies. It is not affiliated with or endorsed by Square Enix Co. Ltd.</p>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">Community-documented DQ9 game mechanics</h3>
 <p>Public knowledge accumulated through long-term research by the player community.</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">Contributions by TKG</h3>
-<ul style="padding-left:20px;margin-bottom:12px;color:#fff;">
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">Contributions by TKG</h3>
+<ul style="padding-left:20px; margin-bottom:12px; color:#fff;">
 <li>Reverse-engineered dq9tmap101.exe to recover the ElistOfs calculation formula</li>
-<li>Corrected the formula through memory inspection,and identified a previously undocumented concept overlooked by the original author:in oversized special floors,certain white cells at the bottom-right corner have a non-zero adjacent edge count but are treated as zero due to memory overflow</li>
+<li>Corrected the formula through memory inspection, and identified a previously undocumented concept overlooked by the original author: in oversized special floors, certain white cells at the bottom-right corner have a non-zero adjacent edge count but are treated as zero due to memory overflow</li>
 <li>Compiled and documented the complete logic for implementation</li>
 </ul>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">ElistOfs logic derived from dq9tmap101.exe(logic only — not a code port)</h3>
-<p>The original author posted anonymously on 2ch(ID:43)and explicitly stated that they had no right to stop others from re-uploading the tool. The concept name ElistOfs is retained from the original so that former users of dq9tmap101.exe can recognize its meaning and origin. Please contact this project if you have copyright concerns.</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">A reverse-engineered database</h3>
-<ul style="padding-left:20px;margin-bottom:12px;color:#fff;">Used under the original author's terms:
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">ElistOfs logic derived from dq9tmap101.exe (logic only — not a code port)</h3>
+<p>The original author posted anonymously on 2ch (ID: 43) and explicitly stated that they had no right to stop others from re-uploading the tool. The concept name ElistOfs is retained from the original so that former users of dq9tmap101.exe can recognize its meaning and origin. Please contact this project if you have copyright concerns.</p>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">A reverse-engineered database</h3>
+<ul style="padding-left:20px; margin-bottom:12px; color:#fff;">Used under the original author's terms:
 <li>Converted to JavaScript</li>
 <li>No claim of originality</li>
 <li>Non-commercial use</li>
 <li>Granted a non-exclusive license</li>
 <li>No attribution required</li>
 </ul>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">Staircase and treasure chest position fix for Softlock floors(5BC7,DF70)</h3>
-<p>The reverse-engineered database contained incorrect data for these two floors. The project author engaged Claude to solve the discrepancy,producing the corrected data.</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">Implementation breakdown</h3>
-<ul style="padding-left:20px;margin-bottom:12px;color:#fff;">
-<li>Reverse-engineered database → JavaScript translation:performed by Claude;project author handled debugging</li>
-<li>ElistOfs-related logic:project author transcribed TKG's logic in their own words;implemented in JavaScript by Gemini</li>
-<li>All other functions &amp;code:implemented by Gemini;project author proposed ideas and handled debugging</li>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">Staircase and treasure chest position fix for Softlock floors (5BC7, DF70)</h3>
+<p>The reverse-engineered database contained incorrect data for these two floors. The project author engaged Claude to solve the discrepancy, producing the corrected data.</p>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">Implementation breakdown</h3>
+<ul style="padding-left:20px; margin-bottom:12px; color:#fff;">
+<li>Reverse-engineered database → JavaScript translation: performed by Claude; project author handled debugging</li>
+<li>ElistOfs-related logic: project author transcribed TKG's logic in their own words; implemented in JavaScript by Gemini</li>
+<li>All other functions &amp; code: implemented by Gemini; project author proposed ideas and handled debugging</li>
 </ul>
-<p style="color:#888;border-top:1px dashed #333;padding-top:8px;"><small>No claim of originality is made over any of the above sources. This project is licensed under<strong><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" style="color:#8cc8ff;">CC BY-NC-SA 4.0</a></strong>. Commercial use is strictly prohibited.</small></p>
+<p style="color:#888; border-top:1px dashed #333; padding-top:8px;"><small>No claim of originality is made over any of the above sources. This project is licensed under <strong><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" style="color:#8cc8ff;">CC BY-NC-SA 4.0</a></strong>. Commercial use is strictly prohibited.</small></p>
 </div>
-<div id="discListJP" style="display:none;">
+
+<div id="discListJP" style="display: none;">
 <p>本プロジェクトは『ドラゴンクエストIX 星空の守り人』の宝の地図に関するファンツールです。株式会社スクウェア・エニックスとは無関係であり、公式に認定・許諾されたものではありません。</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">コミュニティに広く知られているDQ9のゲーム解析知識</h3>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">コミュニティに広く知られているDQ9のゲーム解析知識</h3>
 <p>プレイヤーコミュニティが長年にわたって積み重ねてきた公共の知識です。</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">TKG 氏の貢献</h3>
-<ul style="padding-left:20px;margin-bottom:12px;color:#fff;">
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">TKG 氏の貢献</h3>
+<ul style="padding-left:20px; margin-bottom:12px; color:#fff;">
 <li>dq9tmap101.exe をリバースエンジニアリングし、ElistOfs の計算式を発見。</li>
 <li>メモリチェックにより計算式を修正し、原作者が見落とした概念を提唱：超大型特殊フロアの右下隅には、隣接辺数がゼロでないにもかかわらず、メモリオーバーフローによってゼロとして処理される白マスが存在する。</li>
 <li>後続の実装に向けて、全ロジックを整理・文書化。</li>
 </ul>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">dq9tmap101.exe の ElistOfs ロジック（ロジックの抽出のみ、コードの移植ではありません）</h3>
-<p>原作者は匿名の投稿者（2ch ID:43）であり、「ツールを再アップロードする者を止める権利は自分にはない」と明言しました。概念名である ElistOfs は、かつて dq9tmap101.exe を使用したことのあるユーザーがその意味を理解しやすいように、そのまま引き継いでいます。著作権に関するご懸念がある場合は、本プロジェクトまでお問い合わせください。</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">あるリバースエンジニアリングされたデータベース</h3>
-<ul style="padding-left:20px;margin-bottom:12px;color:#fff;">原作者の定めた条件に従い使用：
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">dq9tmap101.exe の ElistOfs ロジック（ロジックの抽出のみ、コードの移植ではありません）</h3>
+<p>原作者は匿名の投稿者（2ch ID: 43）であり、「ツールを再アップロードする者を止める権利は自分にはない」と明言しました。概念名である ElistOfs は、かつて dq9tmap101.exe を使用したことのあるユーザーがその意味を理解しやすいように、そのまま引き継いでいます。著作権に関するご懸念がある場合は、本プロジェクトまでお問い合わせください。</p>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">あるリバースエンジニアリングされたデータベース</h3>
+<ul style="padding-left:20px; margin-bottom:12px; color:#fff;">原作者の定めた条件に従い使用：
 <li>リバースエンジニアリングの結果をそのまま流用せず、JavaScriptに変換して使用</li>
 <li>独自の成果として主張しない</li>
 <li>商業利用しない</li>
 <li>独占的ライセンスを付与しない</li>
 <li>原作者のサイトへの言及は不要</li>
 </ul>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">「危険？ハマる地図」該当フロア(5BC7,DF70)の階段および宝箱の位置修正</h3>
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">「危険？ハマる地図」該当フロア (5BC7, DF70) の階段および宝箱の位置修正</h3>
 <p>リバースエンジニアリングされたデータベースには、これら2つのフロアのデータに誤りが含まれていました。本プロジェクトの作者が Claude に解析を依頼し、修正を完了しました。</p>
-<h3 style="color:#00ffff;font-size:14px;margin:12px 0 6px;">実装の分担</h3>
-<ul style="padding-left:20px;margin-bottom:12px;color:#fff;">
+<h3 style="color:#00ffff; font-size:14px; margin:12px 0 6px;">実装の分担</h3>
+<ul style="padding-left:20px; margin-bottom:12px; color:#fff;">
 <li>データベース → JavaScript への変換：Claude が実行し、本プロジェクトの作者がデバッグを担当。</li>
 <li>ElistOfs 関連ロジック：本プロジェクトの作者が TKG 氏のロジックを自身の言葉で伝え、Gemini が JavaScript で実装。</li>
 <li>その他すべての機能・コード：Gemini が実装し、本プロジェクトの作者がアイデアの提供とデバッグを担当。</li>
 </ul>
-<p style="color:#888;border-top:1px dashed #333;padding-top:8px;"><small>本プロジェクトは、上記のいかなる情報源に対してもオリジナリティを主張しません。本プロジェクトは<strong><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" target="_blank" style="color:#8cc8ff;">CC BY-NC-SA 4.0</a></strong>ライセンスのもとで公開されており、商業目的での使用は禁じられています。</small></p>
+<p style="color:#888; border-top:1px dashed #333; padding-top:8px;"><small>本プロジェクトは、上記のいかなる情報源に対してもオリジナリティを主張しません。本プロジェクトは <strong><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" target="_blank" style="color:#8cc8ff;">CC BY-NC-SA 4.0</a></strong> ライセンスのもとで公開されており、商業目的での使用は禁じられています。</small></p>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div id="helpModal" class="modal-overlay" onclick="closeHelpModal(event)" style="z-index:1002;">
-<div class="modal-content" onclick="event.stopPropagation()" style="max-width:650px;">
+
+<div id="helpModal" class="modal-overlay" onclick="closeHelpModal(event)" style="z-index: 1002;">
+<div class="modal-content" onclick="event.stopPropagation()" style="max-width: 650px;">
 <div class="modal-header">
-<h3 id="helpModalTitle" style="color:#00ffff;">Help</h3>
+<h3 id="helpModalTitle" style="color:#00ffff;">🗺️ "+K01+"</h3>
 <button class="modal-close" onclick="closeHelpModal()">×</button>
 </div>
-<div class="modal-body" style="padding:0;display:flex;flex-direction:column;overflow-y:hidden;max-height:75vh;">
-<div style="display:flex;gap:4px;background:#111128;padding:12px 16px 0 16px;border-bottom:2px solid #4a4a8a;flex-shrink:0;">
-<div id="helpTabEN" style="padding:6px 16px;background:#222244;color:#888;border:1px solid #333;border-bottom:none;border-radius:6px 6px 0 0;cursor:pointer;font-size:13px;font-weight:bold;margin-bottom:-2px;transition:all 0.2s;" onclick="switchHelpTab('EN')">English</div>
+<div class="modal-body" style="padding:0; display: flex; flex-direction: column; overflow-y: hidden; max-height: 75vh;">
+
+<div class="modal-tabs">
+<div id="helpTabTW" style="padding:6px 16px; background: #1a1a3a; color: #00ffff; border: 1px solid #4a4a8a; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; font-size: 13px; font-weight: bold; margin-bottom: -2px; transition: all 0.2s;" onclick="switchHelpTab('TW')">繁體中文</div>
+<div id="helpTabEN" style="padding:6px 16px; background: #222244; color: #888; border: 1px solid #333; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; font-size: 13px; font-weight: bold; margin-bottom: -2px; transition: all 0.2s;" onclick="switchHelpTab('EN')">English</div>
+<div id="helpTabJP" style="padding:6px 16px; background: #222244; color: #888; border: 1px solid #333; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; font-size: 13px; font-weight: bold; margin-bottom: -2px; transition: all 0.2s;" onclick="switchHelpTab('JP')">日本語</div>
 </div>
-<div style="padding:16px 20px;overflow-y:auto;flex:1;font-size:13px;line-height:1.7;color:#ccc;">
+
+<div style="padding:16px 20px; overflow-y: auto; flex: 1; font-size: 13px; line-height: 1.7; color: #ccc;">
+
+<div id="helpListTW" style="display: block;">
+<h3 style="color:#ffd700; font-size:14px; margin:0 0 8px;">🔘 【搜 B3/B4】&【搜 B9F】</h3>
+<ul style="padding-left:20px; margin-bottom:16px; color:#fff;">
+<li><strong>用途：</strong>找出在同一層樓中，能透過「中斷即開」或「一人旅」直接開出 2~3 個指定物品的地圖。</li>
+<li><strong>【搜 B9F】：</strong>專找 B9F 的 S 級寶箱 (用來拿 天使のソーマ 或 S 級武器)。<span style="color:#888;">*註：因為 A~I 級寶箱在淺層就有了，跑到底層拿不划算。</span></li>
+<li><strong style="color:#ff6666;">⚠️ 注意：</strong>此按鈕不適用於搜「寶箱怪」。(因為打完寶箱怪會刷新內部時間，導致這張圖不能連刷寶箱怪)。</li>
+</ul>
+
+<h3 style="color:#ffd700; font-size:14px; margin:0 0 8px;">🔘 【搜 体感】& 【搜 J 火山】</h3>
+<ul style="padding-left:20px; margin-bottom:16px; color:#fff;">
+<li><strong>用途：</strong>一種高效率刷寶法！先透過「中斷即開」或「一人旅」拿走指定物品，接著利用遊戲中的「體感延遲時間」(例如：走上下樓梯、或是打開再關閉戰歷)，去開同層或隔壁層的「整列箱」，順手拿走從它身上開出的指定物品！</li>
+<li><strong>【搜 J 火山】：</strong>名稱來自傳奇地圖「J火山ソーマ」，能讓你用【搜 体感】相同的辦法，在 B9F/B10F 輕鬆連拿 2 個「天使のソーマ」。</li>
+</ul>
+
+<h3 style="color:#ffd700; font-size:14px; margin:0 0 8px;">🔘 【搜 (S) 整列箱】</h3>
+<ul style="padding-left:20px; margin-bottom:20px; color:#fff;">
+<li><strong>用途：</strong>專門尋找連續兩層樓 (如 B3F/B4F 或 B13F/B14F) 都剛好有 3 個寶箱的地圖。利用下樓梯的時間差，一次帶走兩層樓的稀有寶物。</li>
+</ul>
+
+<div style="background:#222233; padding:12px; border-radius:6px; border-left:4px solid #4a4a8a;">
+<h3 style="color:#8cc8ff; font-size:14px; margin:0 0 8px;">💡 新手必看名詞解釋</h3>
+<p style="margin-bottom:6px;"><strong>中斷即開 (Party)：</strong>隊伍滿 4 人時，於目標寶箱所在的樓層「中斷存檔」並回到標題。重新讀檔進入遊戲後，<span style="color:#ffaa00;">什麼都不做</span>直接跑去開寶箱。此時遊戲內部時間為 2 秒 (現實約 7 秒)。</p>
+<p style="margin-bottom:6px;"><strong>一人旅 (Solo)：</strong>隊伍只有主角 1 人時進行「中斷即開」。此時內部時間為 1 秒 (現實約 6 秒)。約有 20% 機率會偏移成 Party 的時間。</p>
+<p style="margin-bottom:6px;"><strong>大富豪 (Millionaire)：</strong>含有多個能開出「高價武器」(拿去商店賣錢) 寶箱的地圖。</p>
+<p style="margin-bottom:0;"><strong>整列箱 (第3箱)：</strong>如果某層樓<span style="color:#ffaa00;">有 3 個寶箱</span>，第 3 個寶箱在系統機制中會有一個特徵：它會<strong>連續好幾秒鐘都開出同一個物品</strong>。利用這段寬裕的時間，玩家可以百分之百零失誤地拿到想要的寶物！</p>
+</div>
+</div>
+
 <div id="helpListEN" style="display:none;">
 <h3 style="color:#ffd700;font-size:14px;margin:0 0 8px;">🔘 [QL] & [B9F]</h3>
 <ul style="padding-left:20px;margin-bottom:16px;color:#fff;">
@@ -190,212 +230,250 @@
 <p style="margin-bottom:6px;"><strong>Chamber:</strong> Maps with an inaccessible area.</p>
 </div>
 </div>
+
+<div id="helpListJP" style="display: none;">
+<h3 style="color:#ffd700; font-size:14px; margin:0 0 8px;">🔘 【B3/B4】＆【B9F】</h3>
+<ul style="padding-left:20px; margin-bottom:16px; color:#fff;">
+<li><strong>用途：</strong>同じフロアで「中断即開」または「一人旅」で「指定アイテム×2～3」の地図を探します。</li>
+<li><strong>【B9F】：</strong>B9F「天使のソーマ×2」などの地図を探します。</li>
+<li><strong style="color:#ff6666;">⚠️ 注意：</strong>トラップモンスター×2の検索には【体感】をご利用ください。</li>
+</ul>
+
+<h3 style="color:#ffd700; font-size:14px; margin:0 0 8px;">🔘 【体感】&【J火山】</h3>
+<ul style="padding-left:20px; margin-bottom:16px; color:#fff;">
+<li><strong>用途：</strong>「中断即開」または「一人旅」で「整列箱ではない宝箱」から指定アイテムを取得し、その後「戦歴開閉」「階段合わせ」などの体感操作を使って「整列箱」から指定アイテムを取得できる地図を探します。</li>
+<li><strong>【J火山】：</strong>有名地図「J火山ソーマ」由来、上記と同じ使い方で「天使のソーマ×2」を取得できる地図を探します。</li>
+</ul>
+
+<h3 style="color:#ffd700; font-size:14px; margin:0 0 8px;">🔘 【整列箱】</h3>
+<ul style="padding-left:20px; margin-bottom:20px; color:#fff;">
+<li><strong>用途：</strong>B3F～B4F (【S整列】の場合はB13F～B14F) 2連続で3つ目の宝箱から指定アイテム×2を取得できる地図を探します。</li>
+</ul>
+
+<div style="background:#222233; padding:12px; border-radius:6px; border-left:4px solid #4a4a8a;">
+<h3 style="color:#8cc8ff; font-size:14px; margin:0 0 8px;">💡 用語解説</h3>
+<p style="margin-bottom:6px;"><strong>中断即開 (Party)：</strong>4人パーティで宝箱の所在するフロアで「中断セーブ」し、再開後、<span style="color:#ffaa00;">何もせずに</span>直接宝箱を開けることです。リアル時間7秒（内部時間2秒）に固定されます。</p>
+<p style="margin-bottom:6px;"><strong>一人旅 (Solo)：</strong>主人公1人のみで「中断即開」を行うことです。リアル時間6秒（内部時間1秒）に固定されます。</p>
+<p style="margin-bottom:6px;"><strong>大富豪 (Millionaire)：</strong>店で高く売れる武器が出る宝箱を複数含み、金策に適する地図です。</p>
+<p style="margin-bottom:0;"><strong>整列箱：</strong>あるフロアで宝箱が<span style="color:#ffaa00;">3つ</span>ある場合、3番目の宝箱は<strong>「数秒間連続して同じアイテムが出る」</strong>という特徴があります。この広い時間枠を利用することで、100%の確率で目当てのアイテムを取得できます！</p>
 </div>
 </div>
 </div>
 </div>
-<div id="unified_search_panel" style="background:#111128;padding:20px;border-bottom:2px solid #4a4a8a;">
-<div class="search-panel-header" style="border-bottom:1px dashed #4a4a8a;padding-bottom:12px;margin-bottom:16px;">
-<h3 style="color:#ffd700;margin:0;font-size:16px;">🚀 Control Panel</h3>
-<div class="checkbox-field" style="background:#1a1a3a;padding:6px 12px;border-radius:4px;border:1px solid #333355;">
-<input type="checkbox" id="searchAllRanks">
-<label for="searchAllRanks">Search all Ranks</label>
-<input type="checkbox" id="searchOnlyWithD" style="margin-left:10px;">
-<label for="searchOnlyWithD">Search Grottoes with Flag0</label>
-<button id="btnExport" class="go" style="background:linear-gradient(135deg,#228822,#005500);padding:4px 16px;color:#fff;margin-left:15px;font-size:12px;" onclick="exportSearchResults()">📥 TXT Output</button>
 </div>
 </div>
-<div style="margin-bottom:16px;background:#16162a;padding:15px;border-radius:8px;border:1px solid #00ffff;box-shadow:0 0 10px rgba(0,255,255,0.05);">
-<h4 style="color:#00ffff;margin-top:0;margin-bottom:12px;font-size:13px;">1️⃣ Ultimate Search</h4>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:15px;">
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">Prefix:</label><select id="cond_prefix" style="width:100%;padding:6px;background:#000;color:#0f0;border:1px solid #555;"><option value="">------</option></select></div>
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">Suffix:</label><select id="cond_suffix" style="width:100%;padding:6px;background:#000;color:#0f0;border:1px solid #555;"><option value="">------</option></select></div>
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">Locale:</label><select id="cond_locale" style="width:100%;padding:6px;background:#000;color:#0f0;border:1px solid #555;"><option value="">------</option></select></div>
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">Lv:</label><input type="number" id="cond_lv" min="1" max="99" placeholder="1-99" style="width:100%;padding:6px;background:#000;color:#0f0;border:1px solid #555;"></div>
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">Location:</label><input type="text" id="cond_location" maxlength="2" placeholder="01~96(Hex)" style="width:100%;padding:6px;background:#000;color:#0f0;border:1px solid #555;"></div>
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">BQ (Base Quality):</label><input type="number" id="cond_bq" min="2" max="248" disabled placeholder="🔒 Prefix/Suffix/Only" style="width:100%;padding:6px;background:#333;color:#777;border:1px solid #444;cursor:not-allowed;"></div>
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">Environment:</label><select id="cond_env" style="width:100%;padding:6px;background:#000;color:#0f0;border:1px solid #555;"><option value="">------</option></select></div>
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">SMR (B1F Monster Rank):</label><input type="number" id="cond_monster" min="1" max="9" placeholder="1-9" style="width:100%;padding:6px;background:#000;color:#0f0;border:1px solid #555;"></div>
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">Depth:</label><input type="number" id="cond_depth" min="2" max="16" placeholder="2-16" style="width:100%;padding:6px;background:#000;color:#0f0;border:1px solid #555;"></div>
-<div><label style="color:#ccc;display:block;margin-bottom:4px;font-size:12px;">BOSS:</label><select id="cond_boss" style="width:100%;padding:6px;background:#000;color:#0f0;border:1px solid #555;"><option value="">------</option></select></div>
-<div>
-<label style="color:#ff8888;display:block;margin-bottom:4px;font-size:12px;">Special Floor (ElistOfs):</label>
-<select id="cond_elist" style="width:100%;padding:6px;background:#000;color:#ffccff;border:1px solid #cc4444;">
-<option value="">------</option>
-<option value="MULTI_SPECIAL">Multi-Special-Floor</option>
-<option value="PARTIAL_NONE">Partially No-enemy</option>
-<option value="4">4-enemy</option>
-<option value="3">3-enemy</option>
-<option value="2">2-enemy</option>
-<option value="ONLY">ONLY (1-enemy)</option>
-<option value="NONE">No-enemy</option>
-</select>
-</div>
-<div>
-<label style="color:#ff88dd;display:block;margin-bottom:4px;font-size:12px;">Specified ONLY Monster:</label>
-<select id="cond_only_mon" style="width:100%;padding:6px;background:#000;color:#ffccff;border:1px solid #cc44aa;">
-<option value="">------</option>
-</select>
-</div>
-<div>
-<label style="color:#ffcc44;display:block;margin-bottom:4px;font-size:12px;">Anomalies:</label>
-<select id="cond_anomaly" style="width:100%;padding:6px;background:#000;color:#ffcc44;border:1px solid #ccaa44;">
-<option value="">------</option>
-<option value="chest">Nipple (乳首)</option>
-<option value="corridor">Chamber (イケない通路)</option>
-<option value="multi_corridor">Chamber (Multi-Floor)</option>
-<option value="multi_region">Chamber (Plural)</option>
-<option value="chest_corridor">Nipple+Chamber (チラリズム)</option>
-<option value="nochest">No Chest</option>
-</select>
+
+<div id="unified_search_panel" style="background:#111128; padding:20px; border-bottom:2px solid #4a4a8a;"> 
+<div class="search-panel-header" style="border-bottom: 1px dashed #4a4a8a; padding-bottom: 12px; margin-bottom: 16px;">
+ <h3 style="color:#ffd700; margin: 0; font-size:16px;" data-i18n="G00"></h3>
+
+<div class="checkbox-field" style="background: #1a1a3a; padding:6px 12px; border-radius: 4px; border: 1px solid #333355;">
+<input type="checkbox" id="searchAllRanks" checked>
+<label for="searchAllRanks" data-i18n="F01"></label> 
+<input type="checkbox" id="searchOnlyWithD" style="margin-left: 10px;">
+<label for="searchOnlyWithD" data-i18n="F03"></label>
+<button id="btnExport" class="go" style="background:linear-gradient(135deg, #228822, #005500); padding:4px 16px; color:#fff; margin-left: 15px; font-size:12px;" onclick="exportSearchResults()" data-i18n="H09"></button>
 </div>
 </div>
-<div style="background:#111;padding:10px;border-radius:4px;border:1px solid #44cc44;margin-bottom:12px;">
-<label style="color:#44cc44;display:block;margin-bottom:8px;font-size:12px;font-weight:bold;">Chests:</label>
-<div style="display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:#fff;">
-<label>S<input type="number" id="cond_box_S" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
-<label>A<input type="number" id="cond_box_A" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
-<label>B<input type="number" id="cond_box_B" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
-<label>C<input type="number" id="cond_box_C" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
-<label>D<input type="number" id="cond_box_D" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
-<label>E<input type="number" id="cond_box_E" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
-<label>F<input type="number" id="cond_box_F" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
-<label>G<input type="number" id="cond_box_G" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
-<label>H<input type="number" id="cond_box_H" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
-<label>I<input type="number" id="cond_box_I" min="0" max="40" style="width:40px;background:#000;color:#fff;border:1px solid #666;"></label>
+
+<div style="margin-bottom: 16px; background: #16162a; padding:15px; border-radius: 8px; border: 1px solid #00ffff; box-shadow: 0 0 10px rgba(0, 255, 255, 0.05);">
+<h4 style="color:#00ffff; margin-top:0; margin-bottom:12px; font-size:13px;">1️⃣ <span data-i18n="G01"></span></h4>
+<div class="us-grid">
+<div><label data-i18n="G03"></label><select id="cond_prefix"><option value="" data-i18n="G02"></option></select></div>
+<div><label data-i18n="G04"></label><select id="cond_suffix"><option value="" data-i18n="G02"></option></select></div>
+<div><label data-i18n="G05"></label><select id="cond_locale"><option value="" data-i18n="G02"></option></select></div>
+<div><label>Lv:</label><input type="number" id="cond_lv" min="1" max="99" placeholder="1-99"></div>
+<div><label data-i18n="G06"></label><input type="text" id="cond_location" maxlength="2" placeholder="01~96 (Hex)"></div>
+<div><label data-i18n="GBQ"></label><input type="number" id="cond_bq" min="2" max="248" disabled placeholder="🔒" style="background:#333;color:#777;border-color:#444;cursor:not-allowed;"></div>
+<div><label data-i18n="G07"></label><select id="cond_env"><option value="" data-i18n="G02"></option></select></div>
+<div><label data-i18n="G08"></label><input type="number" id="cond_monster" min="1" max="9" placeholder="1-9"></div>
+<div><label data-i18n="G09"></label><input type="number" id="cond_depth" min="2" max="16" placeholder="2-16"></div>
+<div><label>BOSS:</label><select id="cond_boss"><option value="" data-i18n="G02"></option></select></div>
+
+<div><label data-i18n="G19"></label>
+<div style="display:flex;align-items:center;">
+<input type="text" id="cond_seed_min" maxlength="4" placeholder="0000" style="width:50%;text-align:center;font-family:monospace;text-transform:uppercase;">
+<span style="color:#aaa;margin:0 4px;">-</span>
+<input type="text" id="cond_seed_max" maxlength="4" placeholder="7FFF" style="width:50%;text-align:center;font-family:monospace;text-transform:uppercase;">
 </div>
 </div>
-<div style="display:flex;gap:8px;width:100%;">
-<button id="searchBtnSpecific" class="go" style="flex:1;background:linear-gradient(135deg,#00ffff,#0088aa);color:#000;font-size:15px;padding:12px;font-weight:bold;letter-spacing:2px;" onclick="startUltimateSearch()">🎯 Search</button>
-<button class="go" style="background:linear-gradient(135deg,#555566,#333344);color:#fff;font-size:15px;padding:12px 16px;font-weight:bold;border-radius:4px;border:1px solid #666;" onclick="clearUltimateSearch()" title="Clear">Clear</button>
+<div><label style="color:#ffcc44;" data-i18n="G10"></label>
+<select id="cond_anomaly" style="color:#ffcc44;border-color:#ccaa44;">
+<option value="" data-i18n="G02"></option>
+<option value="chest" data-i18n="TKB1_1"></option>
+<option value="corridor" data-i18n="TKB2_1"></option>
+<option value="multi_corridor" data-i18n="TKB2_2"></option>
+<option value="multi_region" data-i18n="TKB2_3"></option>
+<option value="chest_corridor" data-i18n="TKB1_2"></option>
+<option value="nochest" data-i18n="TKB1_3"></option>
+<option value="stair" data-i18n="TKB3_0"></option>
+<option value="ghost" data-i18n="TKB3_1"></option>
+<option value="all_invalid" data-i18n="TKB3_2"></option>
+</select></div>
+<div><label style="color:#ff8888;" data-i18n="G11"></label>
+<select id="cond_elist" style="color:#ffccff;border-color:#cc4444;">
+<option value="" data-i18n="G02"></option>
+<option value="MULTI_SPECIAL" data-i18n="EL_M"></option>
+<option value="PARTIAL_NONE" data-i18n="EL_P"></option>
+<option value="4" data-i18n="EL_4"></option>
+<option value="3" data-i18n="EL_3"></option>
+<option value="2" data-i18n="EL_2"></option>
+<option value="ONLY" data-i18n="EL_1"></option>
+<option value="NONE" data-i18n="EL_0"></option>
+</select></div>
+<div><label style="color:#ff88dd;" data-i18n="G12"></label>
+<select id="cond_only_mon" style="color:#ffccff;border-color:#cc44aa;">
+<option value="" data-i18n="G02"></option>
+</select></div>
+</div>
+
+<div style="background: #111; padding:10px; border-radius: 4px; border: 1px solid #44cc44; margin-bottom: 12px;">
+<label style="color:#44cc44; display:block; margin-bottom:8px; font-size:12px; font-weight:bold;" data-i18n="G13"></label>
+<div class="chest-count-row" style="display: flex; flex-wrap: wrap; font-size: 13px; color: #fff;">
+<label>S <input type="number" id="cond_box_S" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
+<label>A <input type="number" id="cond_box_A" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
+<label>B <input type="number" id="cond_box_B" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
+<label>C <input type="number" id="cond_box_C" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
+<label>D <input type="number" id="cond_box_D" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
+<label>E <input type="number" id="cond_box_E" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
+<label>F <input type="number" id="cond_box_F" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
+<label>G <input type="number" id="cond_box_G" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
+<label>H <input type="number" id="cond_box_H" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
+<label>I <input type="number" id="cond_box_I" min="0" max="40" style="width:40px; background:#000; color:#fff; border:1px solid #666;"></label>
 </div>
 </div>
-<div style="background:#16162a;padding:15px;border-radius:8px;border:1px solid #4a4a8a;">
-<h4 style="color:#8888bb;margin-top:0;margin-bottom:12px;font-size:13px;display:flex;align-items:center;gap:8px;">2️⃣ Quickload Item Search / Specified Chest Search / AT Search
-<button onclick="openHelpModal()" style="background:#222244;color:#00ffff;border:1px solid #4a4a8a;border-radius:50%;width:20px;height:20px;font-size:12px;font-weight:bold;cursor:pointer;display:flex;justify-content:center;align-items:center;transition:all 0.2s;" onmouseover="this.style.background='#00ffff';this.style.color='#000';" onmouseout="this.style.background='#222244';this.style.color='#00ffff';" title="See help">?</button>
+
+<div style="display: flex; width: 100%;">
+<button id="searchBtnSpecific" class="go" style="flex: 1; background:linear-gradient(135deg, #00ffff, #0088aa); color:#000; font-size:15px; padding:12px; font-weight:bold; letter-spacing:2px; margin-right:8px;" onclick="startUltimateSearch()">🎯 Search</button>
+<button class="go" style="background:linear-gradient(135deg, #555566, #333344); color:#fff; font-size:15px; padding:12px 16px; font-weight:bold; border-radius:4px; border:1px solid #666;" onclick="clearUltimateSearch()" title="Clear">Clear</button>
+</div>
+</div>
+
+<div style="background: #16162a; padding:15px; border-radius: 8px; border: 1px solid #4a4a8a;">
+<h4 style="color:#8888bb; margin-top:0; margin-bottom:12px; font-size:13px; display:flex; align-items:center;">2️⃣ <span style="margin-left:8px" data-i18n="H00"></span> 
+<button onclick="openHelpModal()" style="background:#222244; color:#00ffff; border:1px solid #4a4a8a; border-radius:50%; width:20px; height:20px; font-size:12px; font-weight:bold; cursor:pointer; display:flex; justify-content:center; align-items:center; transition:all 0.2s;" onmouseover="this.style.background='#00ffff'; this.style.color='#000';" onmouseout="this.style.background='#222244'; this.style.color='#00ffff';" title="查看功能與術語說明">?</button>
 </h4>
 <div class="compact-search-row">
-<div class="search-group" style="background:#111;border-color:#333;">
-<label>B3/B4 Quickload x2~3 (Solo/Party) / Combo</label>
+<div class="search-group" style="background:#111; border-color:#333;">
+<label data-i18n="G14"></label>
 <div class="search-input-row">
 <select id="searchItem">
-<optgroup label="Artifacts">
-<option value="Ethereal stone">Ethereal stone</option>
-<option value="Lucida shard">Lucida shard</option>
-<option value="Orichalcum">Orichalcum</option>
-<option value="Gold bar">Gold bar</option>
-<option value="Saint's ashes">Saint's ashes</option>
-<option value="Malicite">Malicite</option>
-<option value="Sorcerer's stone">Sorcerer's stone</option>
-<option value="Sage's elixir">Sage's elixir(3)</option>
-<option value="Hephaestus' flame">Hephaestus' flame(3)</option>
-<option value="Iron nails">Iron nails(3)</option>
-<option value="Mini medal">Mini medal(3)</option>
+<optgroup label="" id="og1">
+<option value="Ethereal stone" data-i18n="I_Ethereal stone"></option>
+<option value="Lucida shard" data-i18n="I_Lucida shard"></option>
+<option value="Orichalcum" data-i18n="I_Orichalcum"></option>
+<option value="Gold bar" data-i18n="I_Gold bar"></option>
+<option value="Saint's ashes" data-i18n="I_Saint's ashes"></option>
+<option value="Malicite" data-i18n="I_Malicite"></option>
+<option value="Sorcerer's stone" data-i18n="I_Sorcerer's stone"></option>
+<option value="Sage's elixir" data-i18n="I_Sage's elixir"></option>
+<option value="Hephaestus' flame" data-i18n="I_Hephaestus' flame"></option>
+<option value="Iron nails" data-i18n="I_Iron nails"></option>
+<option value="Mini medal" data-i18n="I_Mini medal"></option>
 </optgroup>
-<optgroup label="Exclusive Equipments">
-<option value="Millionaire">Millionaire(11)</option>
-<option value="Slime shield">Slime shield</option>
-<option value="Fuddle bow">Fuddle bow</option>
-<option value="Dangerous bustier">Dangerous bustier</option>
+<optgroup label="" id="og2">
+<option value="Millionaire" data-i18n="I_Millionaire"></option>
+<option value="Slime shield" data-i18n="I_Slime shield"></option>
+<option value="Fuddle bow" data-i18n="I_Fuddle bow"></option>
+<option value="Dangerous bustier" data-i18n="I_Dangerous bustier"></option>
 </optgroup>
-<optgroup label="Cursed Equipments">
-<option value="Oh-no bow">Oh-no bow</option>
-<option value="Skull ring">Skull ring</option>
-<option value="Skull helm">Skull helm</option>
-<option value="Hades' helm">Hades' helm</option>
-<option value="Ruinous shield">Ruinous shield</option>
+<optgroup label="" id="og3">
+<option value="Oh-no bow" data-i18n="I_Oh-no bow"></option>
+<option value="Hades' helm" data-i18n="I_Hades' helm"></option>
+<option value="Skull ring" data-i18n="I_Skull ring"></option>
+<option value="Skull helm" data-i18n="I_Skull helm"></option>
+<option value="Ruinous shield" data-i18n="I_Ruinous shield"></option>
 </optgroup>
-<optgroup label="Other Equipments">
-<option value="Silver platter">Silver platter</option>
-<option value="Glombolero">Glombolero</option>
-<option value="Hela's hammer">Hela's hammer</option>
-<option value="Depressing shoes">Depressing shoes</option>
-<option value="Unhappy hat">Unhappy hat</option>
-<option value="Divine dress">Divine dress</option>
+<optgroup label="" id="og4">
+<option value="Silver platter" data-i18n="I_Silver platter"></option>
+<option value="Glombolero" data-i18n="I_Glombolero"></option>
+<option value="Brouhaha boomstick" data-i18n="I_Brouhaha boomstick"></option>
+<option value="Hela's hammer" data-i18n="I_Hela's hammer"></option>
+<option value="Depressing shoes" data-i18n="I_Depressing shoes"></option>
+<option value="Unhappy hat" data-i18n="I_Unhappy hat"></option>
+<option value="Divine dress" data-i18n="I_Divine dress"></option>
 </optgroup>
-<optgroup label="Trap Monsters">
-<option value="Cannibox">Cannibox</option>
-<option value="Mimic">Mimic</option>
-<option value="Pandora's box">Pandora's box</option>
+<optgroup label="" id="og5">
+<option value="Cannibox" data-i18n="I_Cannibox"></option>
+<option value="Mimic" data-i18n="I_Mimic"></option>
+<option value="Pandora's box" data-i18n="I_Pandora's box"></option>
 </optgroup>
 </select>
-<button class="go" onclick="startSearch()" id="searchBtn">QL</button>
-<button class="go" onclick="startSearchMillionaireCombo()" id="btnMillionaireCombo">Combo</button>
+<button class="go" onclick="startSearch()" id="searchBtn" data-i18n="H01"></button>
+<button class="go" onclick="TKSearch()" id="BtnTK" data-i18n="H02"></button>
 </div>
 </div>
-<div class="search-group" style="background:#111;border-color:#333;">
-<label>B3/B4 3rd Chest (B13/B14 S-3rd)</label>
+
+<div class="search-group" style="background:#111; border-color:#333;">
+<label data-i18n="G15"></label>
 <div class="search-input-row">
 <select id="searchItemBox3">
-<option value="Ethereal stone">Ethereal stone</option>
-<option value="Lucida shard">Lucida shard</option>
-<option value="Millionaire2">Millionaire(7)</option>
+<option value="Ethereal stone" data-i18n="I_Ethereal stone"></option>
+<option value="Lucida shard" data-i18n="I_Lucida shard"></option>
+<option value="Millionaire2" data-i18n="I_Millionaire2"></option>
 </select>
-<button class="go" onclick="startSearchBox3()" id="searchBtnBox3">3rd</button>
-<button class="go" onclick="startSearchBox3_S()" id="searchBtnBox3_S">S3</button>
+<button class="go" onclick="Box3Search()" id="searchBtnBox3" data-i18n="H03"></button>
+<button class="go" onclick="Box3Search_S()" id="searchBtnBox3_S" data-i18n="H04"></button>
 </div>
 </div>
-<div class="search-group" style="background:#111;border-color:#333;">
-<label>B9 Quickload x2 / J-Fire</label>
+
+<div class="search-group" style="background:#111; border-color:#333;">
+<label data-i18n="G16"></label>
 <div class="search-input-row">
 <select id="searchItemB9F">
-<option value="Sainted soma">Sainted soma</option>
-<option value="Yggdrasil leaf">Yggdrasil leaf</option>
-<option value="Reset stone">Reset stone</option>
-<option value="S weapon">S weapon(12)</option>
+<option value="Sainted soma" data-i18n="I_Sainted soma"></option>
+<option value="Yggdrasil leaf" data-i18n="I_Yggdrasil leaf"></option>
+<option value="Reset stone" data-i18n="I_Reset stone"></option>
+<option value="S weapon" data-i18n="I_S weapon"></option>
 </select>
-<button class="go" onclick="startSearchB9F()" id="searchBtnB9F">B9F</button>
-<button class="go" onclick="startSearchSoma()" id="searchBtnSoma">J-Fire</button>
+<button class="go" onclick="startSearchB9F()" id="searchBtnB9F" data-i18n="H05"></button>
+<button class="go" onclick="JFireSearch()" id="BtnJFire" data-i18n="H06"></button>
 </div>
 </div>
-<div class="search-group" style="background:#1a0a1a;border-color:#552255;">
-<label style="color:#ff88ff;">4-player Multiplay Bug (AT+1) with Special Floor</label>
-<div class="search-input-row" style="align-items:center;gap:8px;">
-<button class="go" onclick="startSearchATBug()" id="searchBtnBug" style="background:linear-gradient(135deg,#cc00cc,#660066);color:#fff;padding:6px 12px;border:none;border-radius:4px;font-weight:bold;cursor:pointer;">Multibug</button>
-<label style="color:#aaa;font-size:12px;display:flex;align-items:center;cursor:pointer;">
-<input type="checkbox" id="requireFloorIncrease" style="margin-right:4px;">Floor increased only
+
+<div class="search-group" style="background:#1a0a1a; border-color:#552255;">
+<label style="color:#ff88ff;" data-i18n="G17"></label>
+<div class="search-input-row" style="align-items:center;">
+<button class="go" onclick="startSearchATBug()" id="searchBtnBug" style="background:linear-gradient(135deg, #cc00cc, #660066); color:#fff; padding:6px 12px; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-i18n="H07"></button>
+<label style="color:#aaa; font-size:12px; display:flex; align-items:center; cursor:pointer;">
+<input type="checkbox" id="requireFloorIncrease" style="margin-right:4px;"><span data-i18n="F04"></span>
+</label>
+<label style="color:#aaa; font-size:12px; display:flex; align-items:center; cursor:pointer;">
+<input type="checkbox" id="requireBugFloorHit" style="margin-right:4px;">🍊
 </label>
 </div>
 </div>
-<div class="search-group" style="background:#221100;border-color:#553300;">
-<label style="color:#ffaa00;">AT Search</label>
-<div class="search-input-row" style="align-items:center;gap:8px;">
-<span style="color:#aaa;font-size:12px;">Step</span>
-<input type="number" id="atMaxSteps" value="400" style="width:55px;background:#000;color:#0f0;border:1px solid #555;padding:4px;font-size:12px;text-align:center;">
-<select id="atConsecutiveThreshold" style="background:#000;color:#0f0;border:1px solid #555;padding:4px;font-size:12px;">
+
+
+<div class="search-group" style="background:#221100; border-color:#553300;">
+<label style="color:#ffaa00;" data-i18n="G18"></label>
+<div class="search-input-row" style="align-items:center;">
+<span style="color:#aaa; font-size:12px;" id="lblSteps"></span>
+<input type="number" id="atMaxSteps" value="400" style="width:55px; background:#000; color:#0f0; border:1px solid #555; padding:4px; font-size:12px; text-align:center;">
+<select id="atConsecutiveThreshold" style="background:#000; color:#0f0; border:1px solid #555; padding:4px; font-size:12px;">
 <option value="127">1/256</option>
 <option value="255">1/128</option>
 <option value="511">1/64</option>
 <option value="1023">1/32</option>
 </select>
-<select id="atConsecutiveCount" style="background:#000;color:#0f0;border:1px solid #555;padding:4px;font-size:12px;">
-<option value="2">2 Rare</option>
-<option value="n_n3">2 Rare (N/N+3 </option>
-<option value="3">3 Rare</option>
-<option value="4">4 Rare</option>
-<option value="5">5 Rare</option>
-<option value="4_in_6">4 in 6 Rare</option>
-<option value="3_in_7">3 in 7 Rare</option>
-<option value="n_n2">2 Normal</option>
-<option value="normal_3">3 Normal</option>
-<option value="normal_4">4 Normal</option>
-<option value="normal_5">5 Normal</option>
-<option value="4_in_10">4 in 10 Normal</option>
-<option value="3_in_10">3 in 10 Normal</option>
+
+<select id="atConsecutiveCount" style="background:#000; color:#0f0; border:1px solid #555; padding:4px; font-size:12px;">
 </select>
-<span style="color:#aaa;font-size:12px;border-left:1px solid #553300;padding-left:8px;">POP</span>
+
+<span style="color:#aaa; font-size:12px; border-left: 1px solid #553300; padding-left: 8px;">POP</span>
 <input type="checkbox" id="sortPOP" style="margin-right:4px;">
-<input type="number" id="atPOPIndex" value="35" style="width:45px;background:#000;color:#39C5BB;border:1px solid #555;padding:4px;font-size:12px;text-align:center;font-weight:bold;">
-<button id="searchBtnConsecutive" class="go" style="background:linear-gradient(135deg,#ff8800,#aa3300);color:#fff;padding:6px 12px;border:none;border-radius:4px;font-weight:bold;cursor:pointer;" onclick="searchAT()">AT</button>
+<input type="number" id="atPOPIndex" value="35" style="width:45px; background:#000; color:#39C5BB; border:1px solid #555; padding:4px; font-size:12px; text-align:center; font-weight:bold;">
+<button id="searchBtnConsecutive" class="go" style="..." onclick="searchAT()" data-i18n="H08"></button>
 </div>
 </div>
 </div>
 </div>
-<div id="atSearchResult" style="margin-top:16px;padding:12px;background:#0a0a15;border:1px dashed #4a4a8a;display:none;flex-wrap:wrap;gap:8px;border-radius:6px;"></div>
-<div id="searchResults" style="margin-top:16px;padding:16px;background:#0a0a15;border:1px solid #4a4a8a;border-radius:6px;min-height:100px;">
-<div style="color:#666;font-size:13px;text-align:center;margin-top:20px;">Waiting for searching...</div>
+
+<div id="searchResults" style="margin-top: 16px; padding:16px; background: #0a0a15; border: 1px solid #4a4a8a; border-radius: 6px; min-height: 100px;">
+<div style="color:#666; font-size:13px; text-align:center; margin-top:20px;"></div>
 </div>
 </div>
+
 <div id="result"></div>
 <hr>
 <div class="info-bar">
@@ -404,7 +482,7 @@ Based on research by DQ9 Lovers from 5ch / GameFAQs / The Quester's Rest / Other
 ElistOfs is introduced by 43 (DQ9TMAP101.exe's author) and fixed by TKG<br>
 Powered by Gemini and Claude<br>
 Produced by WWWild<br>
-<span style="cursor:pointer;background:#222244;color:#aaa;border:1px solid #4a4a8a;padding:4px 10px;border-radius:4px;margin-left:12px;display:inline-block;font-size:12px;transition:all 0.2s;" onclick="openDisclaimerModal()" onmouseover="this.style.borderColor='#ffd700';this.style.color='#ffd700';" onmouseout="this.style.borderColor='#4a4a8a';this.style.color='#aaa';">📜 Disclaimer</span>
+<span style="cursor:pointer; background:#222244; color:#aaa; border:1px solid #4a4a8a; padding:4px 10px; border-radius:4px; margin-left:12px; display:inline-block; font-size:12px; transition:all 0.2s;" onclick="openDisclaimerModal()" onmouseover="this.style.borderColor='#ffd700'; this.style.color='#ffd700';" onmouseout="this.style.borderColor='#4a4a8a'; this.style.color='#aaa';">📜 聲明 / Disclaimer</span>
 </span>
 </div>
 </body>

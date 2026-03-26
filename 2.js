@@ -52,6 +52,7 @@ const MONSTER_DATA={
 "077":{en:"Restless Armour",jp:"さまようよろい",g:16},
 "078":{en:"Infernal Armour",jp:"じごくのよろい",g:16},
 "079":{en:"Lethal Armour",jp:"キラーアーマー",g:16},
+"07B":{en:"Metal Slime Knight",jp:"メタルライダー",g:16},
 "07C":{en:"Swinoceros",jp:"突げきホーン",g:20},
 "07D":{en:"Splatterhorn",jp:"ライノキング",g:16},
 "07F":{en:"Admirer",jp:"ジェリーマン",g:16},
@@ -183,44 +184,121 @@ const MONSTER_DATA={
 "14D":{en:"Hell's Gatekeeper",jp:"ヘルガーディアン",g:20},
 "14E":{en:"Wishmaster",jp:"ギリメカラ",g:12}
 };
+
 const G_VALUES={
-'Caves':[0,116,132,128,128,144,132,140,124,128,124,132,140],
-'Ruins':[0,124,120,116,132,136,128,136,140,136,128,128,136],
-'Ice':[0,108,132,116,148,128,128,128,128,136,120,120,116],
-'Water':[0,140,132,132,128,140,144,124,128,136,128,124,124],
-'Fire':[0,128,128,112,128,128,132,128,136,140,136,140,136]
+1:[0,116,132,128,128,144,132,140,124,128,124,132,140],
+2:[0,124,120,116,132,136,128,136,140,136,128,128,136],
+3:[0,108,132,116,148,128,128,128,128,136,120,120,116],
+4:[0,140,132,132,128,140,144,124,128,136,128,124,124],
+5:[0,128,128,112,128,128,132,128,136,140,136,140,136]
 };
 const ONLY_MONSTERS={
-'Caves':["","00B","036","034","076","052","02F","04D","037","035","0B5","035","0D7"],
-'Ruins':["","053","02A","040","034","062","097","01B","035","035","04D","0B9","0E4"],
-'Ice':["","008","012","068","056","031","0B2","02F","05D","0B8","0B9","0EC","0EC"],
-'Water':["","03D","051","059","013","057","057","037","0B5","0F0","0F0","0B0","0B0"],
-'Fire':["","03E","086","015","01B","080","02E","0AA","0C3","0B5","0C7","0AB","0AB"]
+1:["","00B","036","034","076","052","02F","04D","037","035","0B5","035","0D7"],
+2:["","053","02A","040","034","062","097","01B","035","035","04D","0B9","0E4"],
+3:["","008","012","068","056","031","0B2","02F","05D","0B8","0B9","0EC","0EC"],
+4:["","03D","051","059","013","057","057","037","0B5","0F0","0F0","0B0","0B0"],
+5:["","03E","086","015","01B","080","02E","0AA","0C3","0B5","0C7","0AB","0AB"]
+};
+const SPAWN_DB={
+1:{
+1:[["00B",6555,13107],["00E",13108,19661],["022",0,6554],["026"],["027"],["028"],["082",26215,32767],["08C",19662,26214]],
+2:[["026"],["027"],["028"],["036",6555,13107],["03B",19662,26214],["063",0,6554],["087",26215,32767],["0BD",13108,19661]],
+3:[["026"],["027"],["028"],["034",13108,19661],["083",6555,13107],["08B",26215,32767],["099",0,6554],["101",19662,26214]],
+4:[["026"],["027"],["028"],["076",0,6554],["07C",13108,19661],["080",19662,26214],["0AE",26215,32767],["0D9",6555,13107]],
+5:[["026"],["027"],["028"],["052",13108,19661],["07D",6555,13107],["0B6",19662,26214],["0C5",0,6554],["0DD",26215,32767]],
+6:[["026"],["027"],["028"],["02F",26215,32767],["089",0,6554],["097",6555,13107],["0A9",19662,26214],["105",13108,19661]],
+7:[["026"],["027"],["028"],["04D",16385,18724],["089",25747,32767],["0B4",0,8192],["0B7",18725,25746],["0D5",8193,16384]],
+8:[["026"],["027"],["028"],["037",0,5958],["0C6",25818,32767],["0F5",5959,11916],["102",18867,25817],["109",11917,18866]],
+9:[["026"],["027"],["028"],["035",13903,20852],["0AF",26811,32767],["0ED",0,6951],["109",20853,26810],["14E",6952,13902]],
+10:[["026"],["027"],["028"],["0B5",31555,32767],["0ED",16992,24272],["0F1",0,8496],["147",8497,16991],["14E",24273,31554]],
+11:[["026"],["027"],["028"],["035",21846,26214],["0D7",7647,15292],["0E2",0,7646],["0ED",26215,32767],["147",15293,21845]],
+12:[["026"],["027"],["028"],["0D7",20481,26624],["0E2",14337,20480],["0EB",0,7168],["0F1",26625,32767],["149",7169,14336]],
+},
+2:{
+1:[["026"],["027"],["028"],["053",19662,26214],["077",0,6554],["084",13108,19661],["096",26215,32767],["0BA",6555,13107]],
+2:[["026"],["027"],["028"],["02A",6555,13107],["09F",26215,32767],["0A4",19662,26214],["0C8",13108,19661],["0DC",0,6554]],
+3:[["026"],["027"],["028"],["040",11917,22342],["04C",10427,11916],["0A3",22343,32767],["0B1",0,10426]],
+4:[["026"],["027"],["028"],["034",13108,19661],["062",6555,13107],["086",26215,32767],["08F",19662,26214],["0AC",0,6554]],
+5:[["026"],["027"],["028"],["062",13108,19661],["094",19662,26214],["0B2",6555,13107],["0CB",0,6554],["0DD",26215,32767]],
+6:[["026"],["027"],["028"],["097",13108,19661],["0A6",26215,32767],["0BC",0,6554],["0D5",19662,26214],["105",6555,13107]],
+7:[["01B",0,1425],["026"],["027"],["028"],["0B8",5700,12822],["0DE",12823,22795],["105",22796,32767],["141",1426,5699]],
+8:[["026"],["027"],["028"],["035",18725,23405],["04D",29648,32767],["0A8",23406,29647],["0B8",0,10923],["141",10924,18724]],
+9:[["026"],["027"],["028"],["035",28836,32767],["0B8",15730,19661],["0C2",6555,15729],["0EF",0,6554],["141",19662,28835]],
+10:[["026"],["027"],["028"],["04D",31555,32767],["0C2",24273,31554],["0EF",16992,24272],["0FE",0,8496],["14A",8497,16991]],
+11:[["026"],["027"],["028"],["0B9",4856,7282],["0E6",0,4855],["0EF",24273,32767],["0FE",7283,15777],["14A",15778,24272]],
+12:[["026"],["027"],["028"],["0E4",0,7282],["0E5",7283,14564],["0E6",14565,20025],["0F2",20026,21845],["14A",21846,32767]],
+},
+3:{
+1:[["008",0,8192],["026"],["027"],["028"],["067",16385,24576],["06A",24577,32767],["06D",8193,16384]],
+2:[["012",26215,32767],["026"],["027"],["028"],["05F",0,6554],["065",6555,13107],["072",13108,19661],["0CA",19662,26214]],
+3:[["026"],["027"],["028"],["068",13108,19661],["06D",6555,13107],["0A5",0,6554],["0E8",26215,32767],["0E9",19662,26214]],
+4:[["026"],["027"],["028"],["056",19662,26214],["079",13108,19661],["0A2",6555,13107],["0A5",0,6554],["0D9",26215,32767]],
+5:[["026"],["027"],["028"],["031",13108,19661],["0BE",0,6554],["0CC",26215,32767],["0D9",19662,26214],["103",6555,13107]],
+6:[["026"],["027"],["028"],["0B2",19662,26214],["0B7",26215,32767],["0C1",6555,13107],["0CC",13108,19661],["103",0,6554]],
+7:[["026"],["027"],["028"],["02F",26215,32767],["0B7",19662,26214],["0C1",6555,13107],["0CE",0,6554],["0DE",13108,19661]],
+8:[["026"],["027"],["028"],["05D",26811,32767],["0C4",13903,20852],["0E0",20853,26810],["0F3",0,6951],["143",6952,13902]],
+9:[["026"],["027"],["028"],["0B8",13903,20852],["0E0",26811,32767],["0F7",6952,13902],["0FA",0,6951],["143",20853,26810]],
+10:[["026"],["027"],["028"],["0B9",31130,32767],["0F6",0,11469],["0F7",21300,31129],["0FA",11470,21299]],
+11:[["026"],["027"],["028"],["0EC",8823,17644],["0F6",17645,25206],["0FA",25207,32767],["145",0,8822]],
+12:[["026"],["027"],["028"],["0EC",17040,24903],["0F4",0,9175],["0F8",24904,32767],["145",9176,17039]],
+},
+4:{
+1:[["026"],["027"],["028"],["03D",19662,26214],["05E",0,6554],["09D",6555,13107],["0CF",26215,32767],["104",13108,19661]],
+2:[["026"],["027"],["028"],["051",26215,32767],["095",19662,26214],["09E",13108,19661],["0B3",6555,13107],["0D4",0,6554]],
+3:[["026"],["027"],["028"],["059",19662,26214],["06E",6555,13107],["0A2",13108,19661],["0CD",0,6554],["104",26215,32767]],
+4:[["013",6555,13107],["026"],["027"],["028"],["05A",0,6554],["0A0",13108,19661],["0FF",26215,32767],["106",19662,26214]],
+5:[["026"],["027"],["028"],["057",26215,32767],["060",6555,13107],["070",19662,26214],["0B4",13108,19661],["107",0,6554]],
+6:[["026"],["027"],["028"],["057",6555,13107],["0A8",26215,32767],["0A9",0,6554],["0B4",19662,26214],["102",13108,19661]],
+7:[["026"],["027"],["028"],["037",26215,32767],["0A8",19662,26214],["0AF",0,6554],["0DA",13108,19661],["102",6555,13107]],
+8:[["026"],["027"],["028"],["0B5",16385,18724],["0DA",25747,32767],["0F3",18725,25746],["0F5",8193,16384],["14B",0,8192]],
+9:[["026"],["027"],["028"],["0F0",6952,13902],["0F3",26811,32767],["0F5",20853,26810],["0F8",0,6951],["14B",13903,20852]],
+10:[["026"],["027"],["028"],["0F0",20481,26624],["0F8",14337,20480],["0FB",0,7168],["10C",7169,14336],["14B",26625,32767]],
+11:[["026"],["027"],["028"],["0B0",7169,14336],["0F8",26625,32767],["0FB",14337,20480],["0FD",0,7168],["10C",20481,26624]],
+12:[["026"],["027"],["028"],["0B0",18725,25746],["0FD",11704,18724],["108",3512,11703],["10C",25747,32767],["148",0,3511]],
+},
+5:{
+1:[["026"],["027"],["028"],["03E",6555,13107],["074",26215,32767],["07B",0,6554],["07F",13108,19661],["0C8",19662,26214]],
+2:[["026"],["027"],["028"],["086",19662,26214],["087",26215,32767],["08D",0,6554],["0BB",6555,13107],["0D0",13108,19661]],
+3:[["015",6555,13107],["026"],["027"],["028"],["02C",19662,26214],["078",26215,32767],["08C",0,6554],["0DC",13108,19661]],
+4:[["01B",15820,16949],["026"],["027"],["028"],["040",0,7910],["078",7911,15819],["0A7",24859,32767],["0B1",16950,24858]],
+5:[["026"],["027"],["028"],["080",0,6554],["088",19662,26214],["092",26215,32767],["0A7",6555,13107],["0C9",13108,19661]],
+6:[["026"],["027"],["028"],["02E",19662,26214],["06B",6555,13107],["0B2",0,6554],["0C0",26215,32767],["0DF",13108,19661]],
+7:[["026"],["027"],["028"],["0AA",19662,26214],["0C0",13108,19661],["0C3",0,6554],["0C6",6555,13107],["0DF",26215,32767]],
+8:[["026"],["027"],["028"],["0C3",13903,20852],["0D5",26811,32767],["0D6",6952,13902],["0DA",20853,26810],["0FC",0,6951]],
+9:[["026"],["027"],["028"],["0B5",30428,32767],["0D6",23406,30427],["0F9",0,8192],["0FC",16385,23405],["109",8193,16384]],
+10:[["026"],["027"],["028"],["0C7",0,7910],["0F9",15820,22598],["0FC",29379,32767],["109",22599,29378],["144",7911,15819]],
+11:[["026"],["027"],["028"],["0AB",7169,14336],["0C7",14337,20480],["0F9",26625,32767],["144",20481,26624],["14D",0,7168]],
+12:[["026"],["027"],["028"],["0AB",18725,25746],["0C7",25747,32767],["0E7",8193,11703],["0EE",0,8192],["14D",11704,18724]],
+},
 };
 const _elistWtL=new Uint8Array(256);
 const _elistWtU=new Uint8Array(256);
 function getFloorElistInfo(engine,f){
-let d=engine.di[f];
-let width=d[2];
-let height=d[3];
-let mapType=engine.mapTypeName;
-let baseMR=engine.monsterRank;
-let floorMR=baseMR+Math.floor(f / 4);
-if(floorMR>12)floorMR=12;
-let G=G_VALUES[mapType]?G_VALUES[mapType][floorMR]:0;
-let onlyMonId=ONLY_MONSTERS[mapType]?ONLY_MONSTERS[mapType][floorMR]:"";
-let onlyMon=(onlyMonId&&MONSTER_DATA[onlyMonId])?MONSTER_DATA[onlyMonId].en:"Unknown";
+const d=engine.di[f];
+const width=d[2];
+const height=d[3];
+const envType=engine._details[3];
+const baseMR=engine._details[2];
+let floorMR=baseMR+(f>>2);
+if(floorMR>12) floorMR=12;
+const gArr=G_VALUES[envType];
+const G=gArr?gArr[floorMR]:0;
+const omArr=ONLY_MONSTERS[envType];
+const onlyMonId=omArr?omArr[floorMR]:"";
+const monData=onlyMonId?MONSTER_DATA[onlyMonId]:null;
+const isJP=(DISPLAY_LANG!=='EN');
+const onlyMon=monData?(isJP?monData.jp:monData.en):"Unknown";
+const strOnly=isJP?"オンリー":" only";
 let W=0,X=0;
 let wtCount=0;
 for(let y=0;y<height;y++){
-let yBase=(y<<4)+792;
-let yPrevBase=((y-1)<<4)+792;
+const yBase=(y<<4)+792;
+const yPrevBase=yBase-16;
 for(let x=0;x<width;x++){
-let tile=d[x+yBase];
-if(tile!==1&&tile!==3){
+if(d[x+yBase]!==1&&d[x+yBase]!==3){
 W++;
-let L=(x>0&&d[(x-1)+yBase]!==1&&d[(x-1)+yBase]!==3)?1:0;
-let U=(y>0&&d[x+yPrevBase]!==1&&d[x+yPrevBase]!==3)?1:0;
+const L=(x>0&&d[(x-1)+yBase]!==1&&d[(x-1)+yBase]!==3)?1:0;
+const U=(y>0&&d[x+yPrevBase]!==1&&d[x+yPrevBase]!==3)?1:0;
 X+=(L+U);
 _elistWtL[wtCount]=L;
 _elistWtU[wtCount]=U;
@@ -228,123 +306,133 @@ wtCount++;
 }
 }
 }
-let boundary=4128-(W * 16+X * 8);
-let A=4896+(W * 16)+(X * 8);
-let B=0,D=0;
+const boundary=4128-(W*16+X*8);
+let A,B,D;
 if(boundary>=0){
-B=X;
-D=0;
+A=4896+(W*16)+(X*8);B=X;D=0;
 }else{
-B=Math.floor((9016-4896-(W * 16))/ 8);
+A=9016;B=(9016-4896-(W*16))>>3;D=0;
 let B_pool=B;
-for(let i=0;i<wtCount;i++){
+for(let i=0; i<wtCount; i++){
 if(B_pool<=0){
 D++;
 }else{
-if(_elistWtL[i]&&B_pool>0)B_pool--;
-if(_elistWtU[i]&&B_pool>0)B_pool--;
+if(_elistWtL[i]) B_pool--;
+if(_elistWtU[i]&&B_pool>0) B_pool--;
 }
 }
-A=9016;
 }
-let isIce10_12=(mapType==='Ice'&&floorMR>=10&&floorMR<=12);
-let isRuins3=(mapType==='Ruins'&&floorMR===3);
-let isIce1=(mapType==='Ice'&&floorMR===1);
-let C=A+4+(B * 8)+(D * 4);
-let F=(isIce10_12||isRuins3||isIce1)?7:8;
-let E=C+(F * 20);
-let ElistOfs=E+(F * 8)+G;
-let val=ElistOfs;
+const isIce10_12=(envType===3&&floorMR>=10&&floorMR<=12);
+const isRuins3=(envType===2&&floorMR===3);
+const isIce1=(envType===3&&floorMR===1);
+const F=(isIce10_12||isRuins3||isIce1)?7:8;
+const C=A+4+(B*8)+(D*4);
+const E=C+(F*20);
+const ElistOfs=E+(F*8)+G;
+const val=ElistOfs;
 let state=null;
 if(val<=0x2B30){
-if(D!==0)state="Partially No-enemy";
+if(D!==0)state=EL_P;
 }else{
-let isExc1=isIce10_12||isRuins3;
-let isExc2=(mapType==='Ruins'&&floorMR===7)||(mapType==='Fire'&&(floorMR===3||floorMR===4))||(mapType==='Ice'&&floorMR===2)||(mapType==='Water'&&floorMR===4);
-let isExc4=isIce1;
-let isExc5=(mapType==='Caves'&&floorMR===1);
+const isExc1=isIce10_12||isRuins3; 
+const isExc2=(envType===2&&floorMR===7)||(envType===5&&(floorMR===3||floorMR===4))||(envType===3&&floorMR===2)||(envType===4&&floorMR===4);
+const isExc4=isIce1;
+const isExc5=(envType===1&&floorMR===1);
 if(val>=0x2B34&&val<=0x2B44){
-if(isExc1||isExc4)state=(D!==0)?"Partially No-enemy":null;
-else state="4-enemy";
+if(isExc1||isExc4)state=(D!==0)?EL_P:null;
+else state=EL_4;
 }else if(val>=0x2B48&&val<=0x2B58){
-state="3-enemy";
+state=EL_3;
 }else if(val>=0x2B5C&&val<=0x2B6C){
-if(isExc5)state="3-enemy (No Pandora's Box)";
-else state="2-enemy";
+if(isExc5) state=EL_3+EL_NP;
+else state=EL_2;
 }else if(val>=0x2B70&&val<=0x2B80){
-if(isExc5)state="3-enemy (No Mimic)";
-else state=`${onlyMon} only`;
+if(isExc5) state=EL_3+EL_NM;
+else state=`${onlyMon}${strOnly}`;
 }else if(val>=0x2B84&&val<=0x2B94){
-if(isExc5)state="3-enemy (No Cannibox)";
-else if(isExc4||isExc2)state=`${onlyMon} only (No Pandora's Box)`;
-else state="No-enemy";
+if(isExc5) state=EL_3+EL_NC;
+else if(isExc4||isExc2) state=`${onlyMon}${strOnly}${EL_NP}`;
+else state=EL_0;
 }else if(val>=0x2B98&&val<=0x2BA8){
-if(isExc5)state="2-enemy (No Cannibox)";
-else if(isExc4||isExc2)state=`${onlyMon} only (No Mimic)`;
-else state="No-enemy (No Pandora's Box)";
+if(isExc5) state=EL_2+EL_NC;
+else if(isExc4||isExc2) state=`${onlyMon}${strOnly}${EL_NM}`;
+else state=EL_0+EL_NP;
 }else if(val>=0x2BAC&&val<=0x2BBC){
-if(isExc4||isExc2||isExc5)state=`${onlyMon} only (No Cannibox)`;
-else state="No-enemy (No Mimic)";
+if(isExc4||isExc2||isExc5) state=`${onlyMon}${strOnly}${EL_NC}`;
+else state=EL_0+EL_NM;
 }else if(val>=0x2BC0){
-state="No-enemy (No Cannibox)";
+state=EL_0+EL_NC;
 }
 }
 return{hex:ElistOfs.toString(16).toUpperCase(),state:state,dValue:D};
 }
-function getFloorAnomalies(engine,f){
-let width=engine.getFloorWidth(f);
-let height=engine.getFloorHeight(f);
-let map=engine.getFloorMap(f);
-let up=engine.getUpStair(f);
-let visited=Array.from({length:height},()=>new Uint8Array(width));
-let queue=[{x:up.x,y:up.y}];
-visited[up.y][up.x] = 1;
-let head=0;
-const dx=[0,0,-1,1];
-const dy=[-1,1,0,0];
-while(head<queue.length){
-let curr=queue[head++];
-for(let i=0;i<4;i++){
-let nx=curr.x+dx[i];
-let ny=curr.y+dy[i];
+const _anom_visited=new Uint8Array(256);
+const _anom_queue=new Uint16Array(256);
+const _DX=[0,0,-1,1];
+const _DY=[-1,1,0,0];
+function getFloorAnomalies(engine,f,checkGhostStair=false){
+const di=engine.di[f];
+const width= di[2];
+const height=di[3];
+const upX=di[4],upY=di[5];
+const downX=di[6],downY=di[7];
+const boxes=di[8];
+_anom_visited.fill(0, 0, height<<4);
+let qHead=0, qTail=0;
+const startIdx=(upY<<4)|upX;
+_anom_visited[startIdx]=1;
+_anom_queue[qTail++]=startIdx;
+while (qHead<qTail){
+const curr=_anom_queue[qHead++];
+const cx=curr & 0xF;
+const cy=curr>>4;
+for(let i=0; i<4; i++){
+const nx=cx+_DX[i];
+const ny=cy+_DY[i];
 if(nx>=0&&nx<width&&ny>=0&&ny<height){
-if(!visited[ny][nx]){
-let tile=map[ny][nx];
+const nIdx=(ny<<4)|nx;
+if(!_anom_visited[nIdx]){
+const tile=di[nIdx+792];
 if(tile!==1&&tile!==3){
-visited[ny][nx]=1;
-queue.push({x:nx,y:ny});
+_anom_visited[nIdx]=1;
+_anom_queue[qTail++]=nIdx;
 }
 }
 }
 }
 }
 let hasInaccessibleChest=false;
-let boxes=engine.getBoxCount(f);
-for(let b=0;b<boxes;b++){
-let box=engine.getBoxInfo(f,b);
-if(!visited[box.y][box.x]){hasInaccessibleChest=true;break;}
+for(let b=0; b<boxes; b++){
+if(!_anom_visited[(di[b*2+14]<<4)|di[b*2+13]]){hasInaccessibleChest=true; break; }
 }
-let isolatedRegions=[];
-for(let y=0;y<height;y++){
-for(let x=0;x<width;x++){
-let tile=map[y][x];
-if((tile===0||tile===2||tile===8)&&!visited[y][x]){
+const hasInaccessibleStair=!_anom_visited[(downY<<4)|downX];
+const isolatedRegions=[];
+for(let y=0; y<height; y++){
+const yShift=y<<4;
+for(let x=0; x<width; x++){
+const idx=yShift|x;
+if(!_anom_visited[idx]){
+const tile=di[idx+792];
+if(tile===0||tile===2||tile===8){
 let regionSize=0;
-let q2=[{x:x,y:y}];
-visited[y][x]=1;
-let h2=0;
-while(h2<q2.length){
-let curr2=q2[h2++];
+let q2Head=0, q2Tail=0;
+_anom_visited[idx]=1;
+_anom_queue[q2Tail++]=idx;
+while (q2Head<q2Tail){
+const curr2=_anom_queue[q2Head++];
 regionSize++;
-for(let i=0;i<4;i++){
-let nx=curr2.x+dx[i];
-let ny=curr2.y+dy[i];
+const c2x=curr2 & 0xF;
+const c2y=curr2>>4;
+for(let i=0; i<4; i++){
+const nx=c2x+_DX[i];
+const ny=c2y+_DY[i];
 if(nx>=0&&nx<width&&ny>=0&&ny<height){
-if(!visited[ny][nx]){
-let nt=map[ny][nx];
+const nIdx=(ny<<4)|nx;
+if(!_anom_visited[nIdx]){
+const nt=di[nIdx+792];
 if(nt===0||nt===2||nt===8){
-visited[ny][nx]=1;
-q2.push({x:nx,y:ny});
+_anom_visited[nIdx]=1;
+_anom_queue[q2Tail++]=nIdx;
 }
 }
 }
@@ -354,8 +442,26 @@ isolatedRegions.push(regionSize);
 }
 }
 }
-let hasIsolatedCorridor=isolatedRegions.length>0;
-return{hasIsolatedCorridor,hasInaccessibleChest,isolatedRegions,totalChests:boxes};
+}
+const hasIsolatedCorridor=isolatedRegions.length>0;
+let GhostStairs=[];
+let hasGhostStair=false;
+if(checkGhostStair){
+for(let y=0; y<height; y++){
+const yOfs=(y<<4)+792;
+for(let x=0; x<width; x++){
+const tile=di[yOfs+x];
+if(tile===4||tile===5){
+if(!((x===upX&&y===upY)||(x===downX&&y===downY))){
+GhostStairs.push(`(${x},${y})`);
+}
+}
+}
+}
+hasGhostStair=GhostStairs.length>0;
+}
+const isAllInvalidStair=engine.isStairOverflow[f];
+return{hasIsolatedCorridor, hasInaccessibleChest, hasInaccessibleStair, isolatedRegions, totalChests: boxes, hasGhostStair, GhostStairs, isAllInvalidStair };
 }
 const RANKS={
 "02":{fqMin:2,fqMax:55},
@@ -372,12 +478,9 @@ const RANKS={
 "DD":{fqMin:221,fqMax:248}
 };
 function getLocationMax(finalQuality){
-if(finalQuality<=50)return 47;
-if(finalQuality<=80)return 131;
+if(finalQuality<=50) return 47;
+if(finalQuality<=80) return 131;
 return 150;
-}
-function lcg(seed){
-return(Math.imul(seed,1103515245)+12345)>>>0;
 }
 function calcFinalQuality(baseQ,r1){
 const modulo=Math.floor(baseQ/10)*2+1;
@@ -388,8 +491,8 @@ if(final>248)final=248;
 return final;
 }
 function formatRanges(nums){
-if(nums.length===0)return 'None';
-const sorted=[...nums].sort((a,b)=>a-b);
+if(nums.length===0)return C18;
+const sorted=[...nums].sort((a, b)=>a-b);
 const ranges=[];
 let start=sorted[0],end=sorted[0];
 for(let i=1;i<sorted.length;i++){
@@ -405,15 +508,15 @@ return ranges.join(',');
 }
 let SEED_TO_TIMERS_CACHE=null;
 function calcLocations(seed,rStr){
-const{fqMin,fqMax}=RANKS[rStr]||{fqMin:2,fqMax:248};
+const {fqMin,fqMax}=RANKS[rStr]||{fqMin:2,fqMax:248};
 const seenLocations={};
 const outputOrder=[];
 if(!SEED_TO_TIMERS_CACHE){
 SEED_TO_TIMERS_CACHE={};
-for(let t=0;t<65536;t++){
+for(let t=0; t<65536; t++){
 const x1=lcg(t);
 const x2=lcg(x1);
-const s=(x2>>>16)& 0x7FFF;
+const s=(x2>>>16)&0x7FFF;
 if(!SEED_TO_TIMERS_CACHE[s])SEED_TO_TIMERS_CACHE[s]=[];
 SEED_TO_TIMERS_CACHE[s].push(t);
 }
@@ -423,21 +526,21 @@ for(const timer of timers){
 const x1=lcg(timer);
 const x2=lcg(x1);
 const x3=lcg(x2);
-const r1=(x1>>>16)& 0x7FFF;
-const r3=(x3>>>16)& 0x7FFF;
+const r1=(x1>>>16)&0x7FFF;
+const r3=(x3>>>16)&0x7FFF;
 const locToBq={};
 for(let baseQ=2;baseQ<=248;baseQ++){
 const finalQ=calcFinalQuality(baseQ,r1);
-if(finalQ<fqMin||finalQ>fqMax)continue;
+if(finalQ<fqMin||finalQ>fqMax) continue;
 const locMax=getLocationMax(finalQ);
-const calcLoc=(r3 % locMax)+1;
+const calcLoc=(r3%locMax)+1;
 if(!locToBq[calcLoc])locToBq[calcLoc]=new Set();
 locToBq[calcLoc].add(baseQ);
 }
 for(const loc of Object.keys(locToBq).map(Number)){
 let minBq=255;
 for(const bq of locToBq[loc]){
-if(bq<minBq)minBq=bq;
+if(bq<minBq) minBq=bq;
 }
 if(!seenLocations[loc]){
 seenLocations[loc]=new Set();
@@ -457,34 +560,11 @@ outputOrder.push({timer:"Quest 015",location:5,minBq:2});
 seenLocations[5].add(2);
 }
 }
-outputOrder.sort((a,b)=>{
+outputOrder.sort((a, b)=>{
 if(a.timer==="Quest 015")return 1;
-if(b.timer==="Quest 015")return-1;
+if(b.timer==="Quest 015")return -1;
 if(a.timer!==b.timer)return a.timer-b.timer;
 return a.minBq-b.minBq;
 });
 return{outputOrder,seenLocations};
-}
-function checkBQStatus(){
-let prefix=document.getElementById('cond_prefix').value;
-let suffix=document.getElementById('cond_suffix').value;
-let elist=document.getElementById('cond_elist').value;
-let onlyMon=document.getElementById('cond_only_mon').value;
-let bqInput=document.getElementById('cond_bq');
-if((prefix!==""&&suffix!=="")||elist!==""||onlyMon!==""){
-bqInput.disabled=false;
-bqInput.placeholder="2-248";
-bqInput.style.background="#000";
-bqInput.style.color="#0f0";
-bqInput.style.border="1px solid #555";
-bqInput.style.cursor="text";
-}else{
-bqInput.disabled=true;
-bqInput.value="";
-bqInput.placeholder="🔒 Prefix/Suffix/Only";
-bqInput.style.background="#333";
-bqInput.style.color="#777";
-bqInput.style.border="1px solid #444";
-bqInput.style.cursor="not-allowed";
-}
 }
