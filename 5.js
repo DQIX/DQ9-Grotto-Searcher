@@ -1,4 +1,4 @@
-const TILE_SIZE=24;
+const TILE_SIZE=22;
 const COLORS={0:'#f5f0e0',1:'#000000',2:'#e8e0c8',3:'#000000',4:'#44cc44',5:'#ff4444',6:'#ffd700',8:'#ccd8c0',};
 const WALL_COLOR='#000000';
 let mapData=null;
@@ -125,11 +125,6 @@ const map=mapData.getFloorMap(f);
 const up=mapData.getUpStair(f);
 const down=mapData.getDownStair(f);
 const boxCount=mapData.getBoxCount(f);
-const isMobile=window.innerWidth<=600;
-if(isMobile){
-const availW=window.innerWidth-32;
-TILE_SIZE=Math.max(16,Math.min(Math.floor(availW/w),40));
-}else{TILE_SIZE=BASE_TILE_SIZE;}
 const canvasW=w*TILE_SIZE;
 const canvasH=h*TILE_SIZE;
 let infoHtml='<div class="floor-info">';
