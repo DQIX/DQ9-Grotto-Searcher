@@ -529,22 +529,15 @@ target.innerHTML = html;
 <details class="h1det">
 <summary>📖 地圖生成的詳細三步曲</summary>
 <div>
-<p style="color:#aaa; margin-bottom:8px;">遊戲生成地圖時，會使用一個隨時間跳動的 <strong>Timer (0 ~ 65535)</strong>，並將其送入 AT 函數 (LCG) 連續推進 3 步：
-<br><code style="background:#000; padding:2px 6px; color:#cfc; border:1px solid #333; border-radius:3px;">LCG<sub>n+1</sub> = [1103515245×LCG<sub>n</sub>+12345] % 2<sup>32</sup> 再將其高 16 bit 轉換為 15 bit</code></p>
 <ol style="padding-left:20px; color:#ccc; line-height:1.6;">
 <li style="margin-bottom:8px;">
 <strong style="color:#0ca;">決定 FQ 浮動值</strong>
-<br>跑第一遍 AT 函數，作為「隨機數」代入以下公式算出「±10%」的具體值，進而算出 <strong>FQ</strong> 與 <strong>Rank</strong>：
-<br><code style="background:#000; padding:2px 6px; color:#fcf; border:1px solid #333; border-radius:3px;">FQ = BQ + int(隨機數 % [int(BQ÷10)×2+1] - BQ÷10)</code>
-<br style="color:#888; font-size:11px; margin-bottom:16px;">※ 程式碼中的兩次 <code>int()</code> 捨去小數點動作皆不可省略。
 </li>
 <li style="margin-bottom:8px;">
-<strong style="color:#0ca;">決定地圖 Seed</strong><br>
-跑第二遍 AT 函數，直接用來作為這張地圖的 <strong>Seed</strong>。
+<strong style="color:#0ca;">決定地圖 Seed</strong>
 </li>
 <li style="margin-bottom:8px;">
-<strong style="color:#0ca;">決定地圖的入口位置</strong><br>
-跑第三遍 AT 函數，根據算出的 FQ 查表決定這張地圖「能出現的有效位置總數」(例如 FQ 2~50 時有效位置為 47 個)，再將這次 AT 對「有效位置總數」取餘數 (modulo, 也就是上面的 %)，由此決定最終在大地圖上生成地圖入口的具體位置代碼。
+<strong style="color:#0ca;">決定地圖的入口位置</strong>
 </li>
 </ol>
 </div>
@@ -562,24 +555,6 @@ target.innerHTML = html;
 <li><strong style="color:#39C5BB;">BOSS 樓層所需時間：</strong>從樓層入口到 BOSS 跟前的所需時間也有地形差別：<span style="color:#0ff;">遺跡 6.6秒</span>，<span style="color:#f88;">火山 7.4秒</span>，其餘皆為 7.2秒。這微小的差距足以改變部分低Lv發掘用地圖的排名。(來源: <a href="https://w.atwiki.jp/masha-masha/181.html" target="_blank" style="color:#0ca; text-decoration:none; border-bottom:1px solid #0ca;">勇気ある旅人さんwiki</a>)</li>
 </ul>
 </div>
-
-<details class="h1det">
-<summary>📖 決定地形的機制</summary>
-<div>
-<p>用地圖 Seed 跑 AT 函數，將 <strong>第13步</strong> 的值對 100 取餘數（<code>% 100</code>）：</p>
-<table class="h1t" style="width:100%; max-width:300px; margin-top:8px;">
-<tr class="hdr">
-<th style="padding:4px;">餘數範圍</th>
-<th style="padding:4px;">決定地形</th>
-</tr>
-<tr><td>0 ~ 29</td><td class="w">洞窟</td></tr>
-<tr><td>30 ~ 69</td><td class="w">遺跡</td></tr>
-<tr><td>70 ~ 79</td><td class="w">冰</td></tr>
-<tr><td>80 ~ 89</td><td class="w">水</td></tr>
-<tr><td>90 ~ 99</td><td class="w">火山</td></tr>
-</table>
-</div>
-</details>
 
 <h3 class="h1sec">B1F 怪物等級、樓層深度、Boss</h3>
 
@@ -659,108 +634,6 @@ target.innerHTML = html;
 </tr>
 </table>
 
-<details class="h1det">
-<summary>📖 決定 SMR、樓層、Boss 的機制</summary>
-<div>
-<p style="margin-bottom:8px;">用地圖 Seed 跑 AT 函數：</p>
-<ul style="padding-left:20px; color:#aaa; line-height:1.6; margin-bottom:12px;">
-<li><strong>B1F怪物等級</strong> = <code>第15步(取高16-bit數值) % MR1 + MR2</code></li>
-<li><strong>樓層深度　　</strong> = <code>第14步(取高16-bit數值) % De1 + De2</code></li>
-<li><strong>BOSS 種類　</strong> = <code>第16步(取高16-bit數值) % Bs1 + Bs2</code></li>
-</ul>
-
-<table class="h1t" style="font-size:11px;">
-<tr class="hdr2">
-<th style="padding:4px;">Rank</th>
-<th class="w" style="padding:4px;">MR1</th>
-<th class="w" style="padding:4px;">MR2</th>
-<th class="loc" style="padding:4px;">De1</th>
-<th class="loc" style="padding:4px;">De2</th>
-<th class="p" style="padding:4px;">Bs1</th>
-<th class="p" style="padding:4px;">Bs2</th>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">02</td>
-<td rowspan="9" >3</td>
-<td>1</td>
-<td rowspan="3" >3</td>
-<td>2</td>
-<td rowspan="2" >275</td>
-<td rowspan="2" >0</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">38</td>
-<td rowspan="2" >2</td>
-<td rowspan="2" >4</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">3D</td>
-<td rowspan="2" >300</td>
-<td rowspan="2" >100</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">4C</td>
-<td rowspan="2" >3</td>
-<td rowspan="4" >5</td>
-<td rowspan="2" >6</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">51</td>
-<td>280</td>
-<td>200</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">65</td>
-<td rowspan="2" >4</td>
-<td>8</td>
-<td>205</td>
-<td>275</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">79</td>
-<td rowspan="3" >10</td>
-<td>170</td>
-<td>350</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">8D</td>
-<td rowspan="2" >5</td>
-<td rowspan="2" >7</td>
-<td>120</td>
-<td>400</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">A1</td>
-<td>90</td>
-<td>450</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">B5</td>
-<td>4</td>
-<td>6</td>
-<td>6</td>
-<td>11</td>
-<td>80</td>
-<td>480</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">C9</td>
-<td>2</td>
-<td>8</td>
-<td rowspan="2" >5</td>
-<td>12</td>
-<td rowspan="2" >560</td>
-<td rowspan="2" >0</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">DD</td>
-<td>1</td>
-<td>9</td>
-<td>14</td>
-</tr>
-</table>
-</div>
-</details>
 <h3 class="h1sec">Bug 地形</h3>
 <p style="margin-bottom:12px; color:#ccc; font-size:12px;">DQ9 生成地圖時，因為某些機制，而出現下述匪夷所思的現象。</p>
 
@@ -1301,22 +1174,15 @@ target.innerHTML = html;
 <details class="h1det">
 <summary>📖 The 3-step map generation process in detail</summary>
 <div>
-<p style="color:#aaa; margin-bottom:8px;">When the game generates a map, it uses a <strong>Timer (0 ~ 65535)</strong> and puts it into the AT function (LCG) for 3 consecutive steps:
-<br><code style="background:#000; padding:2px 6px; color:#cfc; border:1px solid #333; border-radius:3px;">LCG<sub>n+1</sub> = [1103515245×LCG<sub>n</sub>+12345] % 2<sup>32</sup><br>Then convert its upper 16 bits to 15 bits: (LCG<sub>n+1</sub> >>> 16) & 0x7FFF</code></p>
 <ol style="padding-left:20px; color:#ccc; line-height:1.6;">
 <li style="margin-bottom:8px;">
 <strong style="color:#0ca;">Determine the actual value of ±10%</strong>
-<br>Run the AT function for the first time, use the result as the RNG, and put it into the following formula to calculate the actual value of ±10%, thereby obtaining <strong>FQ</strong> and <strong>Rank</strong>:
-<br><code style="background:#000; padding:2px 6px; color:#fcf; border:1px solid #333; border-radius:3px;">FQ = BQ + int(RNG % [int(BQ÷10)×2+1] - BQ÷10)</code>
-<br style="color:#888; font-size:11px; margin-bottom:16px;">※ Both <code>int()</code> truncations in the code are essential and must not be omitted.
 </li>
 <li style="margin-bottom:8px;">
-<strong style="color:#0ca;">Determine the map Seed</strong><br>
-Run the AT function for the second time, and use the result directly as this map's <strong>Seed</strong>.
+<strong style="color:#0ca;">Determine the map Seed</strong>
 </li>
 <li style="margin-bottom:8px;">
-<strong style="color:#0ca;">Determine the map entrance location</strong><br>
-Run the AT function for the third time. Based on the calculated FQ, get the total amount of its Location Range's locations (e.g., when FQ is 2~50, its Location Range is 01~2F which contains 47 locations). Then use this AT result to compute the modulo (%) against the "location's total amount," and the result determines the specific location code where the map entrance is placed on the overworld.
+<strong style="color:#0ca;">Determine the map entrance location</strong>
 </li>
 </ol>
 </div>
@@ -1334,25 +1200,6 @@ Run the AT function for the third time. Based on the calculated FQ, get the tota
 <li><strong style="color:#39C5BB;">BOSS floor travel time:</strong> The time from the floor entrance to the BOSS also varies by environment: <span style="color:#0ff;">Ruins 6.6s</span>, <span style="color:#f88;">Fire 7.4s</span>, all others 7.2s. This small difference is enough to affect the ranking of some low-Lv excavation maps. (Source: <a href="https://w.atwiki.jp/masha-masha/181.html" target="_blank" style="color:#0ca; text-decoration:none; border-bottom:1px solid #0ca;">勇気ある旅人さんwiki</a>)</li>
 </ul>
 </div>
-
-<details class="h1det">
-<summary>📖 Mechanism for determining environment</summary>
-<div>
-<p>Run the AT function with the map Seed, use <strong>13th</strong> AT to compute modulo 100 (<code>% 100</code>):</p>
-<table class="h1t" style="max-width:300px; margin-top:8px;">
-<tr class="hdr">
-<th style="padding:4px;">Remainder</th>
-<th style="padding:4px;">Environment</th>
-</tr>
-<tr><td>0 ~ 29</td><td class="w">Caves</td></tr>
-<tr><td>30 ~ 69</td><td class="w">Ruins</td></tr>
-<tr><td>70 ~ 79</td><td class="w">Ice</td></tr>
-<tr><td>80 ~ 89</td><td class="w">Water</td></tr>
-<tr><td>90 ~ 99</td><td class="w">Fire</td></tr>
-</table>
-</div>
-</details>
-
 <h3 class="h1sec">B1F Monster Rank, Depth, Boss</h3>
 
 <div style="margin-bottom:12px; font-size:12px;">
@@ -1430,109 +1277,6 @@ Run the AT function for the third time. Based on the calculated FQ, get the tota
 <td class="loc">14 ~ 16</td>
 </tr>
 </table>
-
-<details class="h1det">
-<summary>📖 Mechanism for determining SMR, Depth and Boss</summary>
-<div>
-<p style="margin-bottom:8px;">Run the AT function with the map Seed:</p>
-<ul style="padding-left:20px; color:#aaa; line-height:1.6; margin-bottom:12px;">
-<li><strong>SMR</strong> = <code>15th AT % MR1 + MR2</code></li>
-<li><strong>Depth</strong> = <code>14th AT % De1 + De2</code></li>
-<li><strong>BOSS </strong> = <code>16th AT % Bs1 + Bs2</code></li>
-</ul>
-
-<table class="h1t" style="font-size:11px;">
-<tr class="hdr2">
-<th style="padding:4px;">Rank</th>
-<th class="w" style="padding:4px;">MR1</th>
-<th class="w" style="padding:4px;">MR2</th>
-<th class="loc" style="padding:4px;">De1</th>
-<th class="loc" style="padding:4px;">De2</th>
-<th class="p" style="padding:4px;">Bs1</th>
-<th class="p" style="padding:4px;">Bs2</th>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">02</td>
-<td rowspan="9" >3</td>
-<td>1</td>
-<td rowspan="3" >3</td>
-<td>2</td>
-<td rowspan="2" >275</td>
-<td rowspan="2" >0</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">38</td>
-<td rowspan="2" >2</td>
-<td rowspan="2" >4</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">3D</td>
-<td rowspan="2" >300</td>
-<td rowspan="2" >100</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">4C</td>
-<td rowspan="2" >3</td>
-<td rowspan="4" >5</td>
-<td rowspan="2" >6</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">51</td>
-<td>280</td>
-<td>200</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">65</td>
-<td rowspan="2" >4</td>
-<td>8</td>
-<td>205</td>
-<td>275</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">79</td>
-<td rowspan="3" >10</td>
-<td>170</td>
-<td>350</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">8D</td>
-<td rowspan="2" >5</td>
-<td rowspan="2" >7</td>
-<td>120</td>
-<td>400</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">A1</td>
-<td>90</td>
-<td>450</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">B5</td>
-<td>4</td>
-<td>6</td>
-<td>6</td>
-<td>11</td>
-<td>80</td>
-<td>480</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">C9</td>
-<td>2</td>
-<td>8</td>
-<td rowspan="2" >5</td>
-<td>12</td>
-<td rowspan="2" >560</td>
-<td rowspan="2" >0</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">DD</td>
-<td>1</td>
-<td>9</td>
-<td>14</td>
-</tr>
-</table>
-</div>
-</details>
 <h3 class="h1sec">Bug Terrain</h3>
 <p style="margin-bottom:12px; color:#ccc; font-size:12px;">Due to certain mechanisms in DQ9's map generation, the following bizarre phenomena can occur.</p>
 
@@ -2013,7 +1757,7 @@ target.innerHTML = html;
 <p style="font-size:11px; color:#888;">参考文献: 
 <a href="https://w.atwiki.jp/gaoodq9/pages/56.html" target="_blank" style="color:#0ca; text-decoration:none; border-bottom:1px solid #055;">がおちゃさんwiki</a>、
 <a href="https://w.atwiki.jp/airu_ob/pages/56.html" target="_blank" style="color:#0ca; text-decoration:none; border-bottom:1px solid #055;">永遠の旅人さんwiki</a>、
-<a href="https://w.atwiki.jp/chinesedq9/pages/86.html" target="_blank" style="color:#0ca; text-decoration:none; border-bottom:1px solid #055;">天龍さんwiki</a>
+<a href="https://w.atwiki.jp/midori7188/pages/136.html" target="_blank" style="color:#0ca; text-decoration:none; border-bottom:1px solid #055;">天龍さんwiki</a>
 </p>
 </div>
 </details>
@@ -2069,23 +1813,15 @@ target.innerHTML = html;
 <details class="h1det">
 <summary>📖 地図生成のステップ</summary>
 <div>
-<p style="color:#aaa; margin-bottom:8px;">ゲームが地図を生成する際、時間とともに変動する <strong>タイマー (0 ~ 65535)</strong> で AT 関数 (LCG) を実行し、3 回目まで推進する：
-<br><code style="background:#000; padding:2px 6px; color:#cfc; border:1px solid #333; border-radius:3px;">LCG<sub>n+1</sub> = [1103515245×LCG<sub>n</sub>+12345] % 2<sup>32</sup> そして上位 16 ビットを 15 ビットに変換</code></p>
 <ol style="padding-left:20px; color:#ccc; line-height:1.6;">
 <li style="margin-bottom:8px;">
 <strong style="color:#0ca;">「±10%」の具体値を決める</strong>
-<br>1 回目の結果は、以下の式で「±10%」の具体値を算出し、<strong>Final 値</strong> と <strong>Rank</strong> を求める：
-<br><code style="background:#000; padding:2px 6px; color:#fcf; border:1px solid #333; border-radius:3px;">Final値 = Base値 + int(乱数 % [int(BQ÷10)×2+1] - BQ÷10)</code>
-<br style="color:#888; font-size:11px; margin-bottom:16px;">※ 2 回とも <code>int()</code> による小数点切り捨ては省略不可。
 </li>
 <li style="margin-bottom:8px;">
-<strong style="color:#0ca;">Seed を決める</strong><br>
-2 回目の結果を、その地図の <strong>Seed</strong> として使う。
+<strong style="color:#0ca;">Seed を決める</strong>
 </li>
 <li style="margin-bottom:8px;">
-<strong style="color:#0ca;">場所を決める</strong><br>
-まず「そのFinal値で生成可能な場所の総数」を見つけ出す（例：Final値 2〜50 の場合、生成可能な場所は 01〜2F 合計 47 箇所）。
-<br>次に、3 回目の結果を「生成可能な場所の総数」で剰余を求め (上記の「%」記号)、その値でフィールド上の地図入口の具体的な位置 (場所コード) を決める。
+<strong style="color:#0ca;">場所を決める</strong>
 </li>
 </ol>
 </div>
@@ -2103,25 +1839,6 @@ target.innerHTML = html;
 <li><strong style="color:#39C5BB;">ボスフロアの所要時間：</strong>フロア入口からボスまでの所要時間にも地形差がある：<span style="color:#0ff;">遺跡 6.6秒</span>、<span style="color:#f88;">火山 7.4秒</span>、その他はすべて 7.2秒。この僅かな差が一部の低 Lv 発掘用地図のランキングを実際に変えた。(出典: <a href="https://w.atwiki.jp/masha-masha/181.html" target="_blank" style="color:#0ca; text-decoration:none; border-bottom:1px solid #0ca;">勇気ある旅人さんwiki</a>)</li>
 </ul>
 </div>
-
-<details class="h1det">
-<summary>📖 地形を決定するメカニズム</summary>
-<div>
-<p>地図の Seed で AT 関数を実行し、<strong>13 回目の結果</strong>を取得し、100 で剰余を求める (<code>% 100</code>)：</p>
-<table class="h1t" style="max-width:300px; margin-top:8px;">
-<tr class="hdr">
-<th style="padding:4px;">剰余</th>
-<th style="padding:4px;">地形</th>
-</tr>
-<tr><td>0 ~ 29</td><td class="w">洞窟</td></tr>
-<tr><td>30 ~ 69</td><td class="w">遺跡</td></tr>
-<tr><td>70 ~ 79</td><td class="w">氷</td></tr>
-<tr><td>80 ~ 89</td><td class="w">水</td></tr>
-<tr><td>90 ~ 99</td><td class="w">火山</td></tr>
-</table>
-</div>
-</details>
-
 <h3 class="h1sec">B1F 敵ランク、深さ、BOSS</h3>
 
 <div style="margin-bottom:12px; font-size:12px;">
@@ -2200,108 +1917,6 @@ target.innerHTML = html;
 </tr>
 </table>
 
-<details class="h1det">
-<summary>📖 B1F 敵ランク・深さ・BOSS を決定するメカニズム</summary>
-<div>
-<p style="margin-bottom:8px;">地図の Seed で AT 関数を実行する：</p>
-<ul style="padding-left:20px; color:#aaa; line-height:1.6; margin-bottom:12px;">
-<li><strong>B1F敵ランク</strong> = <code>15回目の結果 % MR1 + MR2</code></li>
-<li><strong>深さ　　　　</strong> = <code>14回目の結果 % De1 + De2</code></li>
-<li><strong>BOSSの種類</strong> = <code>16回目の結果 % Bs1 + Bs2</code></li>
-</ul>
-
-<table class="h1t" style="font-size:11px;">
-<tr class="hdr2">
-<th style="padding:4px;">Rank</th>
-<th class="w" style="padding:4px;">MR1</th>
-<th class="w" style="padding:4px;">MR2</th>
-<th class="loc" style="padding:4px;">De1</th>
-<th class="loc" style="padding:4px;">De2</th>
-<th class="p" style="padding:4px;">Bs1</th>
-<th class="p" style="padding:4px;">Bs2</th>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">02</td>
-<td rowspan="9" >3</td>
-<td>1</td>
-<td rowspan="3" >3</td>
-<td>2</td>
-<td rowspan="2" >275</td>
-<td rowspan="2" >0</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">38</td>
-<td rowspan="2" >2</td>
-<td rowspan="2" >4</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">3D</td>
-<td rowspan="2" >300</td>
-<td rowspan="2" >100</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">4C</td>
-<td rowspan="2" >3</td>
-<td rowspan="4" >5</td>
-<td rowspan="2" >6</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">51</td>
-<td>280</td>
-<td>200</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">65</td>
-<td rowspan="2" >4</td>
-<td>8</td>
-<td>205</td>
-<td>275</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">79</td>
-<td rowspan="3" >10</td>
-<td>170</td>
-<td>350</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">8D</td>
-<td rowspan="2" >5</td>
-<td rowspan="2" >7</td>
-<td>120</td>
-<td>400</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">A1</td>
-<td>90</td>
-<td>450</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">B5</td>
-<td>4</td>
-<td>6</td>
-<td>6</td>
-<td>11</td>
-<td>80</td>
-<td>480</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">C9</td>
-<td>2</td>
-<td>8</td>
-<td rowspan="2" >5</td>
-<td>12</td>
-<td rowspan="2" >560</td>
-<td rowspan="2" >0</td>
-</tr>
-<tr>
-<td class="rk" style="font-weight:normal;">DD</td>
-<td>1</td>
-<td>9</td>
-<td>14</td>
-</tr>
-</table>
-</div>
-</details>
 <h3 class="h1sec">ネタ地形</h3>
 <p style="margin-bottom:12px; color:#ccc; font-size:12px;">DQ9 の地図を生成する時、特定のメカニズムにより、下記のような奇妙な現象が発生する。</p>
 
