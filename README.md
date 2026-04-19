@@ -40,6 +40,8 @@ Chest Timer Search
 Map Method (AT) Search
 - Map Method mechanics
 
+All other languages are AI translated from Traditional Chinese version.
+
 # Requirements
 
 iOS 10.3+ / Android 6.0+ / Windows 7+ / Any other OS which can run:
