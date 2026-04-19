@@ -31,9 +31,14 @@ Other searches
 
 # In-tool Documents
 
-Ultimate Search - Grotto mechanics
-Chest Timer Search - Basic knowledge of Chest Timer
-Map Method (AT) Search - Map Method mechanics
+Ultimate Search
+- Grotto mechanics
+
+Chest Timer Search
+- Basic knowledge of Chest Timer
+
+Map Method (AT) Search
+- Map Method mechanics
 
 # Requirements
 
