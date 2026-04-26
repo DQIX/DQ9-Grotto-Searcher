@@ -2524,14 +2524,6 @@ target.innerHTML = html;
 </ol>
 
 <details class="h1det" style="margin-bottom:16px;">
-<summary>📖 靈巧值計算公式</summary>
-<ul style="padding-left:16px; margin-bottom:4px;">
-<li><code>靈巧值＝ceil(AT÷32768×100-2)×20</code></li>
-<li>最小為 0 (顯示為 1)，若大於 999 則顯示為 1000</li>
-</ul>
-</details>
-
-<details class="h1det" style="margin-bottom:16px;">
 <summary>📖 戰鬥中消耗的 AT 步數「戰」的計算公式</summary>
 <ul style="padding-left:16px; margin-bottom:4px;">
 <li><code>「戰」＝ 符合掉寶 pattern 的 AT 步數 - (<font color=c0a865>戰鬥開始時 AT</font>＋29×魯拉次數)</code></li>
@@ -2946,15 +2938,6 @@ target.innerHTML = html;
 </ul>
 <span style="color:#888;">※ 來源：TKG 反組譯解析</span>
 </div>
-
-<details class="h1det" style="margin-bottom:16px;">
-<summary>📖 掉寶判定的計算公式</summary>
-<ul style="padding-left:16px; margin-bottom:4px;">
-<li><strong>普通掉寶判定：</strong><code>AT≤掉寶率×32768</code></li>
-<li><strong>盜賊秘傳書判定：</strong><code>AT≤int[32767÷int(掉寶率的倒數×100÷Lv)]+1</code></li>
-</ul>
-</details>
-
 <h3 class="h3sec">即時查詢與懶人包</h3>
 <p style="margin-bottom:12px; font-size:12px; color:#ccc;">在完成搜尋後，手動改變以下三個面板選項，可以即時更新對應的顯示結果（無需重新搜尋）：</p>
 
@@ -3110,14 +3093,6 @@ target.innerHTML = html;
 </ol>
 
 <details class="h1det" style="margin-bottom:16px;">
-<summary>📖 Deftness Formula</summary>
-<ul style="padding-left:16px; margin-bottom:4px;">
-<li><code>Deftness = ceil(AT ÷ 32768 × 100 − 2) × 20</code></li>
-<li>Minimum is 0 (displayed as 1); values greater than 999 are displayed as 1000.</li>
-</ul>
-</details>
-
-<details class="h1det" style="margin-bottom:16px;">
 <summary>📖 Formula for "Bat." (AT steps consumed in battle)</summary>
 <ul style="padding-left:16px; margin-bottom:4px;">
 <li><code>"Bat." = Drop Pattern AT − (<font color=c0a865>AT on Battle Start</font> + 29n)</code> (n = Zoom count)</li>
@@ -3126,10 +3101,10 @@ target.innerHTML = html;
 <table class="h3t sm ctr">
 <tr class="hdr">
 <th style="width:35%">Factors affecting <font color=c0a865>AT on Battle Start</font></th>
-<th>1 monster</th>
-<th>2 monsters</th>
-<th>3 monsters</th>
-<th>4 monsters</th>
+<th>1M</th>
+<th>2M</th>
+<th>3M</th>
+<th>4M</th>
 </tr>
 <tr>
 <td class="bg cw">Preemptive <span style="font-size:10px; color:#888;">(character Deftness ≥ map Deftness)</span></td>
@@ -3280,9 +3255,9 @@ target.innerHTML = html;
 
 <tr class="hdr2">
 <th>Skill</th>
-<th>Damage</th>
-<th>AT Cost</th>
-<th>Tolerance</th>
+<th>DM</th>
+<th>AT</th>
+<th>CD</th>
 <th>Notes</th>
 </tr>
 <tr>
@@ -3533,14 +3508,6 @@ target.innerHTML = html;
 <span style="color:#888;">※ Source: Disassembly analysis by TKG</span>
 </div>
 
-<details class="h1det" style="margin-bottom:16px;">
-<summary>📖 Drop Judgment Formula</summary>
-<ul style="padding-left:16px; margin-bottom:4px;">
-<li><strong>Normal Drop:</strong> <code>AT ≤ Drop Rate × 32768</code></li>
-<li><strong>Thief's Theory:</strong> <code>AT ≤ int[32767 ÷ int(Drop Rate<sup>-1</sup> × 100 ÷ Lv)] + 1</code></li>
-</ul>
-</details>
-
 <h3 class="h3sec">Quick Reference</h3>
 <p style="margin-bottom:12px; font-size:12px; color:#ccc;">After a search completes, manually changing any of the following three panel options instantly updates the corresponding display results (no re-search needed):</p>
 
@@ -3693,14 +3660,6 @@ target.innerHTML = html;
 <li><strong>先制に必要な最低きようさ：</strong>ルーラ回数を指定した上で、戦闘中に「先制攻撃」を発動させるための最低きようさ閾値。</li>
 <li><strong>戦闘中に消費すべき AT ステップ数：</strong>ドロップパターンに到達するまでに、戦闘中に手動で消費する必要がある AT ステップ数。<span style="color:#aaa;">（先制の有無やモンスター数によって変動；AT 検索では常に表示、M 検索では Pattern 指定後に表示）</span><br>消費手段：魔法、特技、および道具として使用可能な武器。詳細は下表を参照。</li>
 </ol>
-
-<details class="h1det" style="margin-bottom:16px;">
-<summary>📖 きようさの計算式</summary>
-<ul style="padding-left:16px; margin-bottom:4px;">
-<li><code>きようさ＝ceil(AT÷32768×100-2)×20</code></li>
-<li>最小は 0（1 と表示）；999 を超える場合は 1000 と表示</li>
-</ul>
-</details>
 
 <details class="h1det" style="margin-bottom:16px;">
 <summary>📖 戦闘中に消費する AT ステップ数「戦」の計算式</summary>
@@ -4117,14 +4076,6 @@ target.innerHTML = html;
 </ul>
 <span style="color:#888;">※ 出典：TKG による逆アセンブル解析</span>
 </div>
-
-<details class="h1det" style="margin-bottom:16px;">
-<summary>📖 ドロップ判定の計算式</summary>
-<ul style="padding-left:16px; margin-bottom:4px;">
-<li><strong>通常ドロップ判定 (落)：</strong><code>AT ≤ ドロップ率 × 32768</code></li>
-<li><strong>秘伝書のオート盗む判定 (盗) ：</strong><code>AT ≤ int[32767 ÷ int(ドロップ率の逆数 × 100 ÷ Lv)] + 1</code></li>
-</ul>
-</details>
 
 <h3 class="h3sec">リアルタイム更新とクイックリファレンス</h3>
 <p style="margin-bottom:12px; font-size:12px; color:#ccc;">検索完了後、以下の 3 つのパネルオプションを手動で変更すると、対応する表示結果が即座に更新される（再検索は不要）：</p>
