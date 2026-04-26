@@ -148,7 +148,7 @@ const MONSTER_DATA={
 "0EF":{en:"Freaky Tiki",jp:"まおうのかめん",g:16 },
 "0F0":{en:"Mandrake Monarch",jp:"まかいファイター",g:20 },
 "0F1":{en:"Cumulus Hex",jp:"ヘルミラージュ",g:16 },
-"0F2":{en:"Platminum King Jewel",jp:"プラチナキング",g:16 },
+"0F2":{en:"Platinum King Jewel",jp:"プラチナキング",g:16 },
 "0F3":{en:"Charmour",jp:"マジックアーマー",g:20 },
 "0F4":{en:"Blight Knight",jp:"ヴァルハラー",g:16 },
 "0F5":{en:"Moai Minstrel",jp:"クラウンヘッド",g:16 },
