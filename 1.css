@@ -36,8 +36,8 @@ button.go:active{transform:scale(0.95)}
 .floor-content>*{margin:0 0 12px 0}
 .map-container{width:fit-content;max-width:100%;overflow-x:auto}
 .floor-info{min-width:0;padding-left:22px}
-.floor-info table{width:92%}
-.floor-info td:first-child{width:100px;padding:4px 8px 4px 12px;font-size:12px}
+.floor-info table{width:93%}
+.floor-info td:first-child{white-space:nowrap;padding:4px 8px 4px 8px;font-size:12px}
 .floor-info td{padding:4px 8px;font-size:12px}
 }
 .legend{display:flex;flex-wrap:wrap;margin-top:16px}
