@@ -47,7 +47,6 @@
 <div class="modal-body" id="chestModalBody"></div>
 </div>
 </div>
-
 <div id="seedInspectorModal" class="modal-overlay" onclick="closeSeedInspector(event)">
 <div class="si-modal-content modal-content" onclick="event.stopPropagation()">
 <div class="si-header">
@@ -55,7 +54,6 @@
 <button class="modal-close" onclick="closeSeedInspector()">×</button>
 </div>
 <div class="modal-body" style="padding:12px; overflow-y:auto; max-height:85vh;">
-
 <div class="si-section">
 <div class="si-grid">
 <div class="si-field"><label>Seed</label><input type="text" id="si_seed" value="7340" maxlength="4" style="width:65px; text-transform:uppercase;" oninput="updateSeedInspector()"></div>
@@ -67,9 +65,7 @@
 <div class="si-field"><label data-i18n="G21"></label><input type="number" id="si_scan_max" value=2000 min=0 style="width:60px;" oninput="updateSeedInspector()"></div>
 </div>
 </div>
-
 <div class="si-section"><div class="si-result-box" id="si_at_results"></div></div>
-
 <div class="si-section">
 <div class="si-grid" style="gap:6px;">
 <div class="si-field"><label data-i18n="G22"></label><select id="si_enemy_count" onchange="updateSeedInspector()" style="width:45px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
@@ -87,7 +83,6 @@
 </div>
 </div>
 </div>
-
 <div class="si-section">
 <div style="display:flex; gap:12px; align-items:center; margin-bottom:8px;">
 <label style="color:#aaa; font-size:12px;">AT Debug</label>
@@ -106,7 +101,6 @@
 <button class="modal-close" onclick="closeDisclaimerModal()">×</button>
 </div>
 <div class="modal-body" id="disclaimerModalBody" style="padding: 0; display: flex; flex-direction: column; overflow-y: hidden; max-height: 70vh;">
-
 <div class="modal-tabs">
 <div id="discTabTW" style="padding: 6px 16px; background: #1a1a3a; color: #ffd700; border: 1px solid #4a4a8a; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; font-size: 13px; font-weight: bold; margin-bottom: -2px; transition: all 0.2s;" onclick="switchDisclaimerTab('TW')">繁體中文</div>
 <div id="discTabEN" style="padding: 6px 16px; background: #224; color: #888; border: 1px solid #333; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; font-size: 13px; font-weight: bold; margin-bottom: -2px; transition: all 0.2s;" onclick="switchDisclaimerTab('EN')">English</div>
@@ -789,17 +783,48 @@
 <summary>📖 實際的生成機制</summary>
 <div>
 <h4 class="h1h4" style="margin-top:8px;">乳首、イケない通路、チラリズム</h4>
-<p style="margin-bottom:16px; text-align:justify;">　地圖生成時，系統先用二元空間分割法把樓層切成多個區域，在每個區域裡挖出房間，再沿著分割線畫走廊連通所有房間。接著進入「侵蝕」階段：根據每個格子周圍牆壁的數量決定它是保留為地板還是填回牆壁。侵蝕不知道哪些走廊是唯一的通道，所以可能把某條 1 格寬的走廊填成牆壁，導致部分房間被完全隔離。之後放寶箱時，系統從房間的邊界範圍內隨機抽座標，只跳過已有樓梯或寶箱的格子，不檢查該格子是不是牆壁、也不檢查玩家能不能走到。如果寶箱落在四面皆牆的位置，就嵌在牆壁正中央，玩家完全看不見——這就是「乳首」。如果走廊被侵蝕切斷但格子本身保留了下來，就成為一段被牆壁封死、無法進入的白色通道——這就是「イケない通路」。「チラリズム」則是指一段 1x2 或以上的「イケない通路」裡面有寶箱的情形。</p>
+<p style="margin-bottom:8px;">樓層生成的流程如下：</p>
+<ol style="padding-left:20px; margin-bottom:12px;">
+<li><strong>二元空間分割 (BSP)</strong>：系統用此法將樓層劃分為多個區域，並在每個區域中生成一個房間。</li>
+<li><strong>「侵蝕」階段</strong>：針對房間邊緣的每個格子，根據其周圍牆壁的數量，決定它是被保留為地板，還是填回成牆壁。雖然侵蝕機制會刻意避開覆蓋「門」，但<strong style="color:#f88;">它可能會在門的內側（後方）直接生成牆壁，將房間內部完全堵死。</strong></li>
+<li><strong>走廊生成</strong>：系統會繪製走廊來連接所有房間的門。走廊確實能成功連接到門上，但無法穿透在侵蝕階段所生成的牆壁。</li>
+<li><strong>寶箱配置</strong>：在房間邊界內隨機抽取座標，只跳過已經放置了階梯或寶箱的格子，<strong style="color:#f88;">不檢查它「是不是牆壁」，或者「玩家能不能到達」。</strong></li>
+</ol>
+<p style="margin-bottom:8px;">上述機制導致了以下現象的發生：</p>
+<ul style="padding-left:20px; margin-bottom:16px;">
+<li><strong>乳首</strong>：寶箱被放置在四面皆牆的位置，嵌在牆壁中。玩家或完全看不見，或在某些火山地圖看到它懸浮在半空中。</li>
+<li><strong>イケない通路</strong>：「侵蝕」堵死了門的內側，導致相連的房間（或房間的某個部分）變成完全無法進入的封閉空間。</li>
+<li><strong>チラリズム</strong>：一段 1x2 或以上的「イケない通路」裡面有寶箱。</li>
+</ul>
 <h4 class="h1h4">幽靈樓梯、危険？ハマるフロア</h4>
-<p style="margin-bottom:16px; text-align:justify;">　放置樓梯時，系統先隨機抽一個 已經通過所有檢查的 上樓梯候選位置，寫入地圖後再抽下樓梯候選。如果下樓梯被拒（例如卡在角落），系統回到外層重新抽上樓梯——但上一次寫入的上樓梯不會被清除，殘留在地圖中成為「幽靈樓梯」：外觀是普通地板，底層數據卻是樓梯。大部分情況下幽靈樓梯只是無害的殘留。但當地圖結構極端受限、100 次候選全部無法通過檢查時，系統進入溢出模式：跳過所有檢查直接放上樓梯，然後將計數器歸零重來。如果下樓梯再次失敗，需要再累積 100 次拒絕才能再次溢出。每次溢出都可能留下新的幽靈樓梯，而這些幽靈樓梯還會污染鄰居格子的判定，導致後續的下樓梯候選也連帶失敗。最終定案的樓梯位置可能出現上樓梯緊鄰寶箱的佈局，形成一道玩家無法穿越的障壁，把地圖分成兩個不連通的區域——走下去就被困住，走上去就回不來。這就是「危険？ハマるフロア」。
-<br>　一個樓層 100 次候選全部無法通過檢查，需滿足以下條件：所有廣域空間都是 2x2，除此之外全是走廊。
-<br>　並不是每一個這種類型的樓層都會產生樓梯與寶箱緊鄰的佈局。5BC3 B4F / 5BC4 B3F 會產生這種佈局實在是非常特殊。</p>
+<p style="margin-bottom:8px;">放置樓梯的流程如下：</p>
+<ol style="padding-left:20px; margin-bottom:12px;">
+<li>隨機抽取一個上樓梯候選位置，通過所有檢查後寫入地圖。</li>
+<li>抽取對應的下樓梯候選位置。</li>
+<li>下樓梯檢查通過 → 樓梯配置完成。</li>
+<li>下樓梯檢查失敗（例如卡在角落）→ 回到步驟 1。<br>
+<strong style="color:#f88;">但上一次寫入的上樓梯不會被清除。</strong>它以「幽靈樓梯」的形式殘留在地圖中：外觀是普通地板，底層數據卻是樓梯。</li>
+</ol>
+<p style="margin-bottom:8px;">大部分情況下幽靈樓梯只是無害的殘留。問題在於地圖結構極端受限時：</p>
+<ol style="padding-left:20px; margin-bottom:12px;">
+<li>100 次連續檢查全部失敗 → 系統進入溢出模式。</li>
+<li>溢出模式：跳過所有檢查，直接放置上樓梯，將計數器歸零，然後進行下樓梯檢查。</li>
+<li>下樓梯檢查也失敗 → 回到步驟 1。由於地圖限制，再次累積 99 次失敗 (共 100 次)，再次觸發溢出。</li>
+</ol>
+<p style="margin-bottom:8px;">也就是說，在會發生溢出的地圖上：</p>
+<ul style="padding-left:20px; margin-bottom:12px;">
+<li>每 <strong>100 次</strong>嘗試才放置一個上樓梯。</li>
+<li>每 <strong>100 次</strong>嘗試就殘留一個幽靈樓梯。</li>
+<li>由於樓層結構的限制 (全部廣域空間都是 2x2)，幾乎所有候選位置的檢查都會持續失敗。</li>
+</ul>
+<p style="margin-bottom:16px;">　當最終定案的上樓梯位置緊鄰寶箱時，形成一道玩家無法穿越的障壁，把地圖分成兩個不連通的區域——走下去就被困住，走上去就回不來。這就是「危険？ハマるフロア」。</p>
+<p style="margin-bottom:16px;">　並不是每一個這種類型的樓層都會產生樓梯與寶箱緊鄰的佈局。5BC3 B4F / 5BC4 B3F 會產生這種佈局實在是非常特殊。</p>
 <h4 class="h1h4">被封在牆壁中的樓梯</h4>
 <p style="margin-bottom:8px; text-align:justify;">　根據上述機制，如果一個樓層 100 次上樓梯候選全部無法通過檢查，進入溢出模式後跳過所有檢查，就有可能把上樓梯也放進牆壁。但由於 100 次候選全部無法通過檢查的樓層實在太少，總共就 4 種 16 個搜尋結果，實際上這種情形並沒有發生。</p>
 </div>
 </details>
-<h3 class="h1sec" id="sec-special-floor">特殊樓層 (ElistOfs) 與 指定 ONLY 怪物</h3>
 
+<h3 class="h1sec" id="sec-special-floor">特殊樓層 (ElistOfs) 與 指定 ONLY 怪物</h3>
 <table class="h1t" style="width:100%; font-size:11px; line-height:1.6; text-align:left;">
 <tr class="hdr2">
 <th style="padding:6px; width:90px;">類型</th>
@@ -1496,24 +1521,20 @@
 <details class="h1det">
 <summary>📖 Mechanism</summary>
 <div>
-
 <h4 class="h1h4" style="margin-top:8px;">Nipple, Chamber, チラリズム</h4>
 <p style="margin-bottom:8px;">Floor generation proceeds as follows:</p>
 <ol style="padding-left:20px; margin-bottom:12px;">
-<li>Binary Space Partitioning (BSP) divides the floor into multiple regions, and a room is carved out in each region.</li>
-<li>Corridors are drawn along the partition lines to connect all rooms.</li>
-<li>"Erosion" phase: for each tile, the system decides — based on the number of surrounding walls — whether to keep it as floor or fill it back in as wall.
-<strong style="color:#f88;">Erosion does not recognize which corridors are the only passageway.</strong> As a result, the entrance of a corridor may be filled with walls, completely isolating the room inside.</li>
-<li>Chest placement: coordinates are randomly chosen within a room's boundary. Only tiles that already contain stairs or chests are skipped.
-<strong style="color:#f88;">Whether the tile is a wall, or whether the player can reach it, is never checked.</strong></li>
+<li><strong>Binary Space Partitioning (BSP)</strong> divides the floor into multiple regions, carving out a room in each.</li>
+<li><strong>"Erosion" phase</strong>: For tiles along the room's edges, the system evaluates the surrounding walls to decide whether to keep the tile as floor or fill it back in as wall. While erosion explicitly avoids overwriting doors, <strong style="color:#f88;">it may generate walls directly behind a door, completely blocking the room's interior.</strong>
+<li><strong>Corridor generation</strong>: Corridors are drawn to connect all rooms via their doors. They successfully reach the doors, but cannot bypass the walls created during the erosion phase.</li>
+<li><strong>Chest placement</strong>: Coordinates are randomly chosen within a room's boundary. The system only skips tiles that already contain stairs or chests; <strong style="color:#f88;">whether the tile is a wall, or whether the player can reach it, is never checked.</strong></li>
 </ol>
 <p style="margin-bottom:8px;">The above flow produces the following phenomena:</p>
 <ul style="padding-left:20px; margin-bottom:16px;">
-<li><strong>Nipple (乳首):</strong> a chest is placed on a tile surrounded by walls on all four sides, becoming embedded in the wall. It is completely invisible in-game, or appears to float in mid-air on Fire terrain.</li>
-<li><strong>Chamber (イケない通路):</strong> erosion severs the entrance of a corridor, leaving an unreachable space sealed off by walls.</li>
-<li><strong>チラリズム:</strong> a state where a 1x2 or larger Chamber contains a chest inside it.</li>
+<li><strong>Nipple (乳首)</strong>: A chest is placed on a tile surrounded by walls on all four sides, becoming embedded in the wall. It is completely invisible in-game, or appears to float in mid-air on Fire terrain.</li>
+<li><strong>Chamber (イケない通路)</strong>: An unreachable space created when erosion blocks the interior side of a door, rendering the connected room (or a section of it) completely inaccessible.</li>
+<li><strong>チラリズム</strong>: A state where a 1x2 or larger Chamber contains a chest inside it.</li>
 </ul>
-
 <h4 class="h1h4">Ghost Stairs, Softlock (危険？ハマるフロア)</h4>
 <p style="margin-bottom:8px;">Staircase placement proceeds as follows:</p>
 <ol style="padding-left:20px; margin-bottom:12px;">
@@ -1533,16 +1554,15 @@
 <ul style="padding-left:20px; margin-bottom:12px;">
 <li>An up-staircase is placed only <strong>1 in every 100</strong> attempts.</li>
 <li>A ghost staircase is left behind <strong>1 in every 100</strong> attempts.</li>
-<li>Ghost staircases affect the adjacency checks of neighboring tiles, causing subsequent down-staircase checks to fail in a chain reaction.</li>
+<li>The inherently constrained floor structure (all open areas are 2x2) causes nearly every candidate position to keep failing checks.</li>
 </ul>
 <p style="margin-bottom:16px;">　When the final placement puts an up-staircase right next to a chest, it forms an impassable barrier that splits the map into two disconnected areas — going down traps you, going up leaves no way back. This is <b>Softlock (危険？ハマるフロア)</b>.</p>
-<p style="margin-bottom:4px;">　Condition for a floor where 100 consecutive checks fail: all open areas are 2x2, and everything else is corridors.</p>
 <p style="margin-bottom:16px;">　However, not every floor meeting this condition produces this layout. The fact that 5BC3 B4F / 5BC4 B3F produce it is an exceptional case.</p>
-
 <h4 class="h1h4">Wall-Embedded Stairs</h4>
 <p style="margin-bottom:8px; text-align:justify;">　Based on the mechanism above, if all 100 up-staircase candidates on a floor fail the checks and the system enters overflow mode, it would theoretically be possible for an up-staircase to be placed inside a wall. However, since floors where all 100 candidates fail are extremely rare — only 4 layout types yielding 16 search results in total — this situation has never actually occurred.</p>
 </div>
 </details>
+
 <h3 class="h1sec" id="sec-special-floor">Wandering Monster Bug Floors (Special Floors, ElistOfs)</h3>
 
 <table class="h1t" style="width:100%; font-size:11px; line-height:1.6; text-align:left;">
@@ -2233,23 +2253,21 @@
 </tr>
 </table>
 <details class="h1det">
+
 <summary>📖 実際の生成メカニズム</summary>
 <div>
-
 <h4 class="h1h4" style="margin-top:8px;">乳首、イケない通路、チラリズム</h4>
 <p style="margin-bottom:8px;">フロアの生成は以下の流れで行われる：</p>
 <ol style="padding-left:20px; margin-bottom:12px;">
-<li>バイナリ空間分割法 (BSP) でフロアを複数の領域に分割し、各領域内に部屋を掘り出す。</li>
-<li>分割線に沿って通路を引き、すべての部屋を接続する。</li>
-<li>「侵食」フェーズ：各マスの周囲にある壁の数に基づき、床として残すか壁に埋め戻すかを決定する。
-<strong style="color:#f88;">侵食はどの通路が唯一の経路かを認識しない。</strong>そのため、通路の入口が壁で埋められ、中の部屋が完全に孤立させられることがある。</li>
-<li>宝箱の配置：部屋の境界範囲内からランダムに座標を選ぶ。既に階段や宝箱があるマスのみスキップする。
-<strong style="color:#f88;">そのマスが壁かどうか、プレイヤーが到達可能かどうかは一切チェックしない。</strong></li>
+<li><strong>バイナリ空間分割法 (BSP)</strong> でフロアを複数の区画に分割し、各区画に部屋を作成する。</li>
+<li><strong>「侵食」フェーズ</strong>：部屋の外周の各マスについて、周囲にある壁の数に基づき、床として残すか壁に埋め戻すかを決定する。侵食処理は「扉」自体を上書きすることは避けるが、<strong style="color:#f88;">扉の内側（裏側）に直接壁を生成してしまい、部屋の内部を完全に塞いでしまうことがある。</strong></li>
+<li><strong>通路の生成</strong>: 全ての部屋の扉を繋ぐように通路が引かれる。通路自体は正常に扉まで到達するが、侵食フェーズで生成された壁を貫通することはできない。</li>
+<li><strong>宝箱の配置</strong>：部屋の境界内からランダムに座標を選ぶ。既に階段や宝箱があるマスのみスキップする。<strong style="color:#f88;">そのマスが「壁」であるか、あるいは「プレイヤーが到達可能か」を一切チェックしない。</strong></li>
 </ol>
 <p style="margin-bottom:8px;">上記の流れにより、以下の現象が発生する：</p>
 <ul style="padding-left:20px; margin-bottom:16px;">
 <li><strong>乳首：</strong>宝箱が四周を壁に囲まれたマスに配置され、壁の中に埋め込まれる。ゲーム内では完全に見えず、あるいは火山地形で空中に浮いているように見える。</li>
-<li><strong>イケない通路：</strong>侵食により通路の入口が切断され、壁に封じ込められた進入不可能な空間が残る。</li>
+<li><strong>イケない通路：</strong>侵食によって扉の内側が塞がれ、繋がっているはずの部屋（またはその一部）が完全に進入不可能となった空間。</li>
 <li><strong>チラリズム：</strong>1x2 以上の「イケない通路」の中に宝箱がある状態。</li>
 </ul>
 
@@ -2272,15 +2290,16 @@
 <ul style="padding-left:20px; margin-bottom:12px;">
 <li>上り階段を配置するチャンスは <strong>100 回に 1 回</strong>。</li>
 <li>ゴースト階段が残るのも <strong>100 回に 1 回</strong>。</li>
-<li>ゴースト階段は隣接マスの判定に影響し、後続の下り階段チェックも連鎖的に失敗させる。</li>
+<li>フロア構造自体の制約（全ての広い空間が 2x2）により、ほぼ全ての候補位置でチェックが失敗し続ける。</li>
 </ul>
 <p style="margin-bottom:16px;">　最終的な配置で上り階段が宝箱の真隣りに来ると、プレイヤーが通過できない障壁となり、マップが 2 つの行き来できないエリアに分断される——下に行けば閉じ込められ、上に行けば戻れない。これが<b>「危険？ハマるフロア」</b>。</p>
-<p style="margin-bottom:4px;">　100 回連続でチェックをパスできないフロアの条件：全ての広い空間が 2x2 で、それ以外は全て通路であること。</p>
 <p style="margin-bottom:16px;">　ただし、この条件を満たすフロアの全てがこのレイアウトを生成するわけではない。5BC3 B4F / 5BC4 B3F で発生するのは極めて特殊なケースである。</p>
 <h4 class="h1h4">壁に埋まった階段</h4>
 <p style="margin-bottom:8px; text-align:justify;">　上記のメカニズムに基づき、あるフロアで 100 回連続で上り階段のチェックをパスできず、オーバーフローモードに入った場合、上り階段が壁の中に配置される可能性は理論上ある。しかし、100 回連続でチェックをパスできないフロアは極めて少なく、全部で 4 種 16 件の検索結果しかないため、実際にはこの現象は発生していない。</p>
 </div>
 </details>
+
+
 <h3 class="h1sec" id="sec-special-floor">特殊フロア (ElistOfs) と オンリーモンスター</h3>
 <table class="h1t" style="width:100%; font-size:11px; line-height:1.6; text-align:left;">
 <tr class="hdr2">
@@ -2582,11 +2601,11 @@
 </tr>
 <tr>
 <td class="bl">AT</td>
-<td class="cc"><strong>掉寶模式搜尋：</strong>在 AT 亂數序列中，搜尋符合以下篩選條件的地圖 Seed：<strong>⑤魯拉、⑥最大步數、⑦掉寶率、⑧掉寶 Pattern</strong>。搜尋結果會一併顯示 ③被「くちぶえ」呼叫的怪物 與 ④靈巧值，但不作為篩選條件。</td>
+<td class="cc"><strong>掉寶模式搜尋</strong>：在 AT 亂數序列中，搜尋符合以下篩選條件的地圖 Seed：<strong>⑤魯拉、⑥最大步數、⑦掉寶率、⑧掉寶 Pattern</strong>。搜尋結果會一併顯示 ③被「くちぶえ」呼叫的怪物 與 ④靈巧值，但不作為篩選條件。</td>
 </tr>
 <tr>
 <td class="tl">M</td>
-<td class="cc"><strong>指定怪物掉寶搜尋：</strong>搜尋使用地圖法秘技後 必定能被「くちぶえ」呼叫的 ③指定怪物 的地圖 Seed。可選填 ④靈巧值上限、⑤魯拉、⑥最大步數、⑦掉寶率、⑧掉寶 Pattern 作為附加篩選條件。</td>
+<td class="cc"><strong>指定怪物掉寶搜尋</strong>：搜尋使用地圖法秘技後 必定能被「くちぶえ」呼叫的 ③指定怪物 的地圖 Seed。可選填 ④靈巧值上限、⑤魯拉、⑥最大步數、⑦掉寶率、⑧掉寶 Pattern 作為附加篩選條件。<br><strong>注</strong>：為減少相同 Seed 不同 Rank 的搜尋結果霸佔版面，本搜尋功能被設定為 不讓「掃描所有 Rank」方框生效。</td>
 </tr>
 </table>
 
@@ -2684,10 +2703,10 @@
 <div style="margin-bottom:16px; font-size:12px; color:#ccc; line-height:1.7;">
 <p style="margin-bottom:8px;">在進行 AT 或 M 搜尋後，結果面板將提供以下四項核心數據：</p>
 <ol style="padding-left:20px; margin-bottom:16px; color:#fff;">
-<li><strong>符合掉寶 Pattern 的 AT 步數 </strong><span style="color:#aaa;">(AT 搜尋必顯示，M 搜尋需指定 Pattern 後才顯示)</span></li>
-<li><strong>呼叫出的怪物：</strong>指定使用 <code style="color:#fa0;">n</code> 次魯拉後，於該地圖使用秘技實際會遭遇的怪物。</li>
-<li><strong>先制所需最小靈巧值：</strong>指定魯拉次數後，能於戰鬥中觸發「先制攻擊」所需的最低靈巧值門檻。</li>
-<li><strong>戰鬥中消耗的 AT 步數：</strong>在到達掉寶 Pattern 前，必須在戰鬥中手動消耗的 AT 步數。<span style="color:#aaa;">(依先制與否、怪物數量而變動；AT 搜尋必顯示，M 搜尋需指定 Pattern 後顯示)</span><br>消耗步數的手段：魔法、特技，以及可作道具使用的武器，詳見下表。</li>
+<li><strong>符合掉寶 Pattern 的 AT 步數 </strong>：搜稀有時，它是第一個「R」所在的 AT 步數。搜通常時，它是第一個「xN」的「x」所在的 AT 步數。<span style="color:#aaa;">(AT 搜尋必顯示，M 搜尋需指定 Pattern 後才顯示)</span></li>
+<li><strong>呼叫出的怪物</strong>：指定使用 <code style="color:#fa0;">n</code> 次魯拉後，再使用地圖法秘技時 能遭遇的怪物。</li>
+<li><strong>先制所需最小靈巧值</strong>：指定魯拉次數後，於戰鬥中觸發「先制攻擊」所需的最低靈巧值門檻。</li>
+<li><strong>戰鬥中消耗的 AT 步數「戰」</strong>：在到達掉寶 Pattern 前，必須在戰鬥中手動消耗的 AT 步數。<span style="color:#aaa;">(依先制與否、怪物數量而變動；AT 搜尋必顯示，M 搜尋需指定 Pattern 後顯示)</span><br>消耗步數的手段：魔法、特技，以及可作道具使用的武器，詳見下表。</li>
 </ol>
 
 <details class="h1det" style="margin-bottom:16px;">
@@ -3172,7 +3191,7 @@
 </tr>
 <tr>
 <td class="tl">M</td>
-<td class="cc"><strong>Specified Monster Drop Search:</strong> Search for map Seeds where the Map Method technique guarantees that ③a specific monster will be summoned by the Whistle skill, ④Deftness cap, ⑤Zoom, ⑥Max Steps, ⑦Drop Rate, and ⑧Drop Pattern can optionally be specified as additional filters.</td>
+<td class="cc"><strong>Specified Monster Drop Search:</strong> Search for map Seeds where the Map Method technique guarantees that ③a specific monster will be summoned by the Whistle skill, ④Deftness cap, ⑤Zoom, ⑥Max Steps, ⑦Drop Rate, and ⑧Drop Pattern can optionally be specified as additional filters.<br><strong>Note</strong>: For preventing "same Seed, different Rank" results from flooding the result panel, this search function is designed to disable "Search All Ranks" checkbox.</td>
 </tr>
 </table>
 
@@ -3270,10 +3289,10 @@
 <div style="margin-bottom:16px; font-size:12px; color:#ccc; line-height:1.7;">
 <p style="margin-bottom:8px;">After performing an AT or M search, the results panel provides the following four core data points:</p>
 <ol style="padding-left:20px; margin-bottom:16px; color:#fff;">
-<li><strong>Drop Pattern AT</strong> <span style="color:#aaa;">(Always shown in AT search; shown in M search only after specifying a Pattern)</span></li>
+<li><strong>Drop Pattern AT</strong>: When searching Rare, it's the AT step of the first "R". When searching Normal, it's the AT step of "x" from the first "xN". <span style="color:#aaa;">(Always shown in AT search; shown in M search only after specifying a Pattern)</span></li>
 <li><strong>Summoned monster</strong>: The specific monster encountered when the technique is used on this map after Zoom gets used <code style="color:#fa0;">n</code> times.</li>
 <li><strong>Minimum Deftness for preemptive</strong>: The minimum Deftness threshold required to trigger a "preemptive strike" in battle for the specified Zoom count.</li>
-<li><strong>AT steps consumed in battle</strong>: The number of AT steps that must be manually consumed in battle before reaching the Drop Pattern. <span style="color:#aaa;">(Varies with preemptive status and monster count; always shown in AT search, shown in M search only after specifying a Pattern)</span><br>Methods of consumption: spells, skills, and weapons usable as items — see the table below.</li>
+<li><strong>AT steps consumed in battle "Bat."</strong>: The number of AT steps that must be manually consumed in battle before reaching the Drop Pattern. <span style="color:#aaa;">(Varies with preemptive status and monster count; always shown in AT search, shown in M search only after specifying a Pattern)</span><br>Methods of consumption: spells, skills, and weapons usable as items — see the table below.</li>
 </ol>
 
 <details class="h1det" style="margin-bottom:16px;">
@@ -3757,7 +3776,7 @@
 </tr>
 <tr>
 <td class="tl">M</td>
-<td class="cc"><strong>「くちぶえ」で呼び出されるモンスターのドロップ検索：</strong>地図法使用後に ③指定モンスター が必ず召喚される地図の Seed を検索する。④きようさ上限、⑤ルーラ、⑥最大ステップ数、⑦ドロップ率、⑧ドロップパターン を追加の絞り込み条件として任意で指定可能。</td>
+<td class="cc"><strong>「くちぶえ」で呼び出されるモンスターのドロップ検索：</strong>地図法使用後に ③指定モンスター が必ず召喚される地図の Seed を検索する。④きようさ上限、⑤ルーラ、⑥最大ステップ数、⑦ドロップ率、⑧ドロップパターン を追加の絞り込み条件として任意で指定可能。<br><strong>お知らせ</strong>：同じSeedだがRankが違う検索結果に荒らされることを防止するため、本機能が「全てのRankを検索」を無効化している。</td>
 </tr>
 </table>
 
@@ -3855,10 +3874,10 @@
 <div style="margin-bottom:16px; font-size:12px; color:#ccc; line-height:1.7;">
 <p style="margin-bottom:8px;">AT または M 検索後、結果パネルには以下の 4 つの主要データが表示される：</p>
 <ol style="padding-left:20px; margin-bottom:16px; color:#fff;">
-<li><strong>ドロップパターンに合致する AT ステップ数</strong> <span style="color:#aaa;">（AT 検索では常に表示、M 検索では Pattern 指定後に表示）</span></li>
-<li><strong>召喚されるモンスター：</strong>ルーラを <code style="color:#fa0;">n</code> 回使用した場合に、この地図でテクニックを使って遭遇する具体的なモンスター。</li>
-<li><strong>先制に必要な最低きようさ：</strong>ルーラ回数を指定した上で、戦闘中に「先制攻撃」を発動させるための最低きようさ閾値。</li>
-<li><strong>戦闘中に消費すべき AT ステップ数：</strong>ドロップパターンに到達するまでに、戦闘中に手動で消費する必要がある AT ステップ数。<span style="color:#aaa;">（先制の有無やモンスター数によって変動；AT 検索では常に表示、M 検索では Pattern 指定後に表示）</span><br>消費手段：魔法、特技、および道具として使用可能な武器。詳細は下表を参照。</li>
+<li><strong>ドロップパターンに合致する AT ステップ数</strong>：レアの場合、最初の「R」に該当する AT ステップ数。通常の場合、最初の「xN」の「x」に該当する AT ステップ数。<span style="color:#aaa;">(AT 検索では常に表示、M 検索では Pattern 指定後に表示)</span></li>
+<li><strong>召喚されるモンスター</strong>：ルーラを <code style="color:#fa0;">n</code> 回使用した場合、地図法の手順に従って呼び出せるモンスター。</li>
+<li><strong>先制に必要な最小きようさ</strong>：ルーラ回数を指定した上で、戦闘中に「先制攻撃」を発動させるための「きようさ」最小値。</li>
+<li><strong>戦闘中に消費すべき AT ステップ数「戦」</strong>：ドロップパターンに到達するまで、戦闘中に手動で消費する AT ステップ数。<span style="color:#aaa;">(先制の有無やモンスターの数により変動；AT 検索では常に表示、M 検索では Pattern 指定後に表示)</span><br>消費手段：呪文、特技、および道具として使用可能な武器。詳しくは下の表を参照。</li>
 </ol>
 
 <details class="h1det" style="margin-bottom:16px;">
@@ -3870,10 +3889,10 @@
 </details>
 
 <details class="h1det" style="margin-bottom:16px;">
-<summary>📖 戦闘中に消費する AT ステップ数「戦」の計算式</summary>
+<summary>📖 戦闘中に消費すべき AT ステップ数「戦」の計算式</summary>
 <ul style="padding-left:16px; margin-bottom:4px;">
 <li><code>「戦」＝ ドロップパターンに合致する AT ステップ数 − (<font color=c0a865>戦闘開始時 AT</font> + 29×ルーラ回数)</code></li>
-<li>「戦」は以下の魔法・特技の組み合わせに分解できる（最大 4 つ；先制時に 2 ターン目の AT 追加消費を正しく把握できれば最大 8 つまで増加可能）</li>
+<li>「戦」は以下の呪文・特技の組み合わせに分解できる（最大 4 つ；先制する時に 2 ターン目の AT 追加消費を正しく把握できれば最大 8 つまで増加可能）</li>
 </ul>
 <table class="h3t sm ctr">
 <tr class="hdr">
@@ -3903,7 +3922,7 @@
 
 <table class="h3t sm">
 <tr class="hdr">
-<th style="width:115px">魔法</th>
+<th style="width:115px">呪文</th>
 <th style="width:35px">DM</th>
 <th style="width:35px">AT</th>
 <th style="width:35px">公差</th>
@@ -4272,10 +4291,10 @@
 
 <div class="h3box h3box-r">
 <ul style="padding-left:16px; margin-bottom:8px;">
-<li>すべての魔法は会心時 <strong style="color:#f88;">AT+30</strong>。</li>
+<li>すべての呪文は会心時 <strong style="color:#f88;">AT+30</strong>。</li>
 <li>すべての特技は会心時 <strong style="color:#0ff;">AT 消費なし</strong>、ビッグバン等の例外を除く。</li>
 <li>すべての秘伝書技は <strong style="color:#fc0;">必中</strong>。</li>
-<li><span style="color:#888;">イオ系魔法の AT 消費は不安定でランダムに変動するため、通常は地図法の開発には使用しない。</span></li>
+<li><span style="color:#888;">イオ系呪文の AT 消費は不安定でランダムに変動するため、通常は地図法の開発には使用しない。</span></li>
 </ul>
 <strong style="color:#fa0; display:block; margin-top:8px;">2 ターン目に入る際、モンスターの表示順が並び替えられるため、AT が消費される：</strong>
 <ul style="padding-left:16px; margin-bottom:4px;">
