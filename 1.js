@@ -22,8 +22,9 @@ const C01=T('Name','地圖名稱','地図名');
 const C02=T('Type','地形','地形');
 const C03=T('SMR','怪物等級','敵ランク');
 const C04=T('Depth','樓層數','深さ');
-const C05=T('Location&BQ','位置與 BQ','場所&Base値');
+const C05=T('Location & BQ','位置與 BQ','場所&Base値');
 const C06=T('AT value','AT 判定值','AT 判定値');
+const C06b=T('AT Ptn','地圖法','地図法');
 const C07=T('📦 Total Chests:','📦 全圖寶箱分佈:','📦 宝箱:');
 const C08=T('Chests','箱','箱');
 const C09=T('No Chest','無寶箱','箱無し');
@@ -100,7 +101,7 @@ const STR_BOTH=T('Solo+Party','即+一人旅','即+一人旅');
 const TKB1_1=T('Nipple (Inaccessible chest)','乳首','乳首 (取れない宝箱)');
 const TKB2_1=T('Chamber','イケない通路','イケない通路');
 const TKB2_2=T('Chamber (Multi-floor)','イケない通路 (多層樓)','イケない通路 (複数階層)');
-const TKB2_3=T('Chamber (Same floor, multiple)','イケない通路 (同層多個)','イケない通路 (同じフロアに複数)');
+const TKB2_3=T('Chamber (Same floor,multiple)','イケない通路 (同層多個)','イケない通路 (同じフロアに複数)');
 const TKB1_2=T('Nipple+Chamber','チラリズム','チラリズム (イケない乳首)');
 const TKB1_3=T('Chestless','無寶箱樓層','箱無しフロア');
 const TKB3_0=T('Wall-Embedded Stair','被牆壁封死的樓梯','壁に埋まった階段');
@@ -119,6 +120,7 @@ const EL_NC=T(" (No Cannibox)"," (Cannibox 消失)"," (ひとくいばこ消失)
 const EL_NORMAL=T('Normal','一般','通常');
 const AT_O=[['R2',T('2 Rare','連續 2 個稀有','レア×2')],['R2_3',T('2 Rare (N/N+3)','連續 2 個稀有 (N/N+3)','レア×2 (チカラめし)')],['R3',T('3 Rare','連續 3 個稀有','レア×3')],['R4',T('4 Rare','連續 4 個稀有','レア×4')],['R5',T('5 Rare','連續 5 個稀有','レア×5')],['4_in_6',T('4 in 6 Rare','6 個中 4 個稀有','レア×4 (6連続)')],['3_in_7',T('3 in 7 Rare','7 個中 3 個稀有','レア×3 (7連続)')],['N2',T('2 Normal','連續 2 個通常','通常×2')],['N3',T('3 Normal','連續 3 個通常','通常×3')],['N4',T('4 Normal','連續 4 個通常','通常×4')],['N5',T('5 Normal','連續 5 個通常','通常×5')],['4_in_10',T('4 in 10 Normal','10 個中 4 個通常','通常×4 (10連続)')],['3_in_10',T('3 in 10 Normal','10 個中 3 個通常','通常×3 (10連続)')]];
 const AT_PAT={'R2':1,'N2':2,'R2_3':3,'R3':4,'R4':5,'R5':6,'4_in_6':7,'3_in_7':8,'N3':9,'N4':10,'N5':11,'4_in_10':12,'3_in_10':13};
+const BATTLE_LABEL=T('Bat.','戰','戦');
 const i18nDict={
 'F01':F01,'F03':F03,'F04':F04,
 'G01':G01,'G02':G02,'G03':G03,'G04':G04,'G05':G05,'G06':G06,'G07':G07,'G08':G08,'G09':G09,'G10':G10,'G11':G11,'G12':G12,'G13':G13,'G14':G14,'G15':G15,
@@ -166,50 +168,49 @@ const TableF=new Uint8Array([1,1,2,0,2,1,2,0,3,1,3,0,4,1,4,0,5,2,5,0,6,2,6,0,7,3
 const TableG=new Uint8Array([2,3,1,2,4,5,1,3,6,7,1,4,8,9,2,5,10,11,2,6,12,13,3,7,14,15,4,8,16,16,6,8]);
 const TableH=new Uint8Array([1,2,1,5,3,4,4,8,5,6,7,12,7,8,7,16,9,9,12,16]);
 const TableI=new Uint8Array([1,3,1,6,4,6,4,9,7,9,7,12,10,12,10,16]);
-const TableN=TableF
 const TableO=new Uint8Array([0,14,28,41,55,71,88,108,125,141,162]);
 const TableP=new Uint8Array([10,10,5,10,10,8,5,8,10,10,2,8,2,2,8,8,10,2,10,10,10,10,8,8,10,2,2,2,10,10,10,10,10,10,10,1,10,10,5,2,2,5,15,15,12,10,15,12,2,5,5,1,1,1,1,5,15,10,15,1,1,1,1,1,1,10,10,1,12,1,15,10,15,15,15,10,6,1,1,10,1,10,1,1,1,1,1,1,10,10,10,10,10,15,6,2,2,15,1,1,1,1,1,1,1,1,1,1,5,13,13,10,15,15,15,5,1,1,1,1,1,1,1,1,1,10,10,10,10,10,15,10,10,8,1,1,1,1,1,1,1,15,10,10,10,15,10,8,5,5,1,1,1,1,1,1,1,1,1,1,1,1]);
 const TableQ=new Uint8Array([12,14,16,15,7,18,28,23,27,0,29,13,30,31,32,33,34,35,36,22,19,1,7,46,37,38,39,40,140,41,11,42,7,2,43,44,45,49,8,50,51,139,52,53,11,8,16,3,54,47,48,76,55,56,57,139,24,58,16,59,60,61,62,63,64,65,66,67,11,68,20,139,21,69,8,70,71,72,73,74,75,11,77,78,79,80,81,82,139,83,84,85,17,4,25,86,87,11,88,89,90,91,92,93,94,95,96,97,98,99,100,17,5,11,9,10,101,102,103,104,105,106,107,108,109,110,111,112,6,17,11,9,113,114,115,116,117,118,119,120,121,122,123,9,124,17,125,26,10,126,127,128,129,130,131,132,133,134,135,136,137,138]);
 const TableR=[
-["125G","125G"], ["268G","268G"], ["450G","450G"], ["670G","670G"], ["880G","880G"], ["1500G","1500G"], ["3000G","3000G"],
-["Gleeban groat","グビアナどうか"], ["Gleeban guinea","グビアナぎんか"], ["Gleeban gold piece","グビアナきんか"], ["Gold bar","きんかい"],
-["Mini medal","ちいさなメダル"], ["Medicinal herb","やくそう"], ["Strong medicine","上やくそう"], ["Evac-u-bell","おもいでのすず"],
-["Holy water","せいすい"], ["Magic water","まほうのせいすい"], ["Sage's elixir","けんじゃのせいすい"], ["Antidotal herb","どくけしそう"],
-["Strong antidote","上どくけしそう"], ["Narspicious","あやかしそう"], ["Mystifying mixture","おかしなくすり"], ["Superior medicine","いやしそう"],
-["Moonwort bulb","まんげつそう"], ["Panacea","ばんのうくすり"], ["Perfect panacea","超ばんのうくすり"], ["Yggdrasil leaf","せかいじゅのは"],
-["Chimaera wing","キメラのつばさ"], ["Oaken club","こんぼう"], ["Pop socks","ニーソックス"], ["Silver bracelets","ぎんのリスト"],
-["Bunny tail","うさぎのおまもり"], ["Royal soil","まりょくの土"], ["Lava lump","ようがんのカケラ"], ["Angel bell","天使のすず"],
-["Silver platter","シルバートレイ"], ["Fisticup","げんこつダケ"], ["Iron nails","てつのクギ"], ["Gold ring","きんのゆびわ"],
-["Gold bracer","きんのプレスレット"], ["Iron mask","てっかめん"], ["Toad oil","ガマのあぶら"], ["Fisticup","げんこつダケ"],
-["Iron ore","てっこうせき"], ["Slime shield","スライムトレイ"], ["Corundum","ルビーのげんせき"], ["Rockbomb shard","ばくだん石"],
-["Flintstone","つけもの石"], ["Mirrorstone","かがみ石"], ["Resurrock","命の石"], ["Strength ring","ちからのゆびわ"],
-["Agility ring","はやてのリング"], ["Manky mud","どくどくヘドロ"], ["Nectar","花のみつ"], ["Sorcerer's stone","ひらめきのジュエル"],
-["Glombolero","ふしぎなボレロ"], ["Saint's ashes","せいじゃのはい"], ["Malicite","うらみのほうじゅ"], ["Hephaestus' flame","ヘパイトスのひだね"],
-["Muscle belt","あらくれベルト"], ["Maid outfit","メイド服"], ["Thug boots","あらくれブーツ"], ["Thug's mug","あらくれマスク"],
-["Maid's mop","ヘッドドレス"], ["Toughie trousers","あらくれズボン"], ["Finessence","ぶどうエキス"], ["Aggressence","とうこんエキス"],
-["Dangerous bustier","あぶないビスチェ"], ["Brouhaha boomstick","まてきの杖"], ["Hephaestus' flame","ヘパイトスのひだね"], ["Astral plume","天使のはね"],
-["Densinium","ヘビーメタル"], ["Riotous wristbands","ぶしんのリスト"], ["Fingerless gloves","オープンフィンガー"], ["Mythril ore","ミスリルこうせき"],
-["Veteran's gloves","古強者のグローブ"], ["Fuddle bow","ゆうわくの弓"], ["Oh-no bow","じごくの弓"], ["Blessed boots","しんかんのブーツ"],
-["Skull ring","ドクロのゆびわ"], ["Hela's hammer","まじんのかなづち"], ["Hades' helm","サタンヘルム"], ["Demon whip","あくまのムチ"],
-["Saint's ashes","せいじゃのはい"], ["Densinium","ヘビーメタル"], ["Lucida shard","ほしのカケラ"], ["Depressing shoes","しわよせのくつ"],
-["Unhappy hat","しわよせのぼうし"], ["Veteran's armour","古強者のよろい"], ["Spellspadrilles","だいまどうシューズ"], ["Veteran's boots","古強者のブーツ"],
-["Combat boots","ぶしんのブーツ"], ["She-mage shoes","まじょのブーツ"], ["Trinity tights","しんかんのタイツ"], ["Ruinous shield","はめつの盾"],
-["Divine dress","さとりのワンピース"], ["Skull helm","ドクロのかぶと"], ["Matador's gloves","マタドールグラブ"], ["Pandora's box","パンドラボックス"],
-["Enchanted stone","せいれいせき"], ["Mythril ore","ミスリルこうせき"], ["Hero spear","えいゆうのやり"], ["Pruning knife","こがらしのダガー"],
-["Wyrmwand","ドラゴンの杖"], ["Wizardly whip","カルベロビュート"], ["Beast claws","まじゅうのツメ"], ["Attribeauty","風林火山"],
-["Heavy hatchet","ふんさいのおおなた"], ["Megaton hammer","メガトンハンマー"], ["Pentarang","ペンタグラム"], ["Pandora's box","パンドラボックス"],
-["Astral plume","天使のはね"], ["Ethereal stone","げんませき"], ["Reckless necklace","しにがみの首かざり"], ["Orichalcum","オリハルコン"],
-["Metal slime sword","メタスラの剣"], ["Metal slime spear","メタスラのやり"], ["Metal slime shield","メタスラの盾"], ["Metal slime armour","メタスラよろい"],
-["Metal slime helm","メタスラヘルム"], ["Metal slime gauntlets","メタスラのこて"], ["Metal slime sollerets","メタスラブーツ"], ["Pandora's box","パンドラボックス"],
-["Reset stone","リサイクルストーン"], ["Evac-u-bell","おもいでのすず"], ["Sainted soma","天使のソーマ"], ["Orichalcum","オリハルコン"],
-["Stardust sword","ほしくずのつるぎ"], ["Poker","きしんのまそう"], ["Deft dagger","サウザンドダガー"], ["Bright staff","ひかりの杖"],
-["Gringham whip","グリンガムのムチ"], ["Knockout rod","しゅらのこん"], ["Dragonlord claws","竜王のツメ"], ["Critical fan","ひっさつのおうぎ"],
-["Bad axe","グレートアックス"], ["Groundbreaker","大地くだき"], ["Meteorang","メテオエッジ"], ["Angel's bow","天使の弓"],
-["Mimic","ミミック"], ["Cannibox","ひとくいばこ"]
+["125G","125G"],["268G","268G"],["450G","450G"],["670G","670G"],["880G","880G"],["1500G","1500G"],["3000G","3000G"],
+["Gleeban groat","グビアナどうか"],["Gleeban guinea","グビアナぎんか"],["Gleeban gold piece","グビアナきんか"],["Gold bar","きんかい"],
+["Mini medal","ちいさなメダル"],["Medicinal herb","やくそう"],["Strong medicine","上やくそう"],["Evac-u-bell","おもいでのすず"],
+["Holy water","せいすい"],["Magic water","まほうのせいすい"],["Sage's elixir","けんじゃのせいすい"],["Antidotal herb","どくけしそう"],
+["Strong antidote","上どくけしそう"],["Narspicious","あやかしそう"],["Mystifying mixture","おかしなくすり"],["Superior medicine","いやしそう"],
+["Moonwort bulb","まんげつそう"],["Panacea","ばんのうくすり"],["Perfect panacea","超ばんのうくすり"],["Yggdrasil leaf","せかいじゅのは"],
+["Chimaera wing","キメラのつばさ"],["Oaken club","こんぼう"],["Pop socks","ニーソックス"],["Silver bracelets","ぎんのリスト"],
+["Bunny tail","うさぎのおまもり"],["Royal soil","まりょくの土"],["Lava lump","ようがんのカケラ"],["Angel bell","天使のすず"],
+["Silver platter","シルバートレイ"],["Fisticup","げんこつダケ"],["Iron nails","てつのクギ"],["Gold ring","きんのゆびわ"],
+["Gold bracer","きんのプレスレット"],["Iron mask","てっかめん"],["Toad oil","ガマのあぶら"],["Fisticup","げんこつダケ"],
+["Iron ore","てっこうせき"],["Slime shield","スライムトレイ"],["Corundum","ルビーのげんせき"],["Rockbomb shard","ばくだん石"],
+["Flintstone","つけもの石"],["Mirrorstone","かがみ石"],["Resurrock","命の石"],["Strength ring","ちからのゆびわ"],
+["Agility ring","はやてのリング"],["Manky mud","どくどくヘドロ"],["Nectar","花のみつ"],["Sorcerer's stone","ひらめきのジュエル"],
+["Glombolero","ふしぎなボレロ"],["Saint's ashes","せいじゃのはい"],["Malicite","うらみのほうじゅ"],["Hephaestus' flame","ヘパイトスのひだね"],
+["Muscle belt","あらくれベルト"],["Maid outfit","メイド服"],["Thug boots","あらくれブーツ"],["Thug's mug","あらくれマスク"],
+["Maid's mop","ヘッドドレス"],["Toughie trousers","あらくれズボン"],["Finessence","ぶどうエキス"],["Aggressence","とうこんエキス"],
+["Dangerous bustier","あぶないビスチェ"],["Brouhaha boomstick","まてきの杖"],["Hephaestus' flame","ヘパイトスのひだね"],["Astral plume","天使のはね"],
+["Densinium","ヘビーメタル"],["Riotous wristbands","ぶしんのリスト"],["Fingerless gloves","オープンフィンガー"],["Mythril ore","ミスリルこうせき"],
+["Veteran's gloves","古強者のグローブ"],["Fuddle bow","ゆうわくの弓"],["Oh-no bow","じごくの弓"],["Blessed boots","しんかんのブーツ"],
+["Skull ring","ドクロのゆびわ"],["Hela's hammer","まじんのかなづち"],["Hades' helm","サタンヘルム"],["Demon whip","あくまのムチ"],
+["Saint's ashes","せいじゃのはい"],["Densinium","ヘビーメタル"],["Lucida shard","ほしのカケラ"],["Depressing shoes","しわよせのくつ"],
+["Unhappy hat","しわよせのぼうし"],["Veteran's armour","古強者のよろい"],["Spellspadrilles","だいまどうシューズ"],["Veteran's boots","古強者のブーツ"],
+["Combat boots","ぶしんのブーツ"],["She-mage shoes","まじょのブーツ"],["Trinity tights","しんかんのタイツ"],["Ruinous shield","はめつの盾"],
+["Divine dress","さとりのワンピース"],["Skull helm","ドクロのかぶと"],["Matador's gloves","マタドールグラブ"],["Pandora's box","パンドラボックス"],
+["Enchanted stone","せいれいせき"],["Mythril ore","ミスリルこうせき"],["Hero spear","えいゆうのやり"],["Pruning knife","こがらしのダガー"],
+["Wyrmwand","ドラゴンの杖"],["Wizardly whip","カルベロビュート"],["Beast claws","まじゅうのツメ"],["Attribeauty","風林火山"],
+["Heavy hatchet","ふんさいのおおなた"],["Megaton hammer","メガトンハンマー"],["Pentarang","ペンタグラム"],["Pandora's box","パンドラボックス"],
+["Astral plume","天使のはね"],["Ethereal stone","げんませき"],["Reckless necklace","しにがみの首かざり"],["Orichalcum","オリハルコン"],
+["Metal slime sword","メタスラの剣"],["Metal slime spear","メタスラのやり"],["Metal slime shield","メタスラの盾"],["Metal slime armour","メタスラよろい"],
+["Metal slime helm","メタスラヘルム"],["Metal slime gauntlets","メタスラのこて"],["Metal slime sollerets","メタスラブーツ"],["Pandora's box","パンドラボックス"],
+["Reset stone","リサイクルストーン"],["Evac-u-bell","おもいでのすず"],["Sainted soma","天使のソーマ"],["Orichalcum","オリハルコン"],
+["Stardust sword","ほしくずのつるぎ"],["Poker","きしんのまそう"],["Deft dagger","サウザンドダガー"],["Bright staff","ひかりの杖"],
+["Gringham whip","グリンガムのムチ"],["Knockout rod","しゅらのこん"],["Dragonlord claws","竜王のツメ"],["Critical fan","ひっさつのおうぎ"],
+["Bad axe","グレートアックス"],["Groundbreaker","大地くだき"],["Meteorang","メテオエッジ"],["Angel's bow","天使の弓"],
+["Mimic","ミミック"],["Cannibox","ひとくいばこ"]
 ];
 const b3fThreeItems=["Mini medal","Sage's elixir","Iron nails","Hephaestus' flame"];
-function lcg(seed){return (Math.imul(seed,1103515245)+12345)>>>0;}
-class GrottoDetail {
+function lcg(seed){return(Math.imul(seed,1103515245)+12345)>>>0;}
+class GrottoDetail{
 constructor(){
 this.di=[];
 for(let i=0;i<16;i++) this.di[i]=new Uint8Array(1336);
@@ -224,11 +225,11 @@ this.trackOverflow=false;
 this._at_offset=0;
 this._force_16_floors=false;
 }
-_readI32(floor, offset){
+_readI32(floor,offset){
 const d=this.di[floor];
-return d[offset] | (d[offset+1]<<8) | (d[offset+2]<<16) | (d[offset+3]<<24);
+return d[offset]|(d[offset+1]<<8)|(d[offset+2]<<16)|(d[offset+3]<<24);
 }
-_writeI32(floor, offset, val){
+_writeI32(floor,offset,val){
 const d=this.di[floor];
 d[offset]=val&0xFF;
 d[offset+1]=(val>>>8)&0xFF;
@@ -240,48 +241,48 @@ this._seed=lcg(this._seed);
 return (this._seed>>>16)&0x7FFF;
 }
 gRNGDiv(div){
-return this.gRNG() % div;
+return this.gRNG()%div;
 }
-gRNGRange(v1, v2){
+gRNGRange(v1,v2){
 if(v1===v2)return v1;
 const r=this.gRNG();
 const num=(v2|0)-(v1|0)+1;
-return num===0?v1:((v1+r % num)>>>0);
+return num===0?v1:((v1+r%num)>>>0);
 }
-getItemRank(value1, value2){
+getItemRank(value1,value2){
 const num=Math.fround(this.gRNG()-1);
-return (Math.fround(((value2|0)-(value1|0)+1)*num / 32767)>>>0)+value1;
+return(Math.fround(((value2|0)-(value1|0)+1)*num/32767)>>>0)+value1;
 }
-seek1(table, tableSize){
+seek1(table,tableSize){
 const random=this.gRNGDiv(100);
 let num=0;
 for(let i=0;i<tableSize;i++){
-num += table[i*4+1];
+num+=table[i*4+1];
 if(random<num)return table[i*4];
 }
 return 0;
 }
-seek2(table, value, tableSize){
+seek2(table,value,tableSize){
 for(let i=0;i<tableSize;i++)
 if(value>=table[i*4]&&value<=table[i*4+1])
-return this.seek3(table[i*4+2], table[i*4+3]);
+return this.seek3(table[i*4+2],table[i*4+3]);
 return 0;
 }
-seek3(val1, val2){
+seek3(val1,val2){
 const r=this.gRNG();
 const num=val2-val1+1;
-return num===0?val1:(val1+r % num);
+return num===0?val1:(val1+r%num);
 }
-seek4(table1, table2, roopCount){
+seek4(table1,table2,roopCount){
 for(let i1=0;i1<roopCount;i1++){
 if(this.MapRank>=table1[i1*4]&&this.MapRank<=table1[i1*4+1]){
 let num1=0;
 for(let i2=table1[i1*4+2];i2<=table1[i1*4+3];i2++)
-num1 += table2[(i2-1)*2+1];
-const num2=this.gRNG() % num1;
+num1+=table2[(i2-1)*2+1];
+const num2=this.gRNG()%num1;
 let num3=0;
 for(let i3=table1[i1*4+2];i3<=table1[i1*4+3];i3++){
-num3 += table2[(i3-1)*2+1];
+num3+=table2[(i3-1)*2+1];
 if(num2<num3)return i3;
 }
 break;
@@ -290,131 +291,131 @@ break;
 return 0;
 }
 routineRandom(value){
-return (Math.fround(this.gRNG()-1)*value / 32767)>>>0;
+return(Math.fround(this.gRNG()-1)*value/32767)>>>0;
 }
-routine1(floor, address, value1, value2){
+routine1(floor,address,value1,value2){
 for(let i=0;i<value2;i++)
 this.di[floor][address+i]=value1&0xFF;
 }
-setValue(floor, address, v1, v2, v3, v4){
+setValue(floor,address,v1,v2,v3,v4){
 const d=this.di[floor];
 d[address]=v1;d[address+1]=v2;d[address+2]=v3;d[address+3]=v4;
 }
-routineA(floor, address, value1, value2){
+routineA(floor,address,value1,value2){
 const d=this.di[floor];
 const num1=d[address+3]+1-d[address+1];
 if(num1<7||d[address+4]!==0)return false;
-const random=this.gRNGRange(0, num1-7);
+const random=this.gRNGRange(0,num1-7);
 const num2=d[address+1]+random+3;
 for(let i=d[address];i<d[address+2]+1;i++)
 d[(num2<<4)+i+792]=3;
-this.setValue(floor, value2, d[address], num2, d[address+2], num2);
-this.setValue(floor, value1, d[address], num2+1, d[address+2], d[address+3]);
+this.setValue(floor,value2,d[address],num2,d[address+2],num2);
+this.setValue(floor,value1,d[address],num2+1,d[address+2],d[address+3]);
 d[value1+4]=0;d[value1+5]=0;
 d[address+3]=num2-1;
 d[address+4]=1;
-this._writeI32(floor, value2+4, address);
-this._writeI32(floor, value2+8, value1);
+this._writeI32(floor,value2+4,address);
+this._writeI32(floor,value2+8,value1);
 d[value2+12]=1;
 return true;
 }
-routineE(floor, address, value1, value2){
+routineE(floor,address,value1,value2){
 const d=this.di[floor];
 const num1=d[address+2]+1-d[address];
 if(num1<7||d[address+5]!==0)return false;
-const random=this.gRNGRange(0, num1-7);
+const random=this.gRNGRange(0,num1-7);
 const num2=d[address]+random+3;
 for(let i=d[address+1];i<d[address+3]+1;i++)
 d[(i<<4)+num2+792]=3;
-this.setValue(floor, value2, num2, d[address+1], num2, d[address+3]);
-this.setValue(floor, value1, num2+1, d[address+1], d[address+2], d[address+3]);
+this.setValue(floor,value2,num2,d[address+1],num2,d[address+3]);
+this.setValue(floor,value1,num2+1,d[address+1],d[address+2],d[address+3]);
 d[value1+4]=0;d[value1+5]=0;
 d[address+2]=num2-1;
 d[address+5]=1;
-this._writeI32(floor, value2+4, address);
-this._writeI32(floor, value2+8, value1);
+this._writeI32(floor,value2+4,address);
+this._writeI32(floor,value2+8,value1);
 d[value2+12]=2;
 return true;
 }
-routineB(floor, address){
+routineB(floor,address){
 const d=this.di[floor];
 const num=d[21];
 d[21]++;d[22]++;
 if((this.gRNG()&1)!==0){
-this.routineF(floor, address);
-this.routineF(floor, num*12+24);
+this.routineF(floor,address);
+this.routineF(floor,num*12+24);
 }else{
-this.routineF(floor, num*12+24);
-this.routineF(floor, address);
+this.routineF(floor,num*12+24);
+this.routineF(floor,address);
 }
 }
-routineF(floor, address){
+routineF(floor,address){
 const d=this.di[floor];
 if(d[21]>=15)return;
 if(d[address+5]!==0){
-if(!this.routineA(floor, address, d[21]*12+24, (d[22]<<4)+216))return;
-this.routineB(floor, address);
-}else if(d[address+4]!==0){
-if(!this.routineE(floor, address, d[21]*12+24, (d[22]<<4)+216))return;
-this.routineB(floor, address);
-}else if((this.gRNG()&1)!==0){
-if(!this.routineE(floor, address, d[21]*12+24, (d[22]<<4)+216))return;
-this.routineB(floor, address);
+if(!this.routineA(floor,address,d[21]*12+24,(d[22]<<4)+216))return;
+this.routineB(floor,address);
+} else if(d[address+4]!==0){
+if(!this.routineE(floor,address,d[21]*12+24,(d[22]<<4)+216))return;
+this.routineB(floor,address);
+} else if((this.gRNG()&1)!==0){
+if(!this.routineE(floor,address,d[21]*12+24,(d[22]<<4)+216))return;
+this.routineB(floor,address);
 }else{
-if(!this.routineA(floor, address, d[21]*12+24, (d[22]<<4)+216))return;
-this.routineB(floor, address);
+if(!this.routineA(floor,address,d[21]*12+24,(d[22]<<4)+216))return;
+this.routineB(floor,address);
 }
 }
-routineC(floor, address1, address2){
+routineC(floor,address1,address2){
 const d=this.di[floor];
 if(d[address1+2]+1-d[address1]<3||d[address1+3]+1-d[address1+1]<3)
 return false;
-const num1=d[address1], num2=d[address1+1], num3=d[address1+2], num4=d[address1+3];
-let random1, random2, random3, random4;
-if(this.gRNGRange(0, 1)!==0){
-random1=this.gRNGRange(num1, num1+((num3-num1+1)/3|0));
-random2=this.gRNGRange(num2, num2+((num4-num2+1)/3|0));
+const num1=d[address1],num2=d[address1+1],num3=d[address1+2],num4=d[address1+3];
+let random1,random2,random3,random4;
+if(this.gRNGRange(0,1)!==0){
+random1=this.gRNGRange(num1,num1+((num3-num1+1)/3|0));
+random2=this.gRNGRange(num2,num2+((num4-num2+1)/3|0));
 }else{
-random1=this.gRNGRange(num1+1, num1+((num3-num1+1)/3|0));
-random2=this.gRNGRange(num2+1, num2+((num4-num2+1)/3|0));
+random1=this.gRNGRange(num1+1,num1+((num3-num1+1)/3|0));
+random2=this.gRNGRange(num2+1,num2+((num4-num2+1)/3|0));
 }
-if(this.gRNGRange(0, 1)!==0){
-random3=this.gRNGRange(num1+((num3-num1+1)/3|0)*2, num3);
-random4=this.gRNGRange(num2+((num4-num2+1)/3|0)*2, num4);
+if(this.gRNGRange(0,1)!==0){
+random3=this.gRNGRange(num1+((num3-num1+1)/3|0)*2,num3);
+random4=this.gRNGRange(num2+((num4-num2+1)/3|0)*2,num4);
 }else{
-random3=this.gRNGRange(num1+((num3-num1+1)/3|0)*2, num3-1);
-random4=this.gRNGRange(num2+((num4-num2+1)/3|0)*2, num4-1);
+random3=this.gRNGRange(num1+((num3-num1+1)/3|0)*2,num3-1);
+random4=this.gRNGRange(num2+((num4-num2+1)/3|0)*2,num4-1);
 }
-this.setValue(floor, address2, random1, random2, random3, random4);
-for(let i=4;i<20;i++) d[address2+i]=0;
-this._writeI32(floor, address1+8, address2);
+this.setValue(floor,address2,random1,random2,random3,random4);
+for(let i=4;i<20;i++)d[address2+i]=0;
+this._writeI32(floor,address1+8,address2);
 for(let y=random2;y<=random4;y++)
 for(let x=random1;x<=random3;x++)
 d[x+(y<<4)+792]=0;
-this.routineD(floor, address2);
+this.routineD(floor,address2);
 return true;
 }
-routineD(floor, address){
+routineD(floor,address){
 const d=this.di[floor];
-const num1=d[address], num2=d[address+2];
+const num1=d[address],num2=d[address+2];
 if(num1===0||d[address+1]===0)return false;
 if(num2===0||d[address+3]===0)return false;
 if(num2-num1+1<5){
-d[address+12]=this.gRNGRange(num1, num2);
+d[address+12]=this.gRNGRange(num1,num2);
 d[address+13]=d[address+1];
-d[address+16]=this.gRNGRange(d[address], d[address+2]);
+d[address+16]=this.gRNGRange(d[address],d[address+2]);
 d[address+17]=d[address+3];
 d[(d[address+13]<<4)+792+d[address+12]]=8;
 d[(d[address+17]<<4)+792+d[address+16]]=8;
 }else{
 const num3=num1+((num2-num1+1)/2|0)-1;
-d[address+12]=this.gRNGRange(num1, num3);
+d[address+12]=this.gRNGRange(num1,num3);
 d[address+13]=d[address+1];
-d[address+14]=this.gRNGRange(num3+1, d[address+2]);
+d[address+14]=this.gRNGRange(num3+1,d[address+2]);
 d[address+15]=d[address+1];
-d[address+16]=this.gRNGRange(d[address], num3);
+d[address+16]=this.gRNGRange(d[address],num3);
 d[address+17]=d[address+3];
-d[address+18]=this.gRNGRange(num3+1, d[address+2]);
+d[address+18]=this.gRNGRange(num3+1,d[address+2]);
 d[address+19]=d[address+3];
 d[(d[address+13]<<4)+792+d[address+12]]=8;
 d[(d[address+15]<<4)+792+d[address+14]]=8;
@@ -423,22 +424,22 @@ d[(d[address+19]<<4)+792+d[address+18]]=8;
 }
 if(d[address+3]-d[address+1]+1<5){
 d[address+4]=d[address];
-d[address+5]=this.gRNGRange(d[address+1], d[address+3]);
+d[address+5]=this.gRNGRange(d[address+1],d[address+3]);
 d[address+8]=d[address+2];
-d[address+9]=this.gRNGRange(d[address+1], d[address+3]);
+d[address+9]=this.gRNGRange(d[address+1],d[address+3]);
 d[(d[address+5]<<4)+792+d[address+4]]=8;
 d[(d[address+9]<<4)+792+d[address+8]]=8;
 }else{
 const num4=d[address+1];
 const num5=num4+((d[address+3]+1-num4)/2|0)-1;
 d[address+4]=d[address];
-d[address+5]=this.gRNGRange(d[address+1], num5);
+d[address+5]=this.gRNGRange(d[address+1],num5);
 d[address+6]=d[address];
-d[address+7]=this.gRNGRange(num5+1, d[address+3]);
+d[address+7]=this.gRNGRange(num5+1,d[address+3]);
 d[address+8]=d[address+2];
-d[address+9]=this.gRNGRange(d[address+1], num5);
+d[address+9]=this.gRNGRange(d[address+1],num5);
 d[address+10]=d[address+2];
-d[address+11]=this.gRNGRange(num5+1, d[address+3]);
+d[address+11]=this.gRNGRange(num5+1,d[address+3]);
 d[(d[address+5]<<4)+792+d[address+4]]=8;
 d[(d[address+7]<<4)+792+d[address+6]]=8;
 d[(d[address+9]<<4)+792+d[address+8]]=8;
@@ -446,15 +447,15 @@ d[(d[address+11]<<4)+792+d[address+10]]=8;
 }
 return true;
 }
-generateFloorMap(floor, address){
+generateFloorMap(floor,address){
 const d=this.di[floor];
-const index1=this._readI32(floor, address+8);
-const num1=((d[index1+2]-d[index1]+1) / 2) | 0;
-const num2=((d[index1+3]-d[index1+1]+1) / 2) | 0;
+const index1=this._readI32(floor,address+8);
+const num1=((d[index1+2]-d[index1]+1)/2)|0;
+const num2=((d[index1+3]-d[index1+1]+1)/2)|0;
 let num3=0;
-if(d[1]===0&&this.gRNGRange(0, 15)===0)
+if(d[1]===0&&this.gRNGRange(0,15)===0)
 num3=1;
-let num4, num5, num6, num7;
+let num4,num5,num6,num7;
 if(num3===0){
 num4=d[address+3]-d[index1+3];
 num5=d[index1]-d[address];
@@ -469,53 +470,51 @@ d[1]=1;
 }
 for(let i3=d[index1];i3<=d[index1+2];i3++){
 const num8=d[i3+(d[index1+1]<<4)+792];
-if(num8===1||num8===3) continue;
-if(this.gRNGRange(0, 1)===0){
+if(num8===1||num8===3)continue;
+if(this.gRNGRange(0,1)===0){
 if(num8!==8){
 const above=d[i3+((d[index1+1]-1)<<4)+792];
-if(above===1||above===8) continue;
-const random1=this.gRNGRange(0, num2);
+if(above===1||above===8)continue;
+const random1=this.gRNGRange(0,num2);
 const num9=i3-1;
-for(let i4=0;
-i4<random1 &&
-d[i3+((d[index1+1]+i4)<<4)+792]!==8 &&
-d[i3+((d[index1+1]+i4+1)<<4)+792]!==1 &&
-(d[((d[index1+1]+i4)<<4)+i3+1+792]===1 ||
-d[((d[index1+1]+i4+1)<<4)+i3+1+792]!==1) &&
-(d[((d[index1+1]+i4)<<4)+num9+792]===1 ||
+for(let i4=0;i4<random1&&
+d[i3+((d[index1+1]+i4)<<4)+792]!==8&&
+d[i3+((d[index1+1]+i4+1)<<4)+792]!==1&&
+(d[((d[index1+1]+i4)<<4)+i3+1+792]===1||
+d[((d[index1+1]+i4+1)<<4)+i3+1+792]!==1)&&
+(d[((d[index1+1]+i4)<<4)+num9+792]===1||
 d[num9+((d[index1+1]+i4+1)<<4)+792]!==1);
 i4++)
 d[i3+((d[index1+1]+i4)<<4)+792]=1;
 }
 }else{
-const random2=this.gRNGRange(0, num7);
+const random2=this.gRNGRange(0,num7);
 for(let i5=0;i5<random2;i5++){
 const idx=i3+((d[index1+1]-1-i5)<<4)+792;
-if(d[idx]!==8) d[idx]=0;
+if(d[idx]!==8)d[idx]=0;
 }
 }
 }
 for(let i7=d[index1];i7<=d[index1+2];i7++){
 const num10=d[i7+(d[index1+3]<<4)+792];
-if(num10===1||num10===3) continue;
-if(this.gRNGRange(0, 1)!==0){
-const random=this.gRNGRange(0, num4);
+if(num10===1||num10===3)continue;
+if(this.gRNGRange(0,1)!==0){
+const random=this.gRNGRange(0,num4);
 for(let i8=0;i8<random;i8++)
 if(d[i7+((d[index1+3]+i8+1)<<4)+792]!==8)
 d[i7+((d[index1+3]+i8+1)<<4)+792]=0;
 }else{
 if(num10!==8){
 const below=d[i7+((d[index1+3]+1)<<4)+792];
-if(below===1||below===8) continue;
-const random3=this.gRNGRange(0, num2);
+if(below===1||below===8)continue;
+const random3=this.gRNGRange(0,num2);
 const num11=i7-1;
-for(let i9=0;
-i9<random3 &&
-d[i7+((d[index1+3]-i9)<<4)+792]!==8 &&
-d[i7+((d[index1+3]-i9-1)<<4)+792]!==1 &&
-(d[((d[index1+3]-i9)<<4)+i7+1+792]===1 ||
-d[((d[index1+3]-i9-1)<<4)+i7+1+792]!==1) &&
-(d[num11+((d[index1+3]-i9)<<4)+792]===1 ||
+for(let i9=0;i9<random3&&
+d[i7+((d[index1+3]-i9)<<4)+792]!==8&&
+d[i7+((d[index1+3]-i9-1)<<4)+792]!==1&&
+(d[((d[index1+3]-i9)<<4)+i7+1+792]===1||
+d[((d[index1+3]-i9-1)<<4)+i7+1+792]!==1)&&
+(d[num11+((d[index1+3]-i9)<<4)+792]===1||
 d[num11+((d[index1+3]-i9-1)<<4)+792]!==1);
 i9++)
 d[i7+((d[index1+3]-i9)<<4)+792]=1;
@@ -524,25 +523,24 @@ d[i7+((d[index1+3]-i9)<<4)+792]=1;
 }
 for(let i10=d[index1+1];i10<=d[index1+3];i10++){
 const num12=d[(i10<<4)+792+d[index1]];
-if(num12===1||num12===3) continue;
-if(this.gRNGRange(0, 1)!==0){
-const random=this.gRNGRange(0, num5);
+if(num12===1||num12===3)continue;
+if(this.gRNGRange(0,1)!==0){
+const random=this.gRNGRange(0,num5);
 for(let i11=0;i11<random;i11++)
 if(d[(i10<<4)+792+d[index1]-1-i11]!==8)
 d[(i10<<4)+792+d[index1]-1-i11]=0;
 }else{
 if(num12!==8){
 const left=d[(i10<<4)+792+d[index1]-1];
-if(left===1||left===8) continue;
-const random4=this.gRNGRange(0, num1);
+if(left===1||left===8)continue;
+const random4=this.gRNGRange(0,num1);
 const num13=i10-1;
-for(let i12=0;
-i12<random4 &&
-d[i12+(i10<<4)+d[index1]+792]!==8 &&
-d[i12+(i10<<4)+d[index1]+792+1]!==1 &&
-(d[i12+((i10+1)<<4)+d[index1]+792]===1 ||
-d[i12+((i10+1)<<4)+d[index1]+792+1]!==1) &&
-(d[i12+(num13<<4)+d[index1]+792]===1 ||
+for(let i12=0;i12<random4&&
+d[i12+(i10<<4)+d[index1]+792]!==8&&
+d[i12+(i10<<4)+d[index1]+792+1]!==1&&
+(d[i12+((i10+1)<<4)+d[index1]+792]===1||
+d[i12+((i10+1)<<4)+d[index1]+792+1]!==1)&&
+(d[i12+(num13<<4)+d[index1]+792]===1||
 d[i12+(num13<<4)+d[index1]+792+1]!==1);
 i12++)
 d[i12+(i10<<4)+d[index1]+792]=1;
@@ -551,25 +549,24 @@ d[i12+(i10<<4)+d[index1]+792]=1;
 }
 for(let i13=d[index1+1];i13<=d[index1+3];i13++){
 const num14=d[(i13<<4)+792+d[index1+2]];
-if(num14===1||num14===3) continue;
-if(this.gRNGRange(0, 1)!==0){
-const random=this.gRNGRange(0, num6);
+if(num14===1||num14===3)continue;
+if(this.gRNGRange(0,1)!==0){
+const random=this.gRNGRange(0,num6);
 for(let i14=0;i14<random;i14++)
 if(d[i14+(i13<<4)+d[index1+2]+792+1]!==8)
 d[i14+(i13<<4)+d[index1+2]+792+1]=0;
 }else{
 if(num14!==8){
 const right=d[d[index1+1]+(i13<<4)+792+1];
-if(right===1||right===8) continue;
-const random5=this.gRNGRange(0, num1);
+if(right===1||right===8)continue;
+const random5=this.gRNGRange(0,num1);
 const num15=i13-1;
-for(let i15=0;
-i15<random5 &&
-d[(i13<<4)+792+d[index1+2]-i15]!==8 &&
-d[(i13<<4)+792+d[index1+2]-i15-1]!==1 &&
-(d[((i13+1)<<4)+792+d[index1+2]-i15]===1 ||
-d[((i13+1)<<4)+792+d[index1+2]-i15-1]!==1) &&
-(d[(num15<<4)+792+d[index1+2]-i15]===1 ||
+for(let i15=0;i15<random5&&
+d[(i13<<4)+792+d[index1+2]-i15]!==8&&
+d[(i13<<4)+792+d[index1+2]-i15-1]!==1&&
+(d[((i13+1)<<4)+792+d[index1+2]-i15]===1||
+d[((i13+1)<<4)+792+d[index1+2]-i15-1]!==1)&&
+(d[(num15<<4)+792+d[index1+2]-i15]===1||
 d[(num15<<4)+792+d[index1+2]-i15-1]!==1);
 i15++)
 d[(i13<<4)+792+d[index1+2]-i15]=1;
@@ -577,7 +574,7 @@ d[(i13<<4)+792+d[index1+2]-i15]=1;
 }
 }
 }
-routineI(floor, value1, value2, value3){
+routineI(floor,value1,value2,value3){
 const d=this.di[floor];
 const num1=d[value1+(value2<<4)+792];
 if(num1===1||num1===3)return 255;
@@ -590,49 +587,49 @@ const num7=d[value1+((value2+1)<<4)+792];
 const num8=d[value1+((value2+1)<<4)+792-1];
 const num9=d[value1+(value2<<4)+792-1];
 if(num1!==0&&num1!==2&&((num1+252)&255)>4)return value3;
-if(num3===1||num3===3) value3|=128;else value3&=127;
-if(num4===1||num4===3) value3|=32;else value3&=223;
-if(num6===1||num6===3) value3|=8;else value3&=247;
-if(num8===1||num8===3) value3|=2;else value3&=253;
-if(num2===1||num2===3) value3|=224;else value3&=191;
-if(num5===1||num5===3) value3|=56;else value3&=239;
-if(num7===1||num7===3) value3|=14;else value3&=251;
-if(num9===1||num9===3) value3|=131;else value3&=254;
+if(num3===1||num3===3)value3|=128;else value3&=127;
+if(num4===1||num4===3)value3|=32;else value3&=223;
+if(num6===1||num6===3)value3|=8;else value3&=247;
+if(num8===1||num8===3)value3|=2;else value3&=253;
+if(num2===1||num2===3)value3|=224;else value3&=191;
+if(num5===1||num5===3)value3|=56;else value3&=239;
+if(num7===1||num7===3)value3|=14;else value3&=251;
+if(num9===1||num9===3)value3|=131;else value3&=254;
 return value3;
 }
-routineG(floor, address){
+routineG(floor,address){
 const d=this.di[floor];
 const address3=address;
 if(d[address3+12]===1){
-const parentAddr=this._readI32(floor, address3+4);
-const address1=this._readI32(floor, parentAddr+8);
-const siblingAddr=this._readI32(floor, address3+8);
-const address2=this._readI32(floor, siblingAddr+8);
+const parentAddr=this._readI32(floor,address3+4);
+const address1=this._readI32(floor,parentAddr+8);
+const siblingAddr=this._readI32(floor,address3+8);
+const address2=this._readI32(floor,siblingAddr+8);
 const num1=this.gRNGRange(0,7)===0?1:0;
-this.routineH(floor, address1, 16, address2, 12, address3, num1);
+this.routineH(floor,address1,16,address2,12,address3,num1);
 const num2=this.gRNGRange(0,7)===0?1:0;
-this.routineH(floor, address1, 18, address2, 12, address3, num2);
+this.routineH(floor,address1,18,address2,12,address3,num2);
 const num3=this.gRNGRange(0,7)===0?1:0;
-this.routineH(floor, address1, 16, address2, 14, address3, num3);
+this.routineH(floor,address1,16,address2,14,address3,num3);
 const num4=this.gRNGRange(0,7)===0?1:0;
-this.routineH(floor, address1, 18, address2, 14, address3, num4);
+this.routineH(floor,address1,18,address2,14,address3,num4);
 }else if(d[address3+12]===2){
-const parentAddr=this._readI32(floor, address3+4);
-const address1=this._readI32(floor, parentAddr+8);
-const siblingAddr=this._readI32(floor, address3+8);
-const address2=this._readI32(floor, siblingAddr+8);
+const parentAddr=this._readI32(floor,address3+4);
+const address1=this._readI32(floor,parentAddr+8);
+const siblingAddr=this._readI32(floor,address3+8);
+const address2=this._readI32(floor,siblingAddr+8);
 const num5=this.gRNGRange(0,7)===0?1:0;
-this.routineH(floor, address1, 8, address2, 4, address3, num5);
+this.routineH(floor,address1,8,address2,4,address3,num5);
 const num6=this.gRNGRange(0,7)===0?1:0;
-this.routineH(floor, address1, 10, address2, 4, address3, num6);
+this.routineH(floor,address1,10,address2,4,address3,num6);
 const num7=this.gRNGRange(0,7)===0?1:0;
-this.routineH(floor, address1, 8, address2, 6, address3, num7);
+this.routineH(floor,address1,8,address2,6,address3,num7);
 const num8=this.gRNGRange(0,7)===0?1:0;
-this.routineH(floor, address1, 10, address2, 6, address3, num8);
+this.routineH(floor,address1,10,address2,6,address3,num8);
 }
 return 1;
 }
-routineH(floor, address1, value1, address2, value2, address3, value3){
+routineH(floor,address1,value1,address2,value2,address3,value3){
 const d=this.di[floor];
 const index1=address3;
 const num1=d[address1+value1];
@@ -640,6 +637,18 @@ const num2=d[address1+value1+1];
 const num3=d[address2+value2];
 const num4=d[address2+value2+1];
 if(num1===0||num2===0||num3===0||num4===0)return false;
+const drawExt=(start,step,isHoriz,fixedCoord)=>{
+for(let i=start+step;i>=0&&i<16;i+=step){
+const idx=isHoriz?(i+(fixedCoord<<4)+792):((i<<4)+792+fixedCoord);
+const v=d[idx];
+if(v===1||v===3)continue;
+for(let j=start+step;j!==i;j+=step){
+const fillIdx=isHoriz?(j+(fixedCoord<<4)+792):((j<<4)+792+fixedCoord);
+d[fillIdx]=2;
+}
+break;
+}
+};
 if(d[address3+12]===1){
 for(let i=num2+1;i<d[index1+1]+1;i++)
 d[(i<<4)+792+num1]=2;
@@ -653,37 +662,13 @@ for(let i=num3;i<num1+1;i++)
 d[i+(d[index1+1]<<4)+792]=2;
 if(value3===0)return true;
 if(num1<num3){
-ext1: for(let i=num3+1;i<16;i++){
-const v=d[i+(d[index1+1]<<4)+792];
-if(v===1||v===3) continue;
-for(let j=num3+1;j<i;j++)
-d[j+(d[index1+1]<<4)+792]=2;
-break ext1;
+drawExt(num3,1,true,d[index1+1]);
+drawExt(num1,-1,true,d[index1+1]);
+}else{
+drawExt(num1,1,true,d[index1+1]);
+drawExt(num3,-1,true,d[index1+1]);
 }
-for(let i=num1-1;i>=0;i--){
-const v=d[i+(d[index1+1]<<4)+792];
-if(v===1||v===3) continue;
-for(let j=num1-1;j>i;j--)
-d[j+(d[index1+1]<<4)+792]=2;
-break;
-}
-}else if(num1>=num3){
-ext2: for(let i=num1+1;i<16;i++){
-const v=d[i+(d[index1+1]<<4)+792];
-if(v===1||v===3) continue;
-for(let j=num1+1;j<i;j++)
-d[j+(d[index1+1]<<4)+792]=2;
-break ext2;
-}
-for(let i=num3-1;i>=0;i--){
-const v=d[i+(d[index1+1]<<4)+792];
-if(v===1||v===3) continue;
-for(let j=num3-1;j>i;j--)
-d[j+(d[index1+1]<<4)+792]=2;
-break;
-}
-}
-}else if(d[address3+12]===2){
+} else if(d[address3+12]===2){
 for(let i=num1+1;i<d[index1]+1;i++)
 d[i+(num2<<4)+792]=2;
 for(let i=num3-1;i>d[index1];i--)
@@ -696,49 +681,25 @@ for(let i=num4;i<num2+1;i++)
 d[(i<<4)+792+d[index1]]=2;
 if(value3===0)return true;
 if(num2<num4){
-ext3: for(let i=num4+1;i<16;i++){
-const v=d[(i<<4)+792+d[index1]];
-if(v===1||v===3) continue;
-for(let j=num4+1;j<i;j++)
-d[(j<<4)+792+d[index1]]=2;
-break ext3;
-}
-for(let i=num2-1;i>=0;i--){
-const v=d[(i<<4)+792+d[index1]];
-if(v===1||v===3) continue;
-for(let j=num2-1;j>i;j--)
-d[(j<<4)+792+d[index1]]=2;
-break;
-}
+drawExt(num4,1,false,d[index1]);
+drawExt(num2,-1,false,d[index1]);
 }else{
-ext4: for(let i=(num2>=num4?num2+1:num2);i<16;i++){
-const v=d[(i<<4)+792+d[index1]];
-if(v===1||v===3) continue;
-for(let j=num2+1;j<i;j++)
-d[(j<<4)+792+d[index1]]=2;
-break ext4;
-}
-for(let i=num4-1;i>=0;i--){
-const v=d[(i<<4)+792+d[index1]];
-if(v===1||v===3) continue;
-for(let j=num4-1;j>i;j--)
-d[(j<<4)+792+d[index1]]=2;
-break;
-}
+drawExt(num2,1,false,d[index1]);
+drawExt(num4,-1,false,d[index1]);
 }
 }
 return true;
 }
 routineJ(floor){
 const d=this.di[floor];
-let num1=0, num2=0;
-let random1=0, random2=0;
-let random3, random4, random5;
+let num1=0,num2=0;
+let random1=0,random2=0;
+let random3,random4,random5;
 while (true){
-random3=this.gRNGRange(0, d[23]-1);
+random3=this.gRNGRange(0,d[23]-1);
 const idx1=random3*20+472;
-random4=this.gRNGRange(d[idx1], d[idx1+2]);
-random5=this.gRNGRange(d[idx1+1], d[idx1+3]);
+random4=this.gRNGRange(d[idx1],d[idx1+2]);
+random5=this.gRNGRange(d[idx1+1],d[idx1+3]);
 if(num2<100){
 const n3=d[((random5-1)<<4)+random4+792];
 const n4=d[((random5+1)<<4)+random4+792];
@@ -748,27 +709,23 @@ const w7=(n3===1||n3===3)?1:0;
 const w8=(n4===1||n4===3)?1:0;
 const w9=(n5===1||n5===3)?1:0;
 const w10=(n6===1||n6===3)?1:0;
-if(w7&&w8&&w9&&w10){num2++;continue;}
-if(w7&&w10){num2++;continue;}
-if(w7&&w9){num2++;continue;}
-if(w8&&w10){num2++;continue;}
-if(w8&&w9){num2++;continue;}
-const ri=this.routineI(floor, random4, random5, 0)&255;
+if((w7||w8)&&(w9||w10)){num2++;continue;}
+const ri=this.routineI(floor,random4,random5,0)&255;
 if([46,58,139,142,163,171,174,184,186,226,232,234].includes(ri)){num2++;continue;}
 }
 d[random4+(random5<<4)+792]=4;
 d[4]=random4;d[5]=random5;
-if(num2>=100){num1=0;num2=0;if(this.trackOverflow) this.isStairOverflow[floor]=true;}
+if(num2>=100){num1=0;num2=0;if(this.trackOverflow)this.isStairOverflow[floor]=true;}
 random1=random4;random2=random5;let num13=random3;
-do {
-const random6=this.gRNGRange(0, d[23]-1);
+do{
+const random6=this.gRNGRange(0,d[23]-1);
 if(random6===(random3&255)&&(num1&255)<25){
 num1++;
 }else{
 const idx2=random6*20+472;
-random1=this.gRNGRange(d[idx2], d[idx2+2]);
+random1=this.gRNGRange(d[idx2],d[idx2+2]);
 num13=random6;
-random2=this.gRNGRange(d[idx2+1], d[idx2+3]);
+random2=this.gRNGRange(d[idx2+1],d[idx2+3]);
 }
 }while((random3&255)===num13&&random1===(random4&0xFFFF)&&random2===(random5&0xFFFF));
 const n14=d[random1+((random2-1)<<4)+792];
@@ -779,11 +736,7 @@ const w18=(n14===1||n14===3)?1:0;
 const w19=(n15===1||n15===3)?1:0;
 const w20=(n16===1||n16===3)?1:0;
 const w21=(n17===1||n17===3)?1:0;
-if(w18&&w19&&w20&&w21){num2++;}
-else if(w18&&w21){num2++;}
-else if(w18&&w20){num2++;}
-else if(w19&&w21){num2++;}
-else if(w19&&w20){num2++;}
+if((w18||w19)&&(w20||w21)){num2++;}
 else break;
 }
 d[random1+(random2<<4)+792]=5;
@@ -791,13 +744,13 @@ d[6]=random1;d[7]=random2;
 }
 routineK(floor){
 const d=this.di[floor];
-const random1=this.gRNGRange(1, 3);
+const random1=this.gRNGRange(1,3);
 d[8]=random1;
-let num1=0, num2=0;
-do {
-const idx=this.gRNGRange(0, d[23]-1)*20+472;
-const random2=this.gRNGRange(d[idx], d[idx+2]);
-const random3=this.gRNGRange(d[idx+1], d[idx+3]);
+let num1=0,num2=0;
+do{
+const idx=this.gRNGRange(0,d[23]-1)*20+472;
+const random2=this.gRNGRange(d[idx],d[idx+2]);
+const random3=this.gRNGRange(d[idx+1],d[idx+3]);
 const num3=d[random2+((random3&255)<<4)+792];
 if(num1<100&&(d[0]===3||d[0]===1)){
 num1++;
@@ -823,19 +776,19 @@ if(this.MapRank<2||this.MapRank>248)return;
 this._seed=this.MapSeed;
 if(this._at_offset===1){this._seed=lcg(this._seed);}
 for(let i=0;i<12;i++) this.gRNGDiv(100);
-this._details[3]=this.seek1(TableA, 5);
-this._details[1]=this.seek2(TableB, this.MapRank, 9);
+this._details[3]=this.seek1(TableA,5);
+this._details[1]=this.seek2(TableB,this.MapRank,9);
 if(this._force_16_floors){this._details[1]=16;}
-this._details[2]=this.seek2(TableC, this.MapRank, 8);
-this._details[0]=this.seek4(TableD, TableE, 9);
+this._details[2]=this.seek2(TableC,this.MapRank,8);
+this._details[0]=this.seek4(TableD,TableE,9);
 for(let i=0;i<12;i++)
-this._details[i+1+7]=this.seek3(TableF[i*4+1], TableF[i*4+2]);
-this._details[5]=this.seek2(TableH, this._details[2], 5);
-this._details[6]=this.seek2(TableI, this._details[0], 4);
-this._details[7]=this.seek2(TableG, this._details[1], 8);
+this._details[i+1+7]=this.seek3(TableF[i*4+1],TableF[i*4+2]);
+this._details[5]=this.seek2(TableH,this._details[2],5);
+this._details[6]=this.seek2(TableI,this._details[0],4);
+this._details[7]=this.seek2(TableG,this._details[1],8);
 let num1=(this._details[0]+this._details[1]+this._details[2]-4)*3+(this.gRNGDiv(11)-5);
-if(num1<1) num1=1;
-if(num1>99) num1=99;
+if(num1<1)num1=1;
+if(num1>99)num1=99;
 this._details[4]=num1;
 this.MapLocale=LOCALE_INDEX[(this._details[7]-1)*5+this._details[3]-1];
 for(let i=1;i<this._details[1]+1;i++){
@@ -858,18 +811,18 @@ const d=this.di[floor];
 d[0]=index1;
 d[8]=0;
 this._seed=(this.MapSeed+index1)>>>0;
-this.routine1(floor, 792, 1, 256);
+this.routine1(floor,792,1,256);
 d[21]=1;d[22]=0;d[23]=0;d[1]=0;
-this.setValue(floor, 24, 1, 1, d[2]-2, d[3]-2);
+this.setValue(floor,24,1,1,d[2]-2,d[3]-2);
 d[28]=0;d[29]=0;
-this.routineF(floor, 24);
+this.routineF(floor,24);
 for(let i2=0;i2<d[21];i2++)
-if(this.routineC(floor, i2*12+24, d[23]*20+472))
+if(this.routineC(floor,i2*12+24,d[23]*20+472))
 d[23]++;
 for(let i3=0;i3<d[21];i3++)
-this.generateFloorMap(floor, i3*12+24);
+this.generateFloorMap(floor,i3*12+24);
 for(let i4=0;i4<d[22];i4++)
-this.routineG(floor, (i4<<4)+216);
+this.routineG(floor,(i4<<4)+216);
 for(let i5=0;i5<d[2];i5++){
 d[i5+792]=1;
 d[((d[3]-1)<<4)+i5+792]=1;
@@ -879,7 +832,7 @@ d[(i6<<4)+792]=1;
 d[(i6<<4)+792+d[2]-1]=1;
 }
 this.routineJ(floor);
-if(d[0]<=2) d[8]=0;
+if(d[0]<=2)d[8]=0;
 else this.routineK(floor);
 }
 for(let i12=2;i12<this._details[1];i12++){
@@ -888,7 +841,7 @@ this._seed=(this.MapSeed+i12+1)>>>0;
 for(let i13=0;i13<d[8]<<1;i13++) this.gRNG();
 const num=this._details[2]+(i12/4|0);
 for(let i14=0;i14<d[8];i14++){
-d[i14+9]=this.getItemRank(TableN[(num-1)*4+1], TableN[(num-1)*4+2]);
+d[i14+9]=this.getItemRank(TableF[(num-1)*4+1],TableF[(num-1)*4+2]);
 this._details2[d[i14+9]-1]++;
 }
 }
@@ -896,12 +849,12 @@ this._details2[d[i14+9]-1]++;
 get floorCount(){return this._details[1];}
 get monsterRank(){return this._details[2];}
 get mapLevel(){return this._details[4];}
-get mapTypeName(){return ENV_NAMES[this._details[3]]?ENV_NAMES[this._details[3]][0] :"Unknown";}
-get mapTypeNameJP(){return ENV_NAMES[this._details[3]]?ENV_NAMES[this._details[3]][1] :"不明";}
+get mapTypeName(){return ENV_NAMES[this._details[3]]?ENV_NAMES[this._details[3]][0]:"Unknown";}
+get mapTypeNameJP(){return ENV_NAMES[this._details[3]]?ENV_NAMES[this._details[3]][1]:"不明";}
 get mapTypeIndex(){return this._details[3]-1;}
 get bossIndex(){return this._details[0]-1;}
-get bossName(){return BOSS_NAMES[this._details[0]]?BOSS_NAMES[this._details[0]][0] :"Unknown";}
-get bossNameJP(){return BOSS_NAMES[this._details[0]]?BOSS_NAMES[this._details[0]][2] :"不明";}
+get bossName(){return BOSS_NAMES[this._details[0]]?BOSS_NAMES[this._details[0]][0]:"Unknown";}
+get bossNameJP(){return BOSS_NAMES[this._details[0]]?BOSS_NAMES[this._details[0]][2]:"不明";}
 get mapName(){
 if(this.MapRank<2||this.MapRank>248)return "Unknown";
 const p=PREFIX_NAMES[this._details[5]][0];
@@ -918,15 +871,15 @@ return `${p}${s}の${l}Lv${this._details[4]}`;
 }
 getFloorWidth(f){return this.di[f][2];}
 getFloorHeight(f){return this.di[f][3];}
-getUpStair(f){return{x: this.di[f][4], y: this.di[f][5] };}
-getDownStair(f){return{x: this.di[f][6], y: this.di[f][7] };}
+getUpStair(f){return{x:this.di[f][4],y:this.di[f][5]};}
+getDownStair(f){return{x:this.di[f][6],y:this.di[f][7]};}
 getBoxCount(f){return this.di[f][8];}
-getBoxInfo(f, i){
+getBoxInfo(f,i){
 const d=this.di[f];
-return{rank: d[9+i], x: d[i*2+13], y: d[i*2+14] };
+return{rank:d[9+i],x:d[i*2+13],y:d[i*2+14]};
 }
 getFloorMap(f){
-const w=this.getFloorWidth(f), h=this.getFloorHeight(f);
+const w=this.getFloorWidth(f),h=this.getFloorHeight(f);
 const map=[];
 for(let y=0;y<h;y++){
 map[y]=[];
@@ -941,17 +894,17 @@ for(let i1=0;i1<this.di[floor][8];i1++){
 const num1=this.routineRandom(100);
 if(i1===boxIndex){
 const index2=this.di[floor][i1+9];
-const num2=TableO[index2-1], num3=TableO[index2];
+const num2=TableO[index2-1],num3=TableO[index2];
 let num4=0;
 for(let i3=num2;i3<num3;i3++){
 num4+=TableP[i3];
-if(num1<num4)return [TableR[TableQ[i3]][0], TableR[TableQ[i3]][1]];
+if(num1<num4)return[TableR[TableQ[i3]][0],TableR[TableQ[i3]][1]];
 }
 }
 }
-return [null, null];
+return[null,null];
 }
-getFloorItemNames(floor, second){
+getFloorItemNames(floor,second){
 const d=this.di[floor];
 const boxCount=d[8];
 this._seed=(d[0]+this.MapSeed+second)>>>0;
@@ -959,10 +912,10 @@ const names=[];
 for(let i1=0;i1<boxCount;i1++){
 const num1=this.routineRandom(100);
 const index2=d[i1+9];
-const num2=TableO[index2-1], num3=TableO[index2];
-let num4=0, name=null;
+const num2=TableO[index2-1],num3=TableO[index2];
+let num4=0,name=null;
 for(let i3=num2;i3<num3;i3++){
-num4 += TableP[i3];
+num4+=TableP[i3];
 if(num1<num4){name=TableR[TableQ[i3]][0];break;}
 }
 names.push(name);
@@ -970,20 +923,368 @@ names.push(name);
 return names;
 }
 getMapBoxCounts(){
-let counts={
-10: this._details2[9],
-9: this._details2[8],
-8: this._details2[7],
-7: this._details2[6],
-6: this._details2[5],
-5: this._details2[4],
-4: this._details2[3],
-3: this._details2[2],
-2: this._details2[1],
-1: this._details2[0]
-};
-let total=0;
-for(let i=0;i<10;i++)total+=this._details2[i];
+let counts={},total=0;
+for(let i=0;i<10;i++){
+counts[i+1]=this._details2[i];
+total+=this._details2[i];
+}
 return{counts,total};
 }
+}
+const MONSTER_DATA={
+"008":{en:"Lost Soul",jp:"さまようたましい",g:20},
+"00B":{en:"Mushroom Mage",jp:"マージマタンゴ",g:16},
+"00E":{en:"Purrestidigitator",jp:"ベンガルクーン",g:16},
+"012":{en:"Sootheslime",jp:"ベホイムスライム",g:20},
+"013":{en:"Cureslime",jp:"ベホマスライム",g:16},
+"015":{en:"Robo-robin",jp:"アイアンクック",g:16},
+"01B":{en:"Liquid Metal Slime",jp:"はぐれメタル",g:16},
+"022":{en:"Dread Admiral",jp:"しびれあげは",g:16},
+"026":{en:"Cannibox",jp:"ひとくいばこ",g:16},
+"027":{en:"Mimic",jp:"ミミック",g:12},
+"028":{en:"Pandora's Box",jp:"パンドラボックス",g:20},
+"02A":{en:"Raving Lunatick",jp:"メーダロード",g:16},
+"02C":{en:"Goodybag",jp:"おどるほうせき",g:16},
+"02E":{en:"Hell Niño",jp:"ヒートギズモ",g:16},
+"02F":{en:"Freezing Fog",jp:"フロストギズモ",g:16},
+"031":{en:"Grim Grinner",jp:"ダークホビット",g:16},
+"034":{en:"Sluggernaut",jp:"スーパーテンツク",g:20},
+"035":{en:"Sluggerslaught",jp:"ラストテンツク",g:16},
+"036":{en:"Pink Sanguini",jp:"ピンクモーモン",g:16},
+"037":{en:"Genie Sanguini",jp:"マポレーナ",g:12},
+"03B":{en:"Scourgette",jp:"ブラックベジター",g:20},
+"03D":{en:"Salamarauder",jp:"かいぞくウーパー",g:20},
+"03E":{en:"Axolhotl",jp:"ウパパロン",g:12},
+"040":{en:"Bagma",jp:"ようがんピロー",g:16},
+"04C":{en:"Metal Medley",jp:"メタルブラザーズ",g:20},
+"04D":{en:"Gem Jamboree",jp:"ゴールデントーテム",g:20},
+"051":{en:"Giddy Gastropog",jp:"メダパニつむり",g:16},
+"052":{en:"Gloomy Gastropog",jp:"ダークデンデン",g:16},
+"053":{en:"Earthenwarrior",jp:"はにわナイト",g:16},
+"056":{en:"Skeleton Soldier",jp:"死霊の騎士",g:32},
+"057":{en:"Dark Skeleton",jp:"影の騎士",g:24},
+"059":{en:"Diethon",jp:"ヘルバイパー",g:16},
+"05A":{en:"Sail Serpent",jp:"オーシャンナーガ",g:20},
+"05D":{en:"Belisha Beakon",jp:"アカイライ",g:12},
+"05E":{en:"Lesionnaire",jp:"がいこつ兵",g:20},
+"05F":{en:"Deadcurion",jp:"しにがみ兵",g:20},
+"060":{en:"Stenchurion",jp:"ゾンビナイト",g:16},
+"062":{en:"Teaky Mask",jp:"トーテムキラー",g:16},
+"063":{en:"Bewarewolf",jp:"リカント",g:12},
+"065":{en:"Scarewolf",jp:"リカントマムル",g:16},
+"067":{en:"Toxic Zombie",jp:"どくどくゾンビ",g:16},
+"068":{en:"Ghoul",jp:"グール",g:8},
+"06A":{en:"Spinchilla",jp:"うずしおキング",g:16},
+"06B":{en:"Whirly Girly",jp:"レッドサイクロン",g:20},
+"06D":{en:"Mummy",jp:"マミー",g:8},
+"06E":{en:"Blood Mummy",jp:"ブラッドマミー",g:16},
+"070":{en:"Wyrtoise",jp:"ガメゴンロード",g:16},
+"072":{en:"Rampage",jp:"ゴートドン",g:12},
+"074":{en:"Rockbomb",jp:"ばくだん岩",g:20},
+"076":{en:"Bomboulder",jp:"メガザルロック",g:16},
+"077":{en:"Restless Armour",jp:"さまようよろい",g:16},
+"078":{en:"Infernal Armour",jp:"じごくのよろい",g:16},
+"079":{en:"Lethal Armour",jp:"キラーアーマー",g:16},
+"07B":{en:"Metal Slime Knight",jp:"メタルライダー",g:16},
+"07C":{en:"Swinoceros",jp:"突げきホーン",g:20},
+"07D":{en:"Splatterhorn",jp:"ライノキング",g:16},
+"07F":{en:"Admirer",jp:"ジェリーマン",g:16},
+"080":{en:"Live Lava",jp:"マグマロン",g:12},
+"082":{en:"Big Badboon",jp:"バブーン",g:12},
+"083":{en:"Brainy Badboon",jp:"ヒババンゴ",g:12},
+"084":{en:"Magus",jp:"まじゅつし",g:12},
+"086":{en:"Sorcerer",jp:"ようじゅつし",g:16},
+"087":{en:"Mandrake Major",jp:"リザードマン",g:16},
+"088":{en:"Mandrake Marauder",jp:"りゅう兵士",g:20},
+"089":{en:"Mandrake Marshal",jp:"シュプリンガー",g:16},
+"08B":{en:"Treevil",jp:"ウドラー",g:12},
+"08C":{en:"Chimaera",jp:"キメラ",g:8},
+"08D":{en:"Hocus Chimaera",jp:"メイジキメラ",g:16},
+"08F":{en:"Raving Reaper",jp:"アサシンドール",g:16},
+"092":{en:"Badja",jp:"ブラックタヌー",g:16},
+"094":{en:"Corrupt Carter",jp:"エビルチャリオット",g:20},
+"095":{en:"Mortoad",jp:"ガマキャノン",g:16},
+"096":{en:"Expload",jp:"デザートタンク",g:16},
+"097":{en:"Blastoad",jp:"キャノンキング",g:16},
+"099":{en:"Peckerel",jp:"アサシンエミュー",g:20},
+"09D":{en:"Knocktopus",jp:"ニードルオクト",g:16},
+"09E":{en:"Shocktopus",jp:"オクトスパイカー",g:20},
+"09F":{en:"Manguini",jp:"アーゴンデビル",g:16},
+"0A0":{en:"Bloody Manguini",jp:"ブラッドアーゴン",g:20},
+"0A2":{en:"Great Gruffon",jp:"ビッグボック",g:16},
+"0A3":{en:"Gramarye Gruffon",jp:"アロダイタス",g:16},
+"0A4":{en:"Trigertaur",jp:"タイガーランス",g:16},
+"0A5":{en:"White Trigertaur",jp:"ホワイトランサー",g:20},
+"0A6":{en:"Sick Trigertaur",jp:"キマライガー",g:16},
+"0A7":{en:"Moosifer",jp:"アンクルホーン",g:16},
+"0A8":{en:"Barbatos",jp:"ヘルバトラー",g:16},
+"0A9":{en:"Green Dragon",jp:"グリーンドラゴン",g:20},
+"0AA":{en:"Red Dragon",jp:"レッドドラゴン",g:16},
+"0AB":{en:"Rashaverak",jp:"アンドレアル",g:16},
+"0AC":{en:"Living Statue",jp:"うごくせきぞう",g:16},
+"0AE":{en:"Drakularge",jp:"ギガントヒルズ",g:16},
+"0AF":{en:"Drakulard",jp:"ギガントドラゴン",g:20},
+"0B0":{en:"Drakulord",jp:"ドラゴン・ウー",g:16},
+"0B1":{en:"Hunter Mech",jp:"メタルハンター",g:16},
+"0B2":{en:"Killing Machine",jp:"キラーマシン",g:16},
+"0B3":{en:"King Slime",jp:"キングスライム",g:16},
+"0B4":{en:"King Cureslime",jp:"スライムベホマズン",g:20},
+"0B5":{en:"Metal King Slime",jp:"メタルキング",g:16},
+"0B6":{en:"Cumulus Rex",jp:"くもの大王",g:28},
+"0B7":{en:"Cumulus Vex",jp:"ヘルクラウダー",g:16},
+"0B8":{en:"Darkonium Slime",jp:"スライムマデュラ",g:20},
+"0B9":{en:"Gem Slime",jp:"ゴールデンスライム",g:20},
+"0BA":{en:"Stone Golem",jp:"ストーンマン",g:16},
+"0BB":{en:"Gold Golem",jp:"ゴールドマン",g:16},
+"0BC":{en:"Golem",jp:"ゴーレム",g:12},
+"0BD":{en:"Drackal",jp:"ストロングアニマル",g:20},
+"0BE":{en:"Drastic Drackal",jp:"ヘルジャッカル",g:16},
+"0C0":{en:"Harmour",jp:"デビルアーマー",g:16},
+"0C1":{en:"Bad Karmour",jp:"てっこうまじん",g:16},
+"0C2":{en:"Alarmour",jp:"サタンメイル",g:16},
+"0C3":{en:"Fright Knight",jp:"ナイトリッチ",g:16},
+"0C4":{en:"Night Knight",jp:"ナイトキング",g:16},
+"0C5":{en:"Terrorhawk",jp:"マッドファルコン",g:20},
+"0C6":{en:"Prism Peacock",jp:"にじくじゃく",g:16},
+"0C7":{en:"Bird of Terrordise",jp:"れんごくまちょう",g:20},
+"0C8":{en:"Mad Moai",jp:"ビッグモアイ",g:16},
+"0C9":{en:"Mega Moai",jp:"ゴードンヘッド",g:16},
+"0CA":{en:"Sculptrice",jp:"ヘルビースト",g:16},
+"0CB":{en:"Sculpture Vulture",jp:"リビングスタチュー",g:20},
+"0CC":{en:"Aggrosculpture",jp:"ウィングデビル",g:16},
+"0CD":{en:"Wight Priest",jp:"デスプリースト",g:16},
+"0CE":{en:"Wight King",jp:"ワイトキング",g:16},
+"0CF":{en:"Claw Hammer",jp:"ヘルマリーン",g:16},
+"0D0":{en:"Power Hammer",jp:"サンドシャーク",g:16},
+"0D4":{en:"Python Priest",jp:"スネークロード",g:16},
+"0D5":{en:"Cobra Cardinal",jp:"じごくのメンドーサ",g:20},
+"0D6":{en:"Tantamount",jp:"れんごく天馬",g:24},
+"0D7":{en:"Godsteed",jp:"レジェンドホース",g:20},
+"0D9":{en:"Cyclops",jp:"サイクロプス",g:16},
+"0DA":{en:"Gigantes",jp:"ギガンテス",g:12},
+"0DC":{en:"Troll",jp:"トロル",g:8},
+"0DD":{en:"Boss Troll",jp:"ボストロール",g:16},
+"0DE":{en:"Great Troll",jp:"トロルキング",g:16},
+"0DF":{en:"Magmalice",jp:"ようがんまじん",g:16},
+"0E0":{en:"Firn Fiend",jp:"ひょうがまじん",g:16},
+"0E2":{en:"Slionheart",jp:"ゴッドライダー",g:16},
+"0E4":{en:"AU-1000",jp:"ゴールドマジンガ",g:20},
+"0E5":{en:"Void Droid",jp:"ファイナルウェポン",g:20},
+"0E6":{en:"Alphyn",jp:"キマイラロード",g:16},
+"0E7":{en:"Vermil Lion",jp:"じごくのヌエ",g:16},
+"0E8":{en:"Shivery Shrubbery",jp:"デビルスノー",g:16},
+"0E9":{en:"Apeckalypse",jp:"ランドンクイナ",g:16},
+"0EB":{en:"Wonder Wyrtle",jp:"ガメゴンレジェンド",g:20},
+"0EC":{en:"Geothaum",jp:"あんこくまじん",g:16},
+"0ED":{en:"Cosmic Chimaera",jp:"スターキメラ",g:16},
+"0EE":{en:"Master Moosifer",jp:"デスカイザー",g:16},
+"0EF":{en:"Freaky Tiki",jp:"まおうのかめん",g:16},
+"0F0":{en:"Mandrake Monarch",jp:"まかいファイター",g:20},
+"0F1":{en:"Cumulus Hex",jp:"ヘルミラージュ",g:16},
+"0F2":{en:"Platinum King Jewel",jp:"プラチナキング",g:16},
+"0F3":{en:"Charmour",jp:"マジックアーマー",g:20},
+"0F4":{en:"Blight Knight",jp:"ヴァルハラー",g:16},
+"0F5":{en:"Moai Minstrel",jp:"クラウンヘッド",g:16},
+"0F6":{en:"Grrrgoyle",jp:"ホラービースト",g:16},
+"0F7":{en:"Wight Emperor",jp:"ロードコープス",g:16},
+"0F8":{en:"Boogie Manguini",jp:"イエローサタン",g:16},
+"0F9":{en:"Barriearthenwarrior",jp:"ちていのばんにん",g:20},
+"0FA":{en:"Grim Reaper",jp:"メフィストフェレス",g:20},
+"0FB":{en:"Bling Badger",jp:"ゴールドタヌ",g:16},
+"0FC":{en:"Flamin' Drayman",jp:"じごくぐるま",g:16},
+"0FD":{en:"Hammer Horror",jp:"ダークマリーン",g:16},
+"0FE":{en:"Boa Bishop",jp:"ビュアール",g:12},
+"0FF":{en:"Handsome Crab",jp:"ガニラス",g:12},
+"101":{en:"Crabber Dabber Doo",jp:"じごくのハサミ",g:16},
+"102":{en:"King Crab",jp:"キラークラブ",g:16},
+"103":{en:"Icikiller",jp:"アイスビックル",g:16},
+"104":{en:"Riptide",jp:"オーシャンクロー",g:20},
+"105":{en:"Claws",jp:"クローハンズ",g:16},
+"106":{en:"Seasaur",jp:"ギャオース",g:12},
+"107":{en:"Abyss Diver",jp:"ヘルダイバー",g:16},
+"108":{en:"Seavern",jp:"シーバーン",g:12},
+"109":{en:"Terror Troll",jp:"ダークトロル",g:16},
+"10C":{en:"Prime Slime",jp:"デンガー",g:12},
+"141":{en:"Octagoon",jp:"アイアンブルドー",g:20},
+"143":{en:"Cannibelle",jp:"ヘルヴィーナス",g:16},
+"144":{en:"Scarlet Fever",jp:"エビルフレイム",g:16},
+"145":{en:"Uncommon Cold",jp:"マッドブリザード",g:20},
+"147":{en:"Stale Whale",jp:"だいおうクジラ",g:16},
+"148":{en:"Pale Whale",jp:"オーシャンボーン",g:20},
+"149":{en:"Widow's Pique",jp:"デスタランチュラ",g:20},
+"14A":{en:"Cyber Spider",jp:"ボーンスパイダ",g:16},
+"14B":{en:"Slugly Betsy",jp:"うみうしひめ",g:16},
+"14D":{en:"Hell's Gatekeeper",jp:"ヘルガーディアン",g:20},
+"14E":{en:"Wishmaster",jp:"ギリメカラ",g:12}
+};
+const G_VALUES={
+1: [0,116,132,128,128,144,132,140,124,128,124,132,140],
+2: [0,124,120,116,132,136,128,136,140,136,128,128,136],
+3: [0,108,132,116,148,128,128,128,128,136,120,120,116],
+4: [0,140,132,132,128,140,144,124,128,136,128,124,124],
+5: [0,128,128,112,128,128,132,128,136,140,136,140,136]
+};
+const ONLY_MONSTERS={
+1: ["","00B","036","034","076","052","02F","04D","037","035","0B5","035","0D7"],
+2: ["","053","02A","040","034","062","097","01B","035","035","04D","0B9","0E4"],
+3: ["","008","012","068","056","031","0B2","02F","05D","0B8","0B9","0EC","0EC"],
+4: ["","03D","051","059","013","057","057","037","0B5","0F0","0F0","0B0","0B0"],
+5: ["","03E","086","015","01B","080","02E","0AA","0C3","0B5","0C7","0AB","0AB"]
+};
+const SPAWN_DB={
+1:{
+1: [["00B",6555,13107],["00E",13108,19661],["022",0,6554],["026"],["027"],["028"],["082",26215,32767],["08C",19662,26214]],
+2: [["026"],["027"],["028"],["036",6555,13107],["03B",19662,26214],["063",0,6554],["087",26215,32767],["0BD",13108,19661]],
+3: [["026"],["027"],["028"],["034",13108,19661],["083",6555,13107],["08B",26215,32767],["099",0,6554],["101",19662,26214]],
+4: [["026"],["027"],["028"],["076",0,6554],["07C",13108,19661],["080",19662,26214],["0AE",26215,32767],["0D9",6555,13107]],
+5: [["026"],["027"],["028"],["052",13108,19661],["07D",6555,13107],["0B6",19662,26214],["0C5",0,6554],["0DD",26215,32767]],
+6: [["026"],["027"],["028"],["02F",26215,32767],["089",0,6554],["097",6555,13107],["0A9",19662,26214],["105",13108,19661]],
+7: [["026"],["027"],["028"],["04D",16385,18724],["089",25747,32767],["0B4",0,8192],["0B7",18725,25746],["0D5",8193,16384]],
+8: [["026"],["027"],["028"],["037",0,5958],["0C6",25818,32767],["0F5",5959,11916],["102",18867,25817],["109",11917,18866]],
+9: [["026"],["027"],["028"],["035",13903,20852],["0AF",26811,32767],["0ED",0,6951],["109",20853,26810],["14E",6952,13902]],
+10: [["026"],["027"],["028"],["0B5",31555,32767],["0ED",16992,24272],["0F1",0,8496],["147",8497,16991],["14E",24273,31554]],
+11: [["026"],["027"],["028"],["035",21846,26214],["0D7",7647,15292],["0E2",0,7646],["0ED",26215,32767],["147",15293,21845]],
+12: [["026"],["027"],["028"],["0D7",20481,26624],["0E2",14337,20480],["0EB",0,7168],["0F1",26625,32767],["149",7169,14336]],
+},
+2:{
+1: [["026"],["027"],["028"],["053",19662,26214],["077",0,6554],["084",13108,19661],["096",26215,32767],["0BA",6555,13107]],
+2: [["026"],["027"],["028"],["02A",6555,13107],["09F",26215,32767],["0A4",19662,26214],["0C8",13108,19661],["0DC",0,6554]],
+3: [["026"],["027"],["028"],["040",11917,22342],["04C",10427,11916],["0A3",22343,32767],["0B1",0,10426]],
+4: [["026"],["027"],["028"],["034",13108,19661],["062",6555,13107],["086",26215,32767],["08F",19662,26214],["0AC",0,6554]],
+5: [["026"],["027"],["028"],["062",13108,19661],["094",19662,26214],["0B2",6555,13107],["0CB",0,6554],["0DD",26215,32767]],
+6: [["026"],["027"],["028"],["097",13108,19661],["0A6",26215,32767],["0BC",0,6554],["0D5",19662,26214],["105",6555,13107]],
+7: [["01B",0,1425],["026"],["027"],["028"],["0B8",5700,12822],["0DE",12823,22795],["105",22796,32767],["141",1426,5699]],
+8: [["026"],["027"],["028"],["035",18725,23405],["04D",29648,32767],["0A8",23406,29647],["0B8",0,10923],["141",10924,18724]],
+9: [["026"],["027"],["028"],["035",28836,32767],["0B8",15730,19661],["0C2",6555,15729],["0EF",0,6554],["141",19662,28835]],
+10: [["026"],["027"],["028"],["04D",31555,32767],["0C2",24273,31554],["0EF",16992,24272],["0FE",0,8496],["14A",8497,16991]],
+11: [["026"],["027"],["028"],["0B9",4856,7282],["0E6",0,4855],["0EF",24273,32767],["0FE",7283,15777],["14A",15778,24272]],
+12: [["026"],["027"],["028"],["0E4",0,7282],["0E5",7283,14564],["0E6",14565,20025],["0F2",20026,21845],["14A",21846,32767]],
+},
+3:{
+1: [["008",0,8192],["026"],["027"],["028"],["067",16385,24576],["06A",24577,32767],["06D",8193,16384]],
+2: [["012",26215,32767],["026"],["027"],["028"],["05F",0,6554],["065",6555,13107],["072",13108,19661],["0CA",19662,26214]],
+3: [["026"],["027"],["028"],["068",13108,19661],["06D",6555,13107],["0A5",0,6554],["0E8",26215,32767],["0E9",19662,26214]],
+4: [["026"],["027"],["028"],["056",19662,26214],["079",13108,19661],["0A2",6555,13107],["0A5",0,6554],["0D9",26215,32767]],
+5: [["026"],["027"],["028"],["031",13108,19661],["0BE",0,6554],["0CC",26215,32767],["0D9",19662,26214],["103",6555,13107]],
+6: [["026"],["027"],["028"],["0B2",19662,26214],["0B7",26215,32767],["0C1",6555,13107],["0CC",13108,19661],["103",0,6554]],
+7: [["026"],["027"],["028"],["02F",26215,32767],["0B7",19662,26214],["0C1",6555,13107],["0CE",0,6554],["0DE",13108,19661]],
+8: [["026"],["027"],["028"],["05D",26811,32767],["0C4",13903,20852],["0E0",20853,26810],["0F3",0,6951],["143",6952,13902]],
+9: [["026"],["027"],["028"],["0B8",13903,20852],["0E0",26811,32767],["0F7",6952,13902],["0FA",0,6951],["143",20853,26810]],
+10: [["026"],["027"],["028"],["0B9",31130,32767],["0F6",0,11469],["0F7",21300,31129],["0FA",11470,21299]],
+11: [["026"],["027"],["028"],["0EC",8823,17644],["0F6",17645,25206],["0FA",25207,32767],["145",0,8822]],
+12: [["026"],["027"],["028"],["0EC",17040,24903],["0F4",0,9175],["0F8",24904,32767],["145",9176,17039]],
+},
+4:{
+1: [["026"],["027"],["028"],["03D",19662,26214],["05E",0,6554],["09D",6555,13107],["0CF",26215,32767],["104",13108,19661]],
+2: [["026"],["027"],["028"],["051",26215,32767],["095",19662,26214],["09E",13108,19661],["0B3",6555,13107],["0D4",0,6554]],
+3: [["026"],["027"],["028"],["059",19662,26214],["06E",6555,13107],["0A2",13108,19661],["0CD",0,6554],["104",26215,32767]],
+4: [["013",6555,13107],["026"],["027"],["028"],["05A",0,6554],["0A0",13108,19661],["0FF",26215,32767],["106",19662,26214]],
+5: [["026"],["027"],["028"],["057",26215,32767],["060",6555,13107],["070",19662,26214],["0B4",13108,19661],["107",0,6554]],
+6: [["026"],["027"],["028"],["057",6555,13107],["0A8",26215,32767],["0A9",0,6554],["0B4",19662,26214],["102",13108,19661]],
+7: [["026"],["027"],["028"],["037",26215,32767],["0A8",19662,26214],["0AF",0,6554],["0DA",13108,19661],["102",6555,13107]],
+8: [["026"],["027"],["028"],["0B5",16385,18724],["0DA",25747,32767],["0F3",18725,25746],["0F5",8193,16384],["14B",0,8192]],
+9: [["026"],["027"],["028"],["0F0",6952,13902],["0F3",26811,32767],["0F5",20853,26810],["0F8",0,6951],["14B",13903,20852]],
+10: [["026"],["027"],["028"],["0F0",20481,26624],["0F8",14337,20480],["0FB",0,7168],["10C",7169,14336],["14B",26625,32767]],
+11: [["026"],["027"],["028"],["0B0",7169,14336],["0F8",26625,32767],["0FB",14337,20480],["0FD",0,7168],["10C",20481,26624]],
+12: [["026"],["027"],["028"],["0B0",18725,25746],["0FD",11704,18724],["108",3512,11703],["10C",25747,32767],["148",0,3511]],
+},
+5:{
+1: [["026"],["027"],["028"],["03E",6555,13107],["074",26215,32767],["07B",0,6554],["07F",13108,19661],["0C8",19662,26214]],
+2: [["026"],["027"],["028"],["086",19662,26214],["087",26215,32767],["08D",0,6554],["0BB",6555,13107],["0D0",13108,19661]],
+3: [["015",6555,13107],["026"],["027"],["028"],["02C",19662,26214],["078",26215,32767],["08C",0,6554],["0DC",13108,19661]],
+4: [["01B",15820,16949],["026"],["027"],["028"],["040",0,7910],["078",7911,15819],["0A7",24859,32767],["0B1",16950,24858]],
+5: [["026"],["027"],["028"],["080",0,6554],["088",19662,26214],["092",26215,32767],["0A7",6555,13107],["0C9",13108,19661]],
+6: [["026"],["027"],["028"],["02E",19662,26214],["06B",6555,13107],["0B2",0,6554],["0C0",26215,32767],["0DF",13108,19661]],
+7: [["026"],["027"],["028"],["0AA",19662,26214],["0C0",13108,19661],["0C3",0,6554],["0C6",6555,13107],["0DF",26215,32767]],
+8: [["026"],["027"],["028"],["0C3",13903,20852],["0D5",26811,32767],["0D6",6952,13902],["0DA",20853,26810],["0FC",0,6951]],
+9: [["026"],["027"],["028"],["0B5",30428,32767],["0D6",23406,30427],["0F9",0,8192],["0FC",16385,23405],["109",8193,16384]],
+10: [["026"],["027"],["028"],["0C7",0,7910],["0F9",15820,22598],["0FC",29379,32767],["109",22599,29378],["144",7911,15819]],
+11: [["026"],["027"],["028"],["0AB",7169,14336],["0C7",14337,20480],["0F9",26625,32767],["144",20481,26624],["14D",0,7168]],
+12: [["026"],["027"],["028"],["0AB",18725,25746],["0C7",25747,32767],["0E7",8193,11703],["0EE",0,8192],["14D",11704,18724]],
+},
+};
+const _elistWtL=new Uint8Array(256);
+const _elistWtU=new Uint8Array(256);
+function getFloorElistInfo(engine,f){
+const d=engine.di[f];
+const width=d[2];
+const height=d[3];
+const envType=engine._details[3];
+const baseMR=engine._details[2];
+let floorMR=baseMR+(f>>2);
+if(floorMR>12)floorMR=12;
+const gArr=G_VALUES[envType];
+const G=gArr?gArr[floorMR]:0;
+const omArr=ONLY_MONSTERS[envType];
+const onlyMonId=omArr?omArr[floorMR]:"";
+const monData=onlyMonId?MONSTER_DATA[onlyMonId]:null;
+const isJP=(DISPLAY_LANG!=='EN');
+const onlyMon=monData?(isJP?monData.jp:monData.en):"Unknown";
+const strOnly=isJP?"オンリー":" only";
+let W=0,X=0;
+let wtCount=0;
+for(let y=0;y<height;y++){
+const yBase=(y<<4)+792;
+const yPrevBase=yBase-16;
+for(let x=0;x<width;x++){
+if(d[x+yBase]!==1&&d[x+yBase]!==3){
+W++;
+const L=(x>0&&d[(x-1)+yBase]!==1&&d[(x-1)+yBase]!==3)?1:0;
+const U=(y>0&&d[x+yPrevBase]!==1&&d[x+yPrevBase]!==3)?1:0;
+X+=(L+U);
+_elistWtL[wtCount]=L;
+_elistWtU[wtCount]=U;
+wtCount++;
+}
+}
+}
+const boundary=4128-(W*16+X*8);
+let A,B,D;
+if(boundary>=0){
+A=4896+(W*16)+(X*8);
+B=X;
+D=0;
+}else{
+A=9016;
+B=(9016-4896-(W*16))>>3;
+D=0;
+let B_pool=B;
+for(let i=0;i<wtCount;i++){
+if(B_pool<=0){
+D++;
+}else{
+if(_elistWtL[i])B_pool--;
+if(_elistWtU[i]&&B_pool>0)B_pool--;
+}
+}
+}
+const isIce10_12=(envType===3&&floorMR>=10&&floorMR<=12);
+const isRuins3=(envType===2&&floorMR===3);
+const isIce1=(envType===3&&floorMR===1);
+const F=(isIce10_12||isRuins3||isIce1)?7:8;
+const C=A+4+(B*8)+(D*4);
+const E=C+(F*20);
+const ElistOfs=E+(F*8)+G;
+const val=ElistOfs;
+let state=null;
+if(val<=0x2B30){
+if(D!==0)state=EL_P;
+}else if(val>=0x2B34){
+const isExc1=isIce10_12||isRuins3;
+const isExc2=(envType===2&&floorMR===7)||(envType===5&&(floorMR===3||floorMR===4))||(envType===3&&floorMR===2)||(envType===4&&floorMR===4);
+const isExc4=isIce1;
+const isExc5=(envType===1&&floorMR===1);
+const EL_diff=Math.floor((val-0x2B34)/20);
+switch(EL_diff){
+case 0:state=(isExc1||isExc4)?(D!==0?EL_P:null):EL_4;break;
+case 1:state=EL_3;break;
+case 2:state=isExc5?EL_3+EL_NP:EL_2;break;
+case 3:state=isExc5?EL_3+EL_NM:`${onlyMon}${strOnly}`;break;
+case 4:state=isExc5?EL_3+EL_NC:(isExc4||isExc2?`${onlyMon}${strOnly}${EL_NP}`:EL_0);break;
+case 5:state=isExc5?EL_2+EL_NC:(isExc4||isExc2?`${onlyMon}${strOnly}${EL_NM}`:EL_0+EL_NP);break;
+case 6:state=(isExc4||isExc2||isExc5)?`${onlyMon}${strOnly}${EL_NC}`:EL_0+EL_NM;break;
+default:state=EL_0+EL_NC;break;
+}
+}
+return{hex:ElistOfs.toString(16).toUpperCase(),state:state,dValue:D};
 }

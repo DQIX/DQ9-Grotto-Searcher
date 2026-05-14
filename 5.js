@@ -1,13 +1,13 @@
 const TILE_SIZE=22;
 const COLORS={
-0:'#f5f0e0',
-1:'#000',
-2:'#e8e0c8',
-3:'#000',
-4:'#4c4',
-5:'#f44',
-6:'#ffd700',
-8:'#ccd8c0',
+0: '#f5f0e0',
+1: '#000',
+2: '#e8e0c8',
+3: '#000',
+4: '#4c4',
+5: '#f44',
+6: '#ffd700',
+8: '#ccd8c0',
 };
 const WALL_COLOR='#000';
 let mapData=null;
@@ -17,7 +17,7 @@ const safeZone=document.getElementById('controls_container');
 const controlsDiv=document.getElementById('single_map_controls');
 if(safeZone&&controlsDiv){safeZone.appendChild(controlsDiv);}
 const seedStr=document.getElementById('seed').value.trim();
-const seed=parseInt(seedStr,16);
+const seed=parseInt(seedStr, 16);
 const rank=parseInt(document.getElementById('rank').value);
 if(isNaN(seed)||seed<0||seed>0x7FFF||!/^[0-9a-fA-F]{1,4}$/.test(seedStr)){
 document.getElementById('result').innerHTML='<div class="error">'+C17+'</div>';
@@ -29,6 +29,21 @@ mapData.MapRank=rank;
 mapData.calculateDetail();
 activeFloor=0;
 renderResult();
+}
+function calcR2N2(seed){
+const threshR=Math.floor(32768/256);
+const threshN=Math.floor(32768/128);
+const MAX=400;
+let rng=seed>>>0;
+const v=[];
+for(let i=0;i<MAX+4;i++){rng=lcg(rng);v.push((rng>>>16)&0x7FFF);}
+let r2=-1, r2_3=-1, n2=-1;
+for(let i=0;i<MAX;i++){
+if(r2===-1&&v[i]<threshR&&v[i+1]<threshR) r2=i+1;
+if(r2_3===-1&&v[i]<threshR&&i+3<v.length&&v[i+3]<threshR) r2_3=i+1;
+if(n2===-1&&i+3<v.length&&v[i]>=threshR&&v[i+1]<threshN&&v[i+2]>=threshR&&v[i+3]<threshN) n2=i+1;
+}
+return {r2, r2_3, n2};
 }
 function renderResult(){
 const el=document.getElementById('result');
@@ -58,6 +73,9 @@ atValues.push((currentSeed>>>16)&0x7FFF);
 }
 }
 const atHtmlString=`[35] ${atValues[0]}<br>[36] ${atValues[1]}<br>[37] ${atValues[2]}`;
+const rn=calcR2N2(mapData.MapSeed);
+const fmtRN=v=>v===-1?`<span style="color:#555;">—</span>`:`<span style="color:#0f0;">${v}</span>`;
+const rnHtml=`<span style="color:#f88;">[R2] ${fmtRN(rn.r2)}</span><br><span style="color:#f88;">[+3] ${fmtRN(rn.r2_3)}</span><br><span style="color:#8cf;">[N2] ${fmtRN(rn.n2)}</span>`;
 const boxData=mapData.getMapBoxCounts();
 const boxCounts=boxData.counts;
 const totalBoxes=boxData.total;
@@ -96,8 +114,11 @@ let html=`<div class="info-bar">
 <span style="display:inline-block;vertical-align:top;border-left:1px dashed #4a4a8a;padding-left:15px;margin-left:5px;">${C06}:
 <strong style="display:block;color:#4c4;font-family:monospace;font-size:12px;margin-top:2px;text-align:left;">${atHtmlString}</strong>
 </span>
+<span style="display:inline-block;vertical-align:top;border-left:1px dashed #4a4a8a;padding-left:15px;margin-left:5px;">${C06b}:
+<strong style="display:block;font-family:monospace;font-size:12px;margin-top:2px;text-align:left;">${rnHtml}</strong>
+</span>
 </div>
-<div class="info-bar" style="align-items:center;background:#16162a;border-bottom:1px solid #4a4a8a;padding:10px 20px;">
+<div class="info-bar" style="align-items:center;background:#16162a;border-bottom:1px solid #4a4a8a;padding: 10px 20px;">
 <span style="color:#88b;font-weight:bold;margin-right:10px;">${C07}</span>
 <div style="display:flex;flex-wrap:wrap;align-items:center;flex:1;">
 ${boxString}
@@ -134,18 +155,18 @@ const map=mapData.getFloorMap(f);
 const up=mapData.getUpStair(f);
 const down=mapData.getDownStair(f);
 const boxCount=mapData.getBoxCount(f);
-const canvasW=w*TILE_SIZE;
-const canvasH=h*TILE_SIZE;
+const canvasW=w * TILE_SIZE;
+const canvasH=h * TILE_SIZE;
 let infoHtml='<div class="floor-info">';
 infoHtml+=`<h3>B${f+1}F</h3>`;
 infoHtml+='<table>';
 infoHtml+=`<tr><td>${C10}</td><td>${w} × ${h}</td></tr>`;
-if(f<mapData.floorCount - 1)
+if(f<mapData.floorCount-1)
 infoHtml+=`<tr><td>${C11}</td><td>▲ (${up.x}, ${up.y})　▼ (${down.x}, ${down.y})</td></tr>`;
 else
 infoHtml+=`<tr><td>${C11}</td><td>▲ (${up.x}, ${up.y})　Boss (${down.x}, ${down.y})</td></tr>`;
 const elistInfo=getFloorElistInfo(mapData, f);
-let stateHtml=elistInfo.state?` <span style="background:#ff44cc;color:#fff;padding:1px 5px;border-radius:3px;font-size:10px;margin-left:6px;white-space:nowrap;">${elistInfo.state}</span>`:'';
+let stateHtml=elistInfo.state?` <span style="background:#f4c;color:#fff;padding:1px 5px;border-radius:3px;font-size:10px;margin-left:6px;white-space:nowrap;">${elistInfo.state}</span>`:'';
 let dHtml=elistInfo.dValue>0?` <span style="background:#fa0;color:#000;padding:1px 5px;border-radius:3px;font-size:10px;margin-left:4px;white-space:nowrap;">${elistInfo.dValue}</span>`:'';
 infoHtml+=`<tr><td>ElistOfs</td><td style="font-family:monospace;color:#4c4;">${elistInfo.hex}${stateHtml}${dHtml}</td></tr>`;
 const envType=mapData._details[3];
@@ -182,7 +203,7 @@ if(monsterSpans.length>0){
 infoHtml+=`<tr><td>${C12}</td><td class="mon-td">${monsterSpans.join('')}</td></tr>`;
 }
 if(boxCount>0){
-infoHtml+=`<tr><td>${C13}</td><td>${boxCount} <font color=666666>${C14}</font></td></tr>`;
+infoHtml+=`<tr><td>${C13}</td><td>${boxCount} <font color=#666>${C14}</font></td></tr>`;
 for(let i=0;i<boxCount;i++){
 const box=mapData.getBoxInfo(f, i);
 const rn=CHEST_RANK[box.rank]||box.rank;
@@ -214,8 +235,8 @@ document.querySelector('.map-container').style.position='relative';
 const mapCanvas=document.getElementById('mapCanvas');
 mapCanvas.addEventListener('mousemove', (e)=>{
 const rect=mapCanvas.getBoundingClientRect();
-const mx=Math.floor((e.clientX - rect.left) / TILE_SIZE);
-const my=Math.floor((e.clientY - rect.top) / TILE_SIZE);
+const mx=Math.floor((e.clientX-rect.left) / TILE_SIZE);
+const my=Math.floor((e.clientY-rect.top) / TILE_SIZE);
 const coordEl=document.getElementById('coordDisplay');
 if(mx>=0&&mx<w&&my>=0&&my<h){
 const tNames={0:D01,1:D02,2:D03,3:D02,4:C11,5:C11,6:D07,8:D04};
@@ -224,8 +245,10 @@ let label=tNames[tile]||`tile:${tile}`;
 if(mx===up.x&&my===up.y) label=D05+'▲';
 if(mx===down.x&&my===down.y) label=(f<mapData.floorCount-1)?D06+'▼':'Boss▼';
 coordEl.textContent=`(${mx},${my}) ${label}`;
+mapCanvas.style.cursor=boxPositions.has(mx+','+my)?'pointer':'default';
 }else{
 coordEl.textContent='';
+mapCanvas.style.cursor='default';
 }
 });
 const boxPositions=new Map();
@@ -235,11 +258,11 @@ boxPositions.set(b.x+','+b.y, i+1);
 }
 mapCanvas.addEventListener('click', (e)=>{
 const rect=mapCanvas.getBoundingClientRect();
-const mx=Math.floor((e.clientX - rect.left) / TILE_SIZE);
-const my=Math.floor((e.clientY - rect.top) / TILE_SIZE);
+const mx=Math.floor((e.clientX-rect.left) / TILE_SIZE);
+const my=Math.floor((e.clientY-rect.top) / TILE_SIZE);
 if(boxPositions&&boxPositions.has(mx+','+my)){
 const boxNum=boxPositions.get(mx+','+my);
-showChestTimer(f, boxNum - 1, mx, my);
+showChestTimer(f, boxNum-1, mx, my);
 }
 });
 const canvas=document.getElementById('mapCanvas');
@@ -249,8 +272,8 @@ ctx.fillRect(0, 0, canvasW, canvasH);
 for(let y=0;y<h;y++){
 for(let x=0;x<w;x++){
 let tile=map[y][x];
-const px=x*TILE_SIZE;
-const py=y*TILE_SIZE;
+const px=x * TILE_SIZE;
+const py=y * TILE_SIZE;
 const isUpStair=(x===up.x&&y===up.y);
 const isDownStair=(x===down.x&&y===down.y);
 const boxNum=boxPositions.get(x+','+y)||0;
@@ -308,7 +331,7 @@ let [currentItemEN, currentItemJP]=mapData.getBoxItem(floorIndex, boxIndex, 0);
 for(let s=1;s<=255;s++){
 let [itemEN, itemJP]=mapData.getBoxItem(floorIndex, boxIndex, s);
 if(itemEN!==currentItemEN){
-results.push({ start: currentStart, end: s - 1, itemEN: currentItemEN, itemJP: currentItemJP });
+results.push({ start: currentStart, end: s-1, itemEN: currentItemEN, itemJP: currentItemJP });
 currentStart=s;
 currentItemEN=itemEN;
 currentItemJP=itemJP;
@@ -318,9 +341,7 @@ results.push({ start: currentStart, end: 255, itemEN: currentItemEN, itemJP: cur
 let htmlEN='';
 let htmlJP='';
 results.forEach(res=>{
-const rangeStr=res.start===res.end
-? (res.start+5).toString().padStart(3, '0')
-: `${(res.start+5).toString().padStart(3, '0')} ~ ${(res.end+5).toString().padStart(3, '0')}`;
+const rangeStr=res.start===res.end?(res.start+5).toString().padStart(3, '0'):`${(res.start+5).toString().padStart(3, '0')} ~ ${(res.end+5).toString().padStart(3, '0')}`;
 const isHighlight=(res.start<=2&&res.end>=1);
 const rowStyle=isHighlight?'background: rgba(255, 215, 0, 0.15);border-left: 3px solid #ffd700;padding-left: 8px;':'';
 const textStyle=isHighlight?'color: #ffd700;font-weight: bold;':'';
@@ -337,12 +358,11 @@ body.style.padding='0';
 body.style.overflowY='hidden';
 body.style.display='flex';
 body.style.flexDirection='column';
-body.innerHTML=`
-<div class="modal-tabs">
-<div id="tabEN" style="padding:6px 16px;background: #1a1a3a;color: #ffd700;border: 1px solid #4a4a8a;border-bottom: none;border-radius: 6px 6px 0 0;cursor: pointer;font-size: 13px;font-weight: bold;margin-bottom: -2px;transition: all 0.2s;" onclick="switchTimerTab('EN')">English</div>
-<div id="tabJP" style="padding:6px 16px;background: #224;color: #888;border: 1px solid #333;border-bottom: none;border-radius: 6px 6px 0 0;cursor: pointer;font-size: 13px;font-weight: bold;margin-bottom: -2px;transition: all 0.2s;" onclick="switchTimerTab('JP')">日本語</div>
+body.innerHTML=`<div class="modal-tabs">
+<div id="tabEN" style="padding: 6px 16px;background: #1a1a3a;color: #ffd700;border: 1px solid #4a4a8a;border-bottom: none;border-radius: 6px 6px 0 0;cursor: pointer;font-size: 13px;font-weight: bold;margin-bottom: -2px;transition: all 0.2s;" onclick="switchTimerTab('EN')">English</div>
+<div id="tabJP" style="padding: 6px 16px;background: #224;color: #888;border: 1px solid #333;border-bottom: none;border-radius: 6px 6px 0 0;cursor: pointer;font-size: 13px;font-weight: bold;margin-bottom: -2px;transition: all 0.2s;" onclick="switchTimerTab('JP')">日本語</div>
 </div>
-<div style="padding:12px 16px;overflow-y: auto;flex: 1;">
+<div style="padding: 12px 16px;overflow-y: auto;flex: 1;">
 <div id="listEN" style="display: block;">${htmlEN}</div>
 <div id="listJP" style="display: none;">${htmlJP}</div>
 </div>
@@ -380,7 +400,7 @@ function closeChestModal(){
 const modal=document.getElementById('chestModal');
 if(modal) modal.style.display='none';
 }
-function switchGenericTab(prefix, lang, activeColor, activeBorder, inactiveBg, inactiveColor, inactiveBorder){
+function switchTab(prefix, lang, activeColor, activeBorder, inactiveBg, inactiveColor, inactiveBorder){
 const keys=['TW', 'EN', 'JP', 'SP'];
 keys.forEach(key=>{
 let tab=document.getElementById(prefix+'Tab'+key);
@@ -393,26 +413,26 @@ tab.style.background=inactiveBg;tab.style.color=inactiveColor;tab.style.borderCo
 }
 });
 }
-function openGenericModal(modalId, tabPrefix, activeColor, activeBorder, inactiveBg, inactiveColor, inactiveBorder){
+function openModal(modalId, tabPrefix, activeColor, activeBorder, inactiveBg, inactiveColor, inactiveBorder){
 const modal=document.getElementById(modalId);
 if(modal){
 modal.style.display='flex';
 const targetLang=['TW', 'EN', 'JP'].includes(DISPLAY_LANG)?DISPLAY_LANG:'TW';
-switchGenericTab(tabPrefix, targetLang, activeColor, activeBorder, inactiveBg, inactiveColor, inactiveBorder);
+switchTab(tabPrefix, targetLang, activeColor, activeBorder, inactiveBg, inactiveColor, inactiveBorder);
 }
 }
-function openDisclaimerModal(){openGenericModal('disclaimerModal', 'disc', '#ffd700', '#4a4a8a', '#224', '#888', '#333');}
+function openDisclaimerModal(){openModal('disclaimerModal', 'disc', '#ffd700', '#4a4a8a', '#224', '#888', '#333');}
 function closeDisclaimerModal(){document.getElementById('disclaimerModal').style.display='none';}
-function switchDisclaimerTab(lang){switchGenericTab('disc', lang, '#ffd700', '#4a4a8a', '#224', '#888', '#333');}
-function openh1Modal(){openGenericModal('h1Modal', 'h1', '#0ff', '#4a4a8a', '#224', '#888', '#333');}
+function switchDisclaimerTab(lang){switchTab('disc', lang, '#ffd700', '#4a4a8a', '#224', '#888', '#333');}
+function openh1Modal(){openModal('h1Modal', 'h1', '#0ff', '#4a4a8a', '#224', '#888', '#333');}
 function closeh1Modal(){document.getElementById('h1Modal').style.display='none';}
-function switchH1Tab(lang){switchGenericTab('h1', lang, '#0ff', '#4a4a8a', '#224', '#888', '#333');}
-function openh2Modal(){openGenericModal('h2Modal', 'h2', '#0ff', '#4a4a8a', '#224', '#888', '#333');}
+function switchH1Tab(lang){switchTab('h1', lang, '#0ff', '#4a4a8a', '#224', '#888', '#333');}
+function openh2Modal(){openModal('h2Modal', 'h2', '#0ff', '#4a4a8a', '#224', '#888', '#333');}
 function closeh2Modal(){document.getElementById('h2Modal').style.display='none';}
-function switchH2Tab(lang){switchGenericTab('h2', lang, '#0ff', '#4a4a8a', '#224', '#888', '#333');}
-function openh3Modal(){openGenericModal('h3Modal', 'h3', '#0ca', '#055', '#001a1a', '#598', '#033');}
+function switchH2Tab(lang){switchTab('h2', lang, '#0ff', '#4a4a8a', '#224', '#888', '#333');}
+function openh3Modal(){openModal('h3Modal', 'h3', '#0ca', '#055', '#001a1a', '#598', '#033');}
 function closeh3Modal(){document.getElementById('h3Modal').style.display='none';}
-function switchH3Tab(lang){switchGenericTab('h3', lang, '#0ca', '#055', '#001a1a', '#598', '#033');}
+function switchH3Tab(lang){switchTab('h3', lang, '#0ca', '#055', '#001a1a', '#598', '#033');}
 window.addEventListener('DOMContentLoaded', ()=>{
 function populateDropdownObj(selectId, dataObj, nameIdx1, nameIdx2){
 let selectElement=document.getElementById(selectId);
@@ -441,7 +461,7 @@ atCountSel.appendChild(opt);
 }
 let topIds=["0B5","01B","0B9"];
 let orderedRemainingIds=[];
-let envOrder=[1, 2, 3, 4, 5];
+let envOrder=[1,2,3,4,5];
 envOrder.forEach(env=>{
 if(ONLY_MONSTERS[env]){
 ONLY_MONSTERS[env].forEach(id=>{
@@ -567,7 +587,7 @@ if(typeof TableR!=='undefined'&&typeof TableO!=='undefined'&&typeof TableQ!=='un
 if(r===0){
 TableR.forEach(p =>{if(!seen.has(p[0])){seen.add(p[0]);validItems.push(p[0]);} });
 }else{
-let startIdx=TableO[r - 1];
+let startIdx=TableO[r-1];
 let endIdx=(TableO[r]!==undefined)?TableO[r]:TableQ.length;
 for(let i=startIdx;i<endIdx;i++){
 let itemName=TableR[TableQ[i]][0];
@@ -591,7 +611,7 @@ container.innerHTML+=`
 <select id="fs_b_${i}" style="width:50px;padding:0;font-size:11px;height:24px;background:#000;color:#0f0;border:1px solid #555;">${boxOpts}</select>
 <select id="fs_r_${i}" onchange="updateFSItems(${i})" style="width:40px;padding:0;font-size:11px;height:24px;background:#000;color:#0f0;border:1px solid #555;">${rankOpts}</select>
 <select id="fs_i_${i}" style="flex:1;width:50px;padding:0;font-size:11px;height:24px;background:#000;color:#0f0;border:1px solid #555;text-overflow:ellipsis;"></select>
-<input type="number" id="fs_t_${i}" value="7" min="5" placeholder="sec" style="width:35px;padding:0;font-size:11px;height:24px;background:#000;color:#0f0;border:1px solid #555;text-align:center;">
+<input type="number" inputmode="numeric" id="fs_t_${i}" value="7" min="5" placeholder="sec" style="width:35px;padding:0;font-size:11px;height:24px;background:#000;color:#0f0;border:1px solid #555;text-align:center;">
 </div>`;
 }
 for(let i=1;i<=3;i++){
@@ -651,7 +671,7 @@ txtContent+=`${rank},${seed},${resultText},D\n`;
 txtContent+=`${rank},${seed},${resultText}\n`;
 }
 });
-const blob=new Blob([txtContent],{type:'text/plain;charset=utf-8' });
+const blob=new Blob([txtContent],{type: 'text/plain;charset=utf-8' });
 const url=URL.createObjectURL(blob);
 const a=document.createElement('a');
 a.href=url;
@@ -662,6 +682,6 @@ document.body.removeChild(a);
 URL.revokeObjectURL(url);
 } catch (error){
 alert(A07+error.message);
-console.error("匯出錯誤詳細資訊：",error);
+console.error("匯出錯誤詳細資訊：", error);
 }
 }

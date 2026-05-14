@@ -2431,10 +2431,9 @@
 </div>
 </details>
 
-
 <h3 class="h1sec" id="sec-special-floor">特殊フロア (ElistOfs) と オンリーモンスター</h3>
-<table class="h1t" style="width:100%; font-size:11px; line-height:1.6; text-align:left;">
-<tr class="hdr2">
+<table class=h1t style="width:100%; font-size:11px; line-height:1.6; text-align:left;">
+<tr class=hdr2>
 <th style="padding:6px; width:90px;">種別</th>
 <th style="padding:6px;">説明</th>
 </tr>
@@ -2448,11 +2447,11 @@
 </tr>
 <tr>
 <td class="bug">敵減</td>
-<td class="bugd">そのフロアに出るモンスターは <strong style="color:#fff;">2 〜 4</strong> 種類</td>
+<td class="bugd">そのフロアに出るモンスターは <strong style="color:#fff;">2〜4</strong> 種類</td>
 </tr>
 <tr>
 <td class="bug">部分敵無</td>
-<td class="bugd">全てのモンスターが出現可能だが、右下隅にモンスターが出ないエリアがある</td>
+<td class="bugd">全てのモンスターが出るものの、フロアの右下に「モンスターの出ないエリア」がある</td>
 </tr>
 <tr>
 <td class="bug">複数の特殊フロア</td>
@@ -2460,45 +2459,53 @@
 </tr>
 <tr>
 <td class="bug">Flag0<br><span style="font-size:10px; color:#888;">(D 値)</span></td>
-<td class="bugd">特殊フロアの右下、モンスターの出ないエリアにある白マスの数<br><span style="color:#39C5BB;">※ このエリアに「地図法」でモンスターのアイテムをドロップさせることができる</span></td>
+<td class="bugd">特殊フロアの右下、「モンスターの出ないエリア」にある白マスの数<br><span style="color:#39C5BB;">※ このエリアに「地図法」でモンスターのアイテムをドロップさせることができる</span></td>
 </tr>
 </table>
 <div class="h1box3">
-<strong style="color:#f88;">オンリーモンスター</strong><br>各 <code style="color:#f8f;">地形 × FloorMR</code> の組み合わせの、モンスターリストの先頭に配置されたモンスター。洞窟・遺跡・氷・水・火山の順に、敵ランクの小さい順で並ぶ。
+<strong style="color:#f88;">オンリーモンスター</strong><br>各 <code style="color:#f8f;">地形 × FloorMR</code> の組み合わせの、モンスターリストの一番先にいるモンスター（トラップモンスターを除く）。このツールでは洞窟・遺跡・氷・水・火山の順に、敵ランクの小さい順で並ぶ。
 </div>
 
 <details class="h1det">
-<summary>📖 メカニズムと dq9tmap101.exe の「敵無→有」「無無無→有」誤判定</summary>
+<summary>📖 メカニズムと「敵無・無無無 → オンリー・敵減」誤判定の歴史</summary>
 <div>
-<h4 class="h1h4">特殊フロアの産生原因：メモリオーバーフロー</h4>
-<p style="margin-bottom:12px; text-align:justify;">　DQ9 では、あるフロアの面積が非常に大きく白マスが多い場合、フロアレイアウトのデータが肥大化してメモリ領域を圧迫し、各フロアの末端に格納されたデータを「押し出して」しまう。この末端データはそのフロアの「モンスター生成リスト (Enemy List)」の格納場所であるため、押し出されると出現可能なモンスターの種類が減少する。数種類減ったものを <strong style="color:#f8f;">敵減</strong>、1 種類だけ残ったものを <strong style="color:#f8f;">オンリー</strong>、すべて押し出されたものを <strong style="color:#f8f;">敵無</strong> と呼ぶ。</p>
-<h4 class="h1h4">派生バグ</h4>
+<h4 class=h1h4>特殊フロアの存在理由：メモリオーバーフロー</h4>
+<p style="text-align:justify;">DQ9 宝の地図のフロアデータは、「レイアウト」→「モンスターリスト」という形で組成する。</p>
+<p style="margin-bottom:12px; text-align:justify;">もしあるフロアの面積が非常に大きく、白マスが多い場合になると：</p>
 <ul style="padding-left:20px; margin-bottom:16px;">
-<li style="margin-bottom:6px;"><strong>トラップモンスター消失バグ：</strong>トラップモンスター（ミミック等）はデータスロットを占有するが、マップ上には出現しない。もしトラップモンスターより前にモンスター ID が配置されている場合（例：<code>はぐれメタル</code>）、トラップモンスターが「出た瞬間に消滅する」という奇妙な現象が発生する。</li>
-<li style="margin-bottom:6px;"><strong>「くちぶえ」失敗バグ：</strong>戦士のスキル「くちぶえ」を使用した際、システムが「押し出された」モンスターを選択すると、モンスターを呼び出せない判定失敗が発生する。</li>
-<li style="margin-bottom:6px;"><strong>Flag0 マスと地図法：</strong>一部の大面積フロアでは、白マスが多すぎるため、白マス専用のメモリ領域もオーバーフローする。その結果、右下の白マスが「上下左右の隣接辺がゼロでないにもかかわらず、強制的にゼロとして処理される」状態になる（Flag0 マス）。このマス内にはモンスターが出現せず、モンスターも入ってこない（プレイヤーを追跡中の場合を除く）。しかし、Flag0 マス上で「くちぶえ」を使うと、モンスターは正常に呼び出され、<strong style="color:#fa0;">戦闘に入った後も AT 乱数が停止した状態を維持する。</strong> この特性は「地図法」でモンスターのアイテムをドロップさせることに最大限活用されている。</li>
+<li>レイアウトデータが肥大化する</li>
+<li>全体データの大きさが「フロアデータ全般のメモリ上限」を超える</li>
+<li>その結果、<strong>データ末端の「モンスターリスト」</strong>が<strong style="color:#f88;">メモリに押し出されてしまう</strong></li>
+<li><strong style="color:#f88;">その「押し出し」によって、出現可能なモンスターの種類が減少する</strong></li>
+<li>数種類減ったものを <strong style="color:#f8f;">敵減</strong>、1 種類だけ残ったものを <strong style="color:#f8f;">オンリー</strong>、全てが押し出されたものを <strong style="color:#f8f;">敵無</strong> と呼ぶ</li>
 </ul>
-<h4 class="h1h4">「オンリー」を「敵無」「無無無」と誤判定した歴史</h4>
-<p style="margin-bottom:16px; text-align:justify;">　このメカニズムは <code>dq9tmap101.exe</code> の作者（43）氏によって最初に発見され、<strong style="color:#fff;">ElistOfs (Enemy List Offsets)</strong> と命名された。しかし、当時の作者は <strong>Flag0</strong> の存在に気づいておらず、Flag0 マスを持つすべての地図で算出された ElistOfs が実際の値より大幅に大きくなり、大量の誤判定を引き起こした（例：「敵減」が「オンリー」と誤判定し、「オンリー」が「敵無」と誤判定した）。
-<br>　さらに、全ての白マスの隣接辺の合計値 ÷ 2 が 256 以上の場合、プログラムがなぜか 256 を減算しており、「ElistOfs = 1Exx〜1Fxx だが実際は特殊フロア」という誤判定も発生した（すなわち「敵無/敵減/オンリー を 無無無 として誤判定した」）。
-<br>　作者がその後 5ch ユーザーからハブられたことで <code>dq9tmap101.exe</code> の更新は停止し、この誤判定は 16 年間そのまま放置された。この間、<strong>Terence</strong> 氏が 2010 年 10 月に発表した <a href=https://gamefaqs.gamespot.com/ds/937281-dragon-quest-ix-sentinels-of-the-starry-skies/faqs/61151 target="_blank" style="color:#0ca;">Grotto Mechanics Guide</a> で白マス過多によるモンスターの出ない現象に簡単に触れたが、それ以上の調査は行われなかった。日本のプレイヤーコミュニティは地図を一枚ずつ発掘して照合し、データベースを構築した（例：<a href="https://w.atwiki.jp/dq9-only" target="_blank" style="color:#0ca;">オンリー敵減(2種) wiki</a>、<strong>ぶぶづけ</strong> 氏による <code>dq9tmap101.exe</code> 用 mapdata パッチ（サイトは 2026.03.31 に閉鎖）など）が、メカニズムの解明には至らなかった。
-<br>　2025 年 12 月、本ツールの開発者が <strong>TKG</strong> 氏に依頼して <code>dq9tmap101.exe</code> を徹底的に分析した結果、ついに ElistOfs の真相が解明された：</p>
-<h4 class="h1h4">ElistOfs の計算式</h4>
-<ol style="padding-left:20px; margin-bottom:16px;"><li>Boundary = 4128 − 16W − 8X とする<br>W：そのフロアの白マス総数<br>X：左から右、上から下の順に各白マスを走査し、L + U の合計を求める（X = ΣL + ΣU）<br>L：左隣のマスも白マスなら L = 1、そうでなければ L = 0<br>U：上隣のマスも白マスなら U = 1、そうでなければ U = 0</li>
+<h4 class=h1h4>派生バグ</h4>
+<ul style="padding-left:20px; margin-bottom:16px;">
+<li style="margin-bottom:6px;"><strong>トラップモンスター消失バグ</strong>：全てのフロアの「モンスターリスト」に<strong style="color:#f88;">トラップモンスター (ひとくいばこ、ミミック、パンドラボックス)</strong> が存在するものの、マップ上には出現しない。<br>一般的に「モンスターリスト」の先頭にいるのはトラップモンスターだが、<code>はぐれメタル</code>等 8 種類のモンスターの順番はトラップモンスターよりも先である。その結果、はぐれメタルオンリーフロア、もしくは敵無フロアの場合、トラップモンスターが「出た瞬間に消滅する」という奇妙な現象が発生する。</li>
+<li style="margin-bottom:6px;"><strong>「くちぶえ」失敗バグ</strong>：戦士の「ゆうかん」スキル「くちぶえ」を使うとき、もし呼び出されるモンスターが「押し出されたモンスター」であれば、「しかし なにもおこらなかった！」という呼び出し判定の失敗が発生する。</li>
+<li style="margin-bottom:6px;"><strong>Flag0 マスと地図法：</strong>一部の大面積フロアでは、白マスが多すぎるため、「レイアウトデータ専用のメモリ上限」も超えてしまう。その結果、右下の白マスが「上下左右の隣接辺がゼロでないにもかかわらず、強制的にゼロとしてみなされる」状態になる (いわゆる Flag0 マス)。<br>このマスの中にはモンスターが出現せず、外で湧いたモンスターも入ってこない (プレイヤーを追跡中の場合を除く)。しかし、Flag0 マスの中で「くちぶえ」を使うと、「押し出されないモンスター」を正常に呼び出すことができる上で、<strong style="color:#fa0;">戦闘に突入した後も AT が止まっている状態を維持する (普段では戦闘に突入すると AT が高速で進む)</strong>。 この特徴は「第 3 世代地図法」に利用され、宝の地図ダンジョン内のモンスターのアイテムドロップに活用されている。</li>
+</ul>
+<h4 class=h1h4>dq9tmap101.exe の誤判定の歴史</h4>
+<p style="margin-bottom:16px; text-align:justify;">　このメカニズムは <code>dq9tmap101.exe</code> の作者 43 氏に発見され、<strong style="color:#fff;">ElistOfs (Enemy List Offsets)</strong> として命名された。しかし、当時の作者さんは <strong>Flag0</strong> の存在に気づいておらず、Flag0 マスを持つ全ての地図の ElistOfs 値を過大算出してしまった。その結果、<strong style="color:#fff;">「オンリー や 敵減」を「敵無」として間違い判定するケースが大量に発生した</strong>。
+<br>　さらに、全ての白マスの隣接辺の合計値 ÷ 2 が 256 以上の場合、<code>dq9tmap101.exe</code> がなぜか 256 を減算しており、「ElistOfs = 1Exx〜1Fxx だが実際には特殊フロア」という誤判定も発生した（すなわち<strong style="color:#fff;">「敵無/敵減/オンリー」を「無無無」として間違い判定された</strong>）。
+<br>　作者はその後 5ch ユーザーからハブられたことで <code>dq9tmap101.exe</code> の更新を停止した故、この誤判定は 16 年間ずっと放置されていた。その間、<strong>Terence</strong> 氏が 2010 年 10 月に発表した <a href=https://gamefaqs.gamespot.com/ds/937281-dragon-quest-ix-sentinels-of-the-starry-skies/faqs/61151 target="_blank" style="color:#0ca;">Grotto Mechanics Guide</a> で白マス過多によるモンスターの出ない現象に簡単に触れたが、それ以上の調査は行われなかった。日本のプレイヤー達は <a href="https://w.atwiki.jp/dq9-only" target="_blank" style="color:#0ca;">オンリー敵減(2種) wiki</a> や <a href="https://w.atwiki.jp/dq9only-seed" target="_blank" style="color:#0ca;">ただの敵無し地図</a> といったサイトを建て、地図を一枚ずつ発掘して照合することで、データベースを完成しようとしたが、誤判定の原因には誰も解明する気がなかった。(一応、その人力修正の結果は <strong>ぶぶづけ</strong> 氏で作り上げた <code>dq9tmap101.exe</code> 用 mapdata パッチとして広まったが、作者さんのサイトは 2026.03.31 に閉鎖された)
+<br>　2025 年 12 月、本ツールの開発者が <strong>TKG</strong> 氏に依頼して <code>dq9tmap101.exe</code> を徹底的に分析し、この誤判定の真相を解明した。</p>
+<h4 class=h1h4>ElistOfs の計算式</h4>
+<ol style="padding-left:20px; margin-bottom:16px;"><li>Boundary = 4128 − 16W − 8X とする<br>W：そのフロアの白マス総数<br>X：左から右、上から下の順に各白マスを走査して、L + U の合計値を求める (X = Σ<sub>L</sub> + Σ<sub>U</sub>)<br>L：左隣のマスも白マスなら L = 1、そうでなければ L = 0<br>U：上隣のマスも白マスなら U = 1、そうでなければ U = 0</li>
 <li>Boundary ≥ 0 の場合：A = 4896 + 16W + 8X<br>Boundary < 0 の場合：A = 4896 + 16W + 8B<br>B = (9016 − 4896 − 16W) ÷ 8 = (4120 − 16W) ÷ 8 = 515 − 2W</li>
 <li>C = A + 4 + 8B + 4D
 <br>D：D の初期値を 0、B_pool の初期値を B とする
 <br>再び左から右、上から下の順に各白マスを走査する
 <br>あるマスに入った時点で B_pool ≤ 0 なら、D を 1 加算し、何も減算せず次のマスへ進む
 <br>B_pool > 0 の場合：
-<br>まず L を確認：L = 1 なら B_pool を 1 減算（この時点で B_pool がゼロになったかは確認しない）
+<br>まず L を確認：L = 1 なら B_pool を 1 減算 (この時点で B_pool が 0 になったかは確認しない)
 <br>次に U を確認：U = 1 かつこの時点で B_pool > 0 なら、B_pool をさらに 1 減算
-<br>すべての白マスを確認した後、D =「B_pool が枯渇した後もなお隣接辺を持つ白マスの数」</li>
-<li>E = C + 20F<br>F：そのフロアに出現するモンスター種類数（氷 MR 1/10〜12、遺跡 MR 3：F = 7、その他：F = 8）</li>
+<br>全ての白マスを確認した後、D =「B_pool が枯渇した後もなお隣接辺を持つ白マスの数」</li>
+<li>E = C + 20F<br>F：そのフロアに出現するモンスター種類数 (氷1/10〜12、遺跡3: F = 7、その他: F = 8)</li>
 <li>ElistOfs = E + 8F + G + 海外版 Padding<br>G：そのフロアに出現するモンスターの固有値の合計<br>海外版 Padding：海外版 DQ9 は 128、日本版 DQ9 は 0</li></ol>
-<h4 class="h1h4">ElistOfs と 特殊フロア の関係 (海外版 Padding を無視)</h4>
-<table class="h1t" style="width:100%; font-size:11px; line-height:1.6;">
-<tr class="hdr2">
+<h4 class=h1h4>ElistOfs と 特殊フロア の関係 (海外版 Padding を無視)</h4>
+<table class=h1t style="width:100%; font-size:11px; line-height:1.6;">
+<tr class=hdr2>
 <th style="padding:6px; width:90px;">ElistOfs</th>
 <th style="padding:6px; width:40px;">モン数</th>
 <th style="padding:6px;">フロア状態 (通常)</th>
