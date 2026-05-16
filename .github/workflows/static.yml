@@ -31,6 +31,7 @@ jobs:
           cp 3.js site/3.js
           cp 4.js site/4.js
           cp 5.js site/5.js
+          cp DQ9_ChestTimer.html site/ChestTimer.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
