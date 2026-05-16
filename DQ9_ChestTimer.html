@@ -40,40 +40,43 @@ body{background:#0a0a1a;color:#ccc;font-family:'Courier New',monospace;overflow:
 .cell-prep{opacity:0.3}
 .hidden{display:none!important}
 @media(max-width:600px){
-  .chest-hdr{width:32px;min-width:32px;font-size:11px}
-  .cell-item{font-size:9px}
+.chest-hdr{width:32px;min-width:32px;font-size:11px}
+.cell-item{font-size:9px}
 }
 </style>
 </head>
 <body>
 <div class="topbar">
-  <label>Rank</label>
-  <select id="inRank" onchange="onInputChange()">
-    <option value="02">02</option><option value="38">38</option><option value="3D">3D</option>
-    <option value="4C">4C</option><option value="51">51</option><option value="65">65</option>
-    <option value="79">79</option><option value="8D">8D</option><option value="A1">A1</option>
-    <option value="B5">B5</option><option value="C9">C9</option><option value="DD" selected>DD</option>
-  </select>
-  <label>Seed</label>
-  <input id="inSeed" value="263C" maxlength="4" inputmode="text" oninput="onInputChange()">
-  <select id="presets" onchange="applyPreset()" style="color:#0ca;">
-    <option value="">— Presets —</option>
-    <option value="DD,263C">【あら風73】あらぶる風の巣Lv73（DD 263C）</option>
-    <option value="B5,3CA2">【川崎ロッカー】あらぶる光の世界Lv86（B5 3CA2）</option>
-    <option value="C9,7FE0">【ゆりっぺ】あらぶる夢の水脈Lv64（C9 7FE0）</option>
-    <option value="C9,2AC6">【ゆりっぺ大富豪】見えざる獣の墓場Lv73（C9 2AC6）</option>
-  </select>
-  <span class="sep"></span>
-  <button class="filter-btn active" data-f="ALL" onclick="setFilter('ALL')">All</button>
-  <button class="filter-btn" data-f="SA" onclick="setFilter('SA')">SA</button>
-  <button class="filter-btn" data-f="AB" onclick="setFilter('AB')">AB</button>
-  <button class="filter-btn" id="btnLang" onclick="toggleLang()" style="color:#0ca;border-color:#0ca;">JP</button>
-  <span class="sep"></span>
-  <div class="timer-box">
-    <div class="timer-display" id="timerDisp"><span id="timerText">000.00</span><span id="prepLabel" style="display:none"></span></div>
-    <button class="ctrl-btn start" id="btnStart" onclick="toggleTimer()">▶</button>
-    <button class="ctrl-btn reset" id="btnReset" onclick="resetTimer()">⟲</button>
-  </div>
+<label>Rank</label>
+<select id="inRank" onchange="onInputChange()">
+<option value="02">02</option><option value="38">38</option><option value="3D">3D</option>
+<option value="4C">4C</option><option value="51">51</option><option value="65">65</option>
+<option value="79">79</option><option value="8D">8D</option><option value="A1">A1</option>
+<option value="B5">B5</option><option value="C9">C9</option><option value="DD" selected>DD</option>
+</select>
+<label>Seed</label>
+<input id="inSeed" value="263C" maxlength="4" inputmode="text" oninput="onInputChange()">
+<select id="presets" onchange="applyPreset()" style="color:#0ca;">
+<option value="">— Presets —</option>
+<option value="DD,263C">【あら風73】あらぶる風の巣Lv73（DD 263C）</option>
+<option value="B5,3CA2">【川崎ロッカー】あらぶる光の世界Lv86（B5 3CA2）</option>
+<option value="DD,2E7A">【ましゃ725ソーマ】残された空の道Lv70（DD 2E7A）</option>
+<option value="C9,7FE0">【ゆりっぺ】あらぶる夢の水脈Lv64（C9 7FE0）</option>
+<option value="C9,2AC6">【ゆりっぺ大富豪】見えざる獣の墓場Lv73（C9 2AC6）</option>
+<option value="DD,32BB">【ジャギ大富豪】大いなる岩の世界Lv63（DD 32BB）</option>
+<option value="DD,47D0">【御柱げんま】とどろく花のじごくLv67（DD 47D0）</option>
+</select>
+<span class="sep"></span>
+<button class="filter-btn active" data-f="ALL" onclick="setFilter('ALL')">All</button>
+<button class="filter-btn" data-f="SA" onclick="setFilter('SA')">SA</button>
+<button class="filter-btn" data-f="AB" onclick="setFilter('AB')">AB</button>
+<button class="filter-btn" id="btnLang" onclick="toggleLang()" style="color:#0ca;border-color:#0ca;">JP</button>
+<span class="sep"></span>
+<div class="timer-box">
+<div class="timer-display" id="timerDisp"><span id="timerText">000.00</span><span id="prepLabel" style="display:none"></span></div>
+<button class="ctrl-btn start" id="btnStart" onclick="toggleTimer()">▶</button>
+<button class="ctrl-btn reset" id="btnReset" onclick="resetTimer()">⟲</button>
+</div>
 </div>
 <div class="main" id="mainArea"></div>
 <script>
@@ -132,734 +135,740 @@ function lcg(seed) {return (Math.imul(seed,1103515245)+12345) >>> 0;}
 
 // =============================================
 class GrottoDetail {
-  constructor() {
-    // _dungeonInfo: 16 floors, each 1336 bytes
-    this.di = [];
-    for (let i = 0; i < 16; i++) this.di[i] = new Uint8Array(1336);
-    this._details = new Uint8Array(20);
-    this._seed = 0;
-    this.MapSeed = 0;
-    this.MapRank = 0;
-  }
+constructor() {
+// _dungeonInfo: 16 floors, each 1336 bytes
+this.di = [];
+for (let i = 0; i < 16; i++) this.di[i] = new Uint8Array(1336);
+this._details = new Uint8Array(20);
+this._seed = 0;
+this.MapSeed = 0;
+this.MapRank = 0;
+}
 
-  // --- Helper: read/write little-endian int32 from _dungeonInfo ---
-  _readI32(floor, offset) {
-    const d = this.di[floor];
-    return d[offset] | (d[offset+1] << 8) | (d[offset+2] << 16) | (d[offset+3] << 24);
-  }
-  _writeI32(floor, offset, val) {
-    const d = this.di[floor];
-    d[offset] = val & 0xFF;
-    d[offset+1] = (val >>> 8) & 0xFF;
-    d[offset+2] = (val >>> 16) & 0xFF;
-    d[offset+3] = (val >>> 24) & 0xFF;
-  }
+// --- Helper: read/write little-endian int32 from _dungeonInfo ---
+_readI32(floor, offset) {
+const d = this.di[floor];
+return d[offset] | (d[offset+1] << 8) | (d[offset+2] << 16) | (d[offset+3] << 24);
+}
+_writeI32(floor, offset, val) {
+const d = this.di[floor];
+d[offset] = val & 0xFF;
+d[offset+1] = (val >>> 8) & 0xFF;
+d[offset+2] = (val >>> 16) & 0xFF;
+d[offset+3] = (val >>> 24) & 0xFF;
+}
 
-  // --- RNG ---
-  gRNG() {
-    this._seed = lcg(this._seed);
-    return (this._seed >>> 16) & 0x7FFF;
-  }
-  gRNGDiv(div) {
-    return this.gRNG() % div;
-  }
-  gRNGRange(v1, v2) {
-    if (v1 === v2) return v1;
-    const r = this.gRNG();
-    const num = (v2|0) - (v1|0) + 1;
-    return num === 0 ? v1 : ((v1 + r % num) >>> 0);
-  }
+// --- RNG ---
+gRNG() {
+this._seed = lcg(this._seed);
+return (this._seed >>> 16) & 0x7FFF;
+}
+gRNGDiv(div) {
+return this.gRNG() % div;
+}
+gRNGRange(v1, v2) {
+if (v1 === v2) return v1;
+const r = this.gRNG();
+const num = (v2|0) - (v1|0) + 1;
+return num === 0 ? v1 : ((v1 + r % num) >>> 0);
+}
 
-  // --- Table lookups ---
-  getItemRank(value1, value2) {
-    const num = Math.fround(this.gRNG() - 1);
-    return (Math.fround(((value2|0) - (value1|0) + 1) * num / 32767) >>> 0) + value1;
-  }
-  seek1(table, tableSize) {
-    const random = this.gRNGDiv(100);
-    let num = 0;
-    for (let i = 0; i < tableSize; i++) {
-      num += table[i * 4 + 1];
-      if (random < num) return table[i * 4];
-    }
-    return 0;
-  }
-  seek2(table, value, tableSize) {
-    for (let i = 0; i < tableSize; i++)
-      if (value >= table[i*4] && value <= table[i*4+1])
-        return this.seek3(table[i*4+2], table[i*4+3]);
-    return 0;
-  }
-  seek3(val1, val2) {
-    const r = this.gRNG();
-    const num = val2 - val1 + 1;
-    return num === 0 ? val1 : (val1 + r % num);
-  }
-  seek4(table1, table2, roopCount) {
-    for (let i1 = 0; i1 < roopCount; i1++) {
-      if (this.MapRank >= table1[i1*4] && this.MapRank <= table1[i1*4+1]) {
-        let num1 = 0;
-        for (let i2 = table1[i1*4+2]; i2 <= table1[i1*4+3]; i2++)
-          num1 += table2[(i2-1)*2+1];
-        const num2 = this.gRNG() % num1;
-        let num3 = 0;
-        for (let i3 = table1[i1*4+2]; i3 <= table1[i1*4+3]; i3++) {
-          num3 += table2[(i3-1)*2+1];
-          if (num2 < num3) return i3;
-        }
-        break;
-      }
-    }
-    return 0;
-  }
-  routineRandom(value) {
-    return (Math.fround(this.gRNG() - 1) * value / 32767) >>> 0;
-  }
+// --- Table lookups ---
+getItemRank(value1, value2) {
+const num = Math.fround(this.gRNG() - 1);
+return (Math.fround(((value2|0) - (value1|0) + 1) * num / 32767) >>> 0) + value1;
+}
+seek1(table, tableSize) {
+const random = this.gRNGDiv(100);
+let num = 0;
+for (let i = 0; i < tableSize; i++) {
+num += table[i * 4 + 1];
+if (random < num) return table[i * 4];
+}
+return 0;
+}
+seek2(table, value, tableSize) {
+for (let i = 0; i < tableSize; i++)
+if (value >= table[i*4] && value <= table[i*4+1])
+return this.seek3(table[i*4+2], table[i*4+3]);
+return 0;
+}
+seek3(val1, val2) {
+const r = this.gRNG();
+const num = val2 - val1 + 1;
+return num === 0 ? val1 : (val1 + r % num);
+}
+seek4(table1, table2, roopCount) {
+for (let i1 = 0; i1 < roopCount; i1++) {
+if (this.MapRank >= table1[i1*4] && this.MapRank <= table1[i1*4+1]) {
+let num1 = 0;
+for (let i2 = table1[i1*4+2]; i2 <= table1[i1*4+3]; i2++)
+num1 += table2[(i2-1)*2+1];
+const num2 = this.gRNG() % num1;
+let num3 = 0;
+for (let i3 = table1[i1*4+2]; i3 <= table1[i1*4+3]; i3++) {
+num3 += table2[(i3-1)*2+1];
+if (num2 < num3) return i3;
+}
+break;
+}
+}
+return 0;
+}
+routineRandom(value) {
+return (Math.fround(this.gRNG() - 1) * value / 32767) >>> 0;
+}
 
-  // --- routine1: memset ---
-  routine1(floor, address, value1, value2) {
-    for (let i = 0; i < value2; i++)
-      this.di[floor][address + i] = value1 & 0xFF;
-  }
+// --- routine1: memset ---
+routine1(floor, address, value1, value2) {
+for (let i = 0; i < value2; i++)
+this.di[floor][address + i] = value1 & 0xFF;
+}
 
-  // --- SetValue ---
-  setValue(floor, address, v1, v2, v3, v4) {
-    const d = this.di[floor];
-    d[address] = v1; d[address+1] = v2; d[address+2] = v3; d[address+3] = v4;
-  }
+// --- SetValue ---
+setValue(floor, address, v1, v2, v3, v4) {
+const d = this.di[floor];
+d[address] = v1; d[address+1] = v2; d[address+2] = v3; d[address+3] = v4;
+}
 
-  // --- routineA: horizontal split ---
-  routineA(floor, address, value1, value2) {
-    const d = this.di[floor];
-    const num1 = d[address+3] + 1 - d[address+1];
-    if (num1 < 7 || d[address+4] !== 0) return false;
-    const random = this.gRNGRange(0, num1 - 7);
-    const num2 = d[address+1] + random + 3;
-    for (let i = d[address]; i < d[address+2] + 1; i++)
-      d[(num2 << 4) + i + 792] = 3;
-    this.setValue(floor, value2, d[address], num2, d[address+2], num2);
-    this.setValue(floor, value1, d[address], num2+1, d[address+2], d[address+3]);
-    d[value1+4] = 0; d[value1+5] = 0;
-    d[address+3] = num2 - 1;
-    d[address+4] = 1;
-    this._writeI32(floor, value2+4, address);
-    this._writeI32(floor, value2+8, value1);
-    d[value2+12] = 1;
-    return true;
-  }
+// --- routineA: horizontal split ---
+routineA(floor, address, value1, value2) {
+const d = this.di[floor];
+const num1 = d[address+3] + 1 - d[address+1];
+if (num1 < 7 || d[address+4] !== 0) return false;
+const random = this.gRNGRange(0, num1 - 7);
+const num2 = d[address+1] + random + 3;
+for (let i = d[address]; i < d[address+2] + 1; i++)
+d[(num2 << 4) + i + 792] = 3;
+this.setValue(floor, value2, d[address], num2, d[address+2], num2);
+this.setValue(floor, value1, d[address], num2+1, d[address+2], d[address+3]);
+d[value1+4] = 0; d[value1+5] = 0;
+d[address+3] = num2 - 1;
+d[address+4] = 1;
+this._writeI32(floor, value2+4, address);
+this._writeI32(floor, value2+8, value1);
+d[value2+12] = 1;
+return true;
+}
 
-  // --- routineE: vertical split ---
-  routineE(floor, address, value1, value2) {
-    const d = this.di[floor];
-    const num1 = d[address+2] + 1 - d[address];
-    if (num1 < 7 || d[address+5] !== 0) return false;
-    const random = this.gRNGRange(0, num1 - 7);
-    const num2 = d[address] + random + 3;
-    for (let i = d[address+1]; i < d[address+3] + 1; i++)
-      d[(i << 4) + num2 + 792] = 3;
-    this.setValue(floor, value2, num2, d[address+1], num2, d[address+3]);
-    this.setValue(floor, value1, num2+1, d[address+1], d[address+2], d[address+3]);
-    d[value1+4] = 0; d[value1+5] = 0;
-    d[address+2] = num2 - 1;
-    d[address+5] = 1;
-    this._writeI32(floor, value2+4, address);
-    this._writeI32(floor, value2+8, value1);
-    d[value2+12] = 2;
-    return true;
-  }
+// --- routineE: vertical split ---
+routineE(floor, address, value1, value2) {
+const d = this.di[floor];
+const num1 = d[address+2] + 1 - d[address];
+if (num1 < 7 || d[address+5] !== 0) return false;
+const random = this.gRNGRange(0, num1 - 7);
+const num2 = d[address] + random + 3;
+for (let i = d[address+1]; i < d[address+3] + 1; i++)
+d[(i << 4) + num2 + 792] = 3;
+this.setValue(floor, value2, num2, d[address+1], num2, d[address+3]);
+this.setValue(floor, value1, num2+1, d[address+1], d[address+2], d[address+3]);
+d[value1+4] = 0; d[value1+5] = 0;
+d[address+2] = num2 - 1;
+d[address+5] = 1;
+this._writeI32(floor, value2+4, address);
+this._writeI32(floor, value2+8, value1);
+d[value2+12] = 2;
+return true;
+}
 
-  // --- routineB: recursive split ---
-  routineB(floor, address) {
-    const d = this.di[floor];
-    const num = d[21];
-    d[21]++; d[22]++;
-    if ((this.gRNG() & 1) !== 0) {
-      this.routineF(floor, address);
-      this.routineF(floor, num * 12 + 24);
-    } else {
-      this.routineF(floor, num * 12 + 24);
-      this.routineF(floor, address);
-    }
-  }
+// --- routineB: recursive split ---
+routineB(floor, address) {
+const d = this.di[floor];
+const num = d[21];
+d[21]++; d[22]++;
+if ((this.gRNG() & 1) !== 0) {
+this.routineF(floor, address);
+this.routineF(floor, num * 12 + 24);
+} else {
+this.routineF(floor, num * 12 + 24);
+this.routineF(floor, address);
+}
+}
 
-  // --- routineF: split decision ---
-  routineF(floor, address) {
-    const d = this.di[floor];
-    if (d[21] >= 15) return;
-    if (d[address+5] !== 0) {
-      if (!this.routineA(floor, address, d[21]*12+24, (d[22]<<4)+216)) return;
-      this.routineB(floor, address);
-    } else if (d[address+4] !== 0) {
-      if (!this.routineE(floor, address, d[21]*12+24, (d[22]<<4)+216)) return;
-      this.routineB(floor, address);
-    } else if ((this.gRNG() & 1) !== 0) {
-      if (!this.routineE(floor, address, d[21]*12+24, (d[22]<<4)+216)) return;
-      this.routineB(floor, address);
-    } else {
-      if (!this.routineA(floor, address, d[21]*12+24, (d[22]<<4)+216)) return;
-      this.routineB(floor, address);
-    }
-  }
+// --- routineF: split decision ---
+routineF(floor, address) {
+const d = this.di[floor];
+if (d[21] >= 15) return;
+if (d[address+5] !== 0) {
+if (!this.routineA(floor, address, d[21]*12+24, (d[22]<<4)+216)) return;
+this.routineB(floor, address);
+} else if (d[address+4] !== 0) {
+if (!this.routineE(floor, address, d[21]*12+24, (d[22]<<4)+216)) return;
+this.routineB(floor, address);
+} else if ((this.gRNG() & 1) !== 0) {
+if (!this.routineE(floor, address, d[21]*12+24, (d[22]<<4)+216)) return;
+this.routineB(floor, address);
+} else {
+if (!this.routineA(floor, address, d[21]*12+24, (d[22]<<4)+216)) return;
+this.routineB(floor, address);
+}
+}
 
-  // --- routineC: create room ---
-  routineC(floor, address1, address2) {
-    const d = this.di[floor];
-    if (d[address1+2] + 1 - d[address1] < 3 || d[address1+3] + 1 - d[address1+1] < 3)
-      return false;
-    const num1 = d[address1], num2 = d[address1+1], num3 = d[address1+2], num4 = d[address1+3];
-    let random1, random2, random3, random4;
-    if (this.gRNGRange(0, 1) !== 0) {
-      random1 = this.gRNGRange(num1, num1 + ((num3-num1+1)/3|0));
-      random2 = this.gRNGRange(num2, num2 + ((num4-num2+1)/3|0));
-    } else {
-      random1 = this.gRNGRange(num1+1, num1 + ((num3-num1+1)/3|0));
-      random2 = this.gRNGRange(num2+1, num2 + ((num4-num2+1)/3|0));
-    }
-    if (this.gRNGRange(0, 1) !== 0) {
-      random3 = this.gRNGRange(num1 + ((num3-num1+1)/3|0)*2, num3);
-      random4 = this.gRNGRange(num2 + ((num4-num2+1)/3|0)*2, num4);
-    } else {
-      random3 = this.gRNGRange(num1 + ((num3-num1+1)/3|0)*2, num3-1);
-      random4 = this.gRNGRange(num2 + ((num4-num2+1)/3|0)*2, num4-1);
-    }
-    this.setValue(floor, address2, random1, random2, random3, random4);
-    for (let i = 4; i < 20; i++) d[address2+i] = 0;
-    this._writeI32(floor, address1+8, address2);
-    for (let y = random2; y <= random4; y++)
-      for (let x = random1; x <= random3; x++)
-        d[x + (y << 4) + 792] = 0;
-    this.routineD(floor, address2);
-    return true;
-  }
+// --- routineC: create room ---
+routineC(floor, address1, address2) {
+const d = this.di[floor];
+if (d[address1+2] + 1 - d[address1] < 3 || d[address1+3] + 1 - d[address1+1] < 3)
+return false;
+const num1 = d[address1], num2 = d[address1+1], num3 = d[address1+2], num4 = d[address1+3];
+let random1, random2, random3, random4;
+if (this.gRNGRange(0, 1) !== 0) {
+random1 = this.gRNGRange(num1, num1 + ((num3-num1+1)/3|0));
+random2 = this.gRNGRange(num2, num2 + ((num4-num2+1)/3|0));
+} else {
+random1 = this.gRNGRange(num1+1, num1 + ((num3-num1+1)/3|0));
+random2 = this.gRNGRange(num2+1, num2 + ((num4-num2+1)/3|0));
+}
+if (this.gRNGRange(0, 1) !== 0) {
+random3 = this.gRNGRange(num1 + ((num3-num1+1)/3|0)*2, num3);
+random4 = this.gRNGRange(num2 + ((num4-num2+1)/3|0)*2, num4);
+} else {
+random3 = this.gRNGRange(num1 + ((num3-num1+1)/3|0)*2, num3-1);
+random4 = this.gRNGRange(num2 + ((num4-num2+1)/3|0)*2, num4-1);
+}
+this.setValue(floor, address2, random1, random2, random3, random4);
+for (let i = 4; i < 20; i++) d[address2+i] = 0;
+this._writeI32(floor, address1+8, address2);
+for (let y = random2; y <= random4; y++)
+for (let x = random1; x <= random3; x++)
+d[x + (y << 4) + 792] = 0;
+this.routineD(floor, address2);
+return true;
+}
 
-  // --- routineD: create doors ---
-  routineD(floor, address) {
-    const d = this.di[floor];
-    const num1 = d[address], num2 = d[address+2];
-    if (num1 === 0 || d[address+1] === 0) return false;
-    if (num2 === 0 || d[address+3] === 0) return false;
+// --- routineD: create doors ---
+routineD(floor, address) {
+const d = this.di[floor];
+const num1 = d[address], num2 = d[address+2];
+if (num1 === 0 || d[address+1] === 0) return false;
+if (num2 === 0 || d[address+3] === 0) return false;
 
-    // Top/bottom doors
-    if (num2 - num1 + 1 < 5) {
-      d[address+12] = this.gRNGRange(num1, num2);
-      d[address+13] = d[address+1];
-      d[address+16] = this.gRNGRange(d[address], d[address+2]);
-      d[address+17] = d[address+3];
-      d[(d[address+13]<<4)+792+d[address+12]] = 8;
-      d[(d[address+17]<<4)+792+d[address+16]] = 8;
-    } else {
-      const num3 = num1 + ((num2-num1+1)/2|0) - 1;
-      d[address+12] = this.gRNGRange(num1, num3);
-      d[address+13] = d[address+1];
-      d[address+14] = this.gRNGRange(num3+1, d[address+2]);
-      d[address+15] = d[address+1];
-      d[address+16] = this.gRNGRange(d[address], num3);
-      d[address+17] = d[address+3];
-      d[address+18] = this.gRNGRange(num3+1, d[address+2]);
-      d[address+19] = d[address+3];
-      d[(d[address+13]<<4)+792+d[address+12]] = 8;
-      d[(d[address+15]<<4)+792+d[address+14]] = 8;
-      d[(d[address+17]<<4)+792+d[address+16]] = 8;
-      d[(d[address+19]<<4)+792+d[address+18]] = 8;
-    }
+// Top/bottom doors
+if (num2 - num1 + 1 < 5) {
+d[address+12] = this.gRNGRange(num1, num2);
+d[address+13] = d[address+1];
+d[address+16] = this.gRNGRange(d[address], d[address+2]);
+d[address+17] = d[address+3];
+d[(d[address+13]<<4)+792+d[address+12]] = 8;
+d[(d[address+17]<<4)+792+d[address+16]] = 8;
+} else {
+const num3 = num1 + ((num2-num1+1)/2|0) - 1;
+d[address+12] = this.gRNGRange(num1, num3);
+d[address+13] = d[address+1];
+d[address+14] = this.gRNGRange(num3+1, d[address+2]);
+d[address+15] = d[address+1];
+d[address+16] = this.gRNGRange(d[address], num3);
+d[address+17] = d[address+3];
+d[address+18] = this.gRNGRange(num3+1, d[address+2]);
+d[address+19] = d[address+3];
+d[(d[address+13]<<4)+792+d[address+12]] = 8;
+d[(d[address+15]<<4)+792+d[address+14]] = 8;
+d[(d[address+17]<<4)+792+d[address+16]] = 8;
+d[(d[address+19]<<4)+792+d[address+18]] = 8;
+}
 
-    // Left/right doors
-    if (d[address+3] - d[address+1] + 1 < 5) {
-      d[address+4] = d[address];
-      d[address+5] = this.gRNGRange(d[address+1], d[address+3]);
-      d[address+8] = d[address+2];
-      d[address+9] = this.gRNGRange(d[address+1], d[address+3]);
-      d[(d[address+5]<<4)+792+d[address+4]] = 8;
-      d[(d[address+9]<<4)+792+d[address+8]] = 8;
-    } else {
-      const num4 = d[address+1];
-      const num5 = num4 + ((d[address+3]+1-num4)/2|0) - 1;
-      d[address+4] = d[address];
-      d[address+5] = this.gRNGRange(d[address+1], num5);
-      d[address+6] = d[address];
-      d[address+7] = this.gRNGRange(num5+1, d[address+3]);
-      d[address+8] = d[address+2];
-      d[address+9] = this.gRNGRange(d[address+1], num5);
-      d[address+10] = d[address+2];
-      d[address+11] = this.gRNGRange(num5+1, d[address+3]);
-      d[(d[address+5]<<4)+792+d[address+4]] = 8;
-      d[(d[address+7]<<4)+792+d[address+6]] = 8;
-      d[(d[address+9]<<4)+792+d[address+8]] = 8;
-      d[(d[address+11]<<4)+792+d[address+10]] = 8;
-    }
-    return true;
-  }
+// Left/right doors
+if (d[address+3] - d[address+1] + 1 < 5) {
+d[address+4] = d[address];
+d[address+5] = this.gRNGRange(d[address+1], d[address+3]);
+d[address+8] = d[address+2];
+d[address+9] = this.gRNGRange(d[address+1], d[address+3]);
+d[(d[address+5]<<4)+792+d[address+4]] = 8;
+d[(d[address+9]<<4)+792+d[address+8]] = 8;
+} else {
+const num4 = d[address+1];
+const num5 = num4 + ((d[address+3]+1-num4)/2|0) - 1;
+d[address+4] = d[address];
+d[address+5] = this.gRNGRange(d[address+1], num5);
+d[address+6] = d[address];
+d[address+7] = this.gRNGRange(num5+1, d[address+3]);
+d[address+8] = d[address+2];
+d[address+9] = this.gRNGRange(d[address+1], num5);
+d[address+10] = d[address+2];
+d[address+11] = this.gRNGRange(num5+1, d[address+3]);
+d[(d[address+5]<<4)+792+d[address+4]] = 8;
+d[(d[address+7]<<4)+792+d[address+6]] = 8;
+d[(d[address+9]<<4)+792+d[address+8]] = 8;
+d[(d[address+11]<<4)+792+d[address+10]] = 8;
+}
+return true;
+}
 
-  // --- GenerateFloorMap: wall erosion ---
-  generateFloorMap(floor, address) {
-    const d = this.di[floor];
-    const index1 = this._readI32(floor, address + 8);
-    const num1 = ((d[index1+2] - d[index1] + 1) / 2) | 0;
-    const num2 = ((d[index1+3] - d[index1+1] + 1) / 2) | 0;
-    let num3 = 0;
-    if (d[1] === 0 && this.gRNGRange(0, 15) === 0)
-      num3 = 1;
-    let num4, num5, num6, num7;
-    if (num3 === 0) {
-      num4 = d[address+3] - d[index1+3];
-      num5 = d[index1] - d[address];
-      num6 = d[address+2] - d[index1+2];
-      num7 = d[index1+1] - d[address+1];
-    } else {
-      num4 = d[3] - d[index1+3] - 1;
-      num5 = d[index1] - 1;
-      num6 = d[2] - d[index1+2] - 1;
-      num7 = d[index1+1] - 1;
-      d[1] = 1;
-    }
+// --- GenerateFloorMap: wall erosion ---
+generateFloorMap(floor, address) {
+const d = this.di[floor];
+const index1 = this._readI32(floor, address + 8);
+const num1 = ((d[index1+2] - d[index1] + 1) / 2) | 0;
+const num2 = ((d[index1+3] - d[index1+1] + 1) / 2) | 0;
+let num3 = 0;
+if (d[1] === 0 && this.gRNGRange(0, 15) === 0)
+num3 = 1;
+let num4, num5, num6, num7;
+if (num3 === 0) {
+num4 = d[address+3] - d[index1+3];
+num5 = d[index1] - d[address];
+num6 = d[address+2] - d[index1+2];
+num7 = d[index1+1] - d[address+1];
+} else {
+num4 = d[3] - d[index1+3] - 1;
+num5 = d[index1] - 1;
+num6 = d[2] - d[index1+2] - 1;
+num7 = d[index1+1] - 1;
+d[1] = 1;
+}
 
-    // Top edge erosion
-    for (let i3 = d[index1]; i3 <= d[index1+2]; i3++) {
-      const num8 = d[i3 + (d[index1+1] << 4) + 792];
-      if (num8 === 1 || num8 === 3) continue;
-      if (this.gRNGRange(0, 1) === 0) {
-        if (num8 !== 8) {
-          const above = d[i3 + ((d[index1+1]-1)<<4) + 792];
-          if (above === 1 || above === 8) continue;
-          const random1 = this.gRNGRange(0, num2);
-          const num9 = i3 - 1;
-          for (let i4 = 0; i4 < random1 &&
-            d[i3 + ((d[index1+1]+i4)<<4) + 792] !== 8 &&
-            d[i3 + ((d[index1+1]+i4+1)<<4) + 792] !== 1 &&
-            (d[((d[index1+1]+i4)<<4) + i3 + 1 + 792] === 1 ||
-            d[((d[index1+1]+i4+1)<<4) + i3 + 1 + 792] !== 1) &&
-            (d[((d[index1+1]+i4)<<4) + num9 + 792] === 1 ||
-            d[num9 + ((d[index1+1]+i4+1)<<4) + 792] !== 1);
-            i4++)
-            d[i3 + ((d[index1+1]+i4)<<4) + 792] = 1;
-        }
-      } else {
-        const random2 = this.gRNGRange(0, num7);
-        for (let i5 = 0; i5 < random2; i5++) {
-          const idx = i3 + ((d[index1+1]-1-i5)<<4) + 792;
-          if (d[idx] !== 8) d[idx] = 0;
-        }
-      }
-    }
+// Top edge erosion
+for (let i3 = d[index1]; i3 <= d[index1+2]; i3++) {
+const num8 = d[i3 + (d[index1+1] << 4) + 792];
+if (num8 === 1 || num8 === 3) continue;
+if (this.gRNGRange(0, 1) === 0) {
+if (num8 !== 8) {
+const above = d[i3 + ((d[index1+1]-1)<<4) + 792];
+if (above === 1 || above === 8) continue;
+const random1 = this.gRNGRange(0, num2);
+const num9 = i3 - 1;
+for (let i4 = 0; i4 < random1 &&
+d[i3 + ((d[index1+1]+i4)<<4) + 792] !== 8 &&
+d[i3 + ((d[index1+1]+i4+1)<<4) + 792] !== 1 &&
+(d[((d[index1+1]+i4)<<4) + i3 + 1 + 792] === 1 ||
+d[((d[index1+1]+i4+1)<<4) + i3 + 1 + 792] !== 1) &&
+(d[((d[index1+1]+i4)<<4) + num9 + 792] === 1 ||
+d[num9 + ((d[index1+1]+i4+1)<<4) + 792] !== 1);
+i4++)
+d[i3 + ((d[index1+1]+i4)<<4) + 792] = 1;
+}
+} else {
+const random2 = this.gRNGRange(0, num7);
+for (let i5 = 0; i5 < random2; i5++) {
+const idx = i3 + ((d[index1+1]-1-i5)<<4) + 792;
+if (d[idx] !== 8) d[idx] = 0;
+}
+}
+}
 
-    // Bottom edge erosion
-    for (let i7 = d[index1]; i7 <= d[index1+2]; i7++) {
-      const num10 = d[i7 + (d[index1+3] << 4) + 792];
-      if (num10 === 1 || num10 === 3) continue;
-      if (this.gRNGRange(0, 1) !== 0) {
-        const random = this.gRNGRange(0, num4);
-        for (let i8 = 0; i8 < random; i8++)
-          if (d[i7 + ((d[index1+3]+i8+1)<<4) + 792] !== 8)
-          d[i7 + ((d[index1+3]+i8+1)<<4) + 792] = 0;
-      } else {
-        if (num10 !== 8) {
-          const below = d[i7 + ((d[index1+3]+1)<<4) + 792];
-          if (below === 1 || below === 8) continue;
-          const random3 = this.gRNGRange(0, num2);
-          const num11 = i7 - 1;
-          for (let i9 = 0; i9 < random3 &&
-            d[i7 + ((d[index1+3]-i9)<<4) + 792] !== 8 &&
-            d[i7 + ((d[index1+3]-i9-1)<<4) + 792] !== 1 &&
-            (d[((d[index1+3]-i9)<<4) + i7 + 1 + 792] === 1 ||
-            d[((d[index1+3]-i9-1)<<4) + i7 + 1 + 792] !== 1) &&
-            (d[num11 + ((d[index1+3]-i9)<<4) + 792] === 1 ||
-            d[num11 + ((d[index1+3]-i9-1)<<4) + 792] !== 1);
-            i9++)
-            d[i7 + ((d[index1+3]-i9)<<4) + 792] = 1;
-        }
-      }
-    }
+// Bottom edge erosion
+for (let i7 = d[index1]; i7 <= d[index1+2]; i7++) {
+const num10 = d[i7 + (d[index1+3] << 4) + 792];
+if (num10 === 1 || num10 === 3) continue;
+if (this.gRNGRange(0, 1) !== 0) {
+const random = this.gRNGRange(0, num4);
+for (let i8 = 0; i8 < random; i8++)
+if (d[i7 + ((d[index1+3]+i8+1)<<4) + 792] !== 8)
+d[i7 + ((d[index1+3]+i8+1)<<4) + 792] = 0;
+} else {
+if (num10 !== 8) {
+const below = d[i7 + ((d[index1+3]+1)<<4) + 792];
+if (below === 1 || below === 8) continue;
+const random3 = this.gRNGRange(0, num2);
+const num11 = i7 - 1;
+for (let i9 = 0; i9 < random3 &&
+d[i7 + ((d[index1+3]-i9)<<4) + 792] !== 8 &&
+d[i7 + ((d[index1+3]-i9-1)<<4) + 792] !== 1 &&
+(d[((d[index1+3]-i9)<<4) + i7 + 1 + 792] === 1 ||
+d[((d[index1+3]-i9-1)<<4) + i7 + 1 + 792] !== 1) &&
+(d[num11 + ((d[index1+3]-i9)<<4) + 792] === 1 ||
+d[num11 + ((d[index1+3]-i9-1)<<4) + 792] !== 1);
+i9++)
+d[i7 + ((d[index1+3]-i9)<<4) + 792] = 1;
+}
+}
+}
 
-    // Left edge erosion
-    for (let i10 = d[index1+1]; i10 <= d[index1+3]; i10++) {
-      const num12 = d[(i10<<4) + 792 + d[index1]];
-      if (num12 === 1 || num12 === 3) continue;
-      if (this.gRNGRange(0, 1) !== 0) {
-        const random = this.gRNGRange(0, num5);
-        for (let i11 = 0; i11 < random; i11++)
-        if (d[(i10<<4) + 792 + d[index1] - 1 - i11] !== 8)
-        d[(i10<<4) + 792 + d[index1] - 1 - i11] = 0;
-      } else {
-        if (num12 !== 8) {
-          const left = d[(i10<<4) + 792 + d[index1] - 1];
-          if (left === 1 || left === 8) continue;
-          const random4 = this.gRNGRange(0, num1);
-          const num13 = i10 - 1;
-          for (let i12 = 0; i12 < random4 &&
-             d[i12 + (i10<<4) + d[index1] + 792] !== 8 &&
-             d[i12 + (i10<<4) + d[index1] + 792 + 1] !== 1 &&
-             (d[i12 + ((i10+1)<<4) + d[index1] + 792] === 1 ||
-             d[i12 + ((i10+1)<<4) + d[index1] + 792 + 1] !== 1) &&
-             (d[i12 + (num13<<4) + d[index1] + 792] === 1 ||
-             d[i12 + (num13<<4) + d[index1] + 792 + 1] !== 1);
-             i12++)
-             d[i12 + (i10<<4) + d[index1] + 792] = 1;
-        }
-      }
-    }
+// Left edge erosion
+for (let i10 = d[index1+1]; i10 <= d[index1+3]; i10++) {
+const num12 = d[(i10<<4) + 792 + d[index1]];
+if (num12 === 1 || num12 === 3) continue;
+if (this.gRNGRange(0, 1) !== 0) {
+const random = this.gRNGRange(0, num5);
+for (let i11 = 0; i11 < random; i11++)
+if (d[(i10<<4) + 792 + d[index1] - 1 - i11] !== 8)
+d[(i10<<4) + 792 + d[index1] - 1 - i11] = 0;
+} else {
+if (num12 !== 8) {
+const left = d[(i10<<4) + 792 + d[index1] - 1];
+if (left === 1 || left === 8) continue;
+const random4 = this.gRNGRange(0, num1);
+const num13 = i10 - 1;
+for (let i12 = 0; i12 < random4 &&
+ d[i12 + (i10<<4) + d[index1] + 792] !== 8 &&
+ d[i12 + (i10<<4) + d[index1] + 792 + 1] !== 1 &&
+ (d[i12 + ((i10+1)<<4) + d[index1] + 792] === 1 ||
+ d[i12 + ((i10+1)<<4) + d[index1] + 792 + 1] !== 1) &&
+ (d[i12 + (num13<<4) + d[index1] + 792] === 1 ||
+ d[i12 + (num13<<4) + d[index1] + 792 + 1] !== 1);
+ i12++)
+ d[i12 + (i10<<4) + d[index1] + 792] = 1;
+}
+}
+}
 
-    // Right edge erosion
-    for (let i13 = d[index1+1]; i13 <= d[index1+3]; i13++) {
-      const num14 = d[(i13<<4) + 792 + d[index1+2]];
-      if (num14 === 1 || num14 === 3) continue;
-      if (this.gRNGRange(0, 1) !== 0) {
-        const random = this.gRNGRange(0, num6);
-        for (let i14 = 0; i14 < random; i14++)
-          if (d[i14 + (i13<<4) + d[index1+2] + 792 + 1] !== 8)
-            d[i14 + (i13<<4) + d[index1+2] + 792 + 1] = 0;
-      } else {
-        if (num14 !== 8) {
-          const right = d[d[index1+1] + (i13<<4) + 792 + 1];
-          if (right === 1 || right === 8) continue;
-          const random5 = this.gRNGRange(0, num1);
-          const num15 = i13 - 1;
-          for (let i15 = 0; i15 < random5 &&
-            d[(i13<<4) + 792 + d[index1+2] - i15] !== 8 &&
-            d[(i13<<4) + 792 + d[index1+2] - i15 - 1] !== 1 &&
-            (d[((i13+1)<<4) + 792 + d[index1+2] - i15] === 1 ||
-            d[((i13+1)<<4) + 792 + d[index1+2] - i15 - 1] !== 1) &&
-            (d[(num15<<4) + 792 + d[index1+2] - i15] === 1 ||
-            d[(num15<<4) + 792 + d[index1+2] - i15 - 1] !== 1);
-            i15++)
-            d[(i13<<4) + 792 + d[index1+2] - i15] = 1;
-        }
-      }
-    }
-  }
+// Right edge erosion
+for (let i13 = d[index1+1]; i13 <= d[index1+3]; i13++) {
+const num14 = d[(i13<<4) + 792 + d[index1+2]];
+if (num14 === 1 || num14 === 3) continue;
+if (this.gRNGRange(0, 1) !== 0) {
+const random = this.gRNGRange(0, num6);
+for (let i14 = 0; i14 < random; i14++)
+if (d[i14 + (i13<<4) + d[index1+2] + 792 + 1] !== 8)
+d[i14 + (i13<<4) + d[index1+2] + 792 + 1] = 0;
+} else {
+if (num14 !== 8) {
+const right = d[d[index1+1] + (i13<<4) + 792 + 1];
+if (right === 1 || right === 8) continue;
+const random5 = this.gRNGRange(0, num1);
+const num15 = i13 - 1;
+for (let i15 = 0; i15 < random5 &&
+d[(i13<<4) + 792 + d[index1+2] - i15] !== 8 &&
+d[(i13<<4) + 792 + d[index1+2] - i15 - 1] !== 1 &&
+(d[((i13+1)<<4) + 792 + d[index1+2] - i15] === 1 ||
+d[((i13+1)<<4) + 792 + d[index1+2] - i15 - 1] !== 1) &&
+(d[(num15<<4) + 792 + d[index1+2] - i15] === 1 ||
+d[(num15<<4) + 792 + d[index1+2] - i15 - 1] !== 1);
+i15++)
+d[(i13<<4) + 792 + d[index1+2] - i15] = 1;
+}
+}
+}
+}
 
-  // --- routineI: tile classification ---
-  routineI(floor, value1, value2, value3) {
-    const d = this.di[floor];
-    const num1 = d[value1 + (value2 << 4) + 792];
-    if (num1 === 1 || num1 === 3) return 255;
-    const num2 = d[value1 + ((value2-1) << 4) + 792];
-    const num3 = d[value1 + ((value2-1) << 4) + 792 - 1];
-    const num4 = d[value1 + ((value2-1) << 4) + 792 + 1];
-    const num5 = d[value1 + (value2 << 4) + 792 + 1];
-    const num6 = d[value1 + ((value2+1) << 4) + 792 + 1];
-    const num7 = d[value1 + ((value2+1) << 4) + 792];
-    const num8 = d[value1 + ((value2+1) << 4) + 792 - 1];
-    const num9 = d[value1 + (value2 << 4) + 792 - 1];
-    if (num1 !== 0 && num1 !== 2 && ((num1 + 252) & 255) > 4) return value3;
-    if (num3===1||num3===3) value3|=128; else value3&=127;
-    if (num4===1||num4===3) value3|=32; else value3&=223;
-    if (num6===1||num6===3) value3|=8; else value3&=247;
-    if (num8===1||num8===3) value3|=2; else value3&=253;
-    if (num2===1||num2===3) value3|=224; else value3&=191;
-    if (num5===1||num5===3) value3|=56; else value3&=239;
-    if (num7===1||num7===3) value3|=14; else value3&=251;
-    if (num9===1||num9===3) value3|=131; else value3&=254;
-    return value3;
-  }
+// --- routineI: tile classification ---
+routineI(floor, value1, value2, value3) {
+const d = this.di[floor];
+const num1 = d[value1 + (value2 << 4) + 792];
+if (num1 === 1 || num1 === 3) return 255;
+const num2 = d[value1 + ((value2-1) << 4) + 792];
+const num3 = d[value1 + ((value2-1) << 4) + 792 - 1];
+const num4 = d[value1 + ((value2-1) << 4) + 792 + 1];
+const num5 = d[value1 + (value2 << 4) + 792 + 1];
+const num6 = d[value1 + ((value2+1) << 4) + 792 + 1];
+const num7 = d[value1 + ((value2+1) << 4) + 792];
+const num8 = d[value1 + ((value2+1) << 4) + 792 - 1];
+const num9 = d[value1 + (value2 << 4) + 792 - 1];
+if (num1 !== 0 && num1 !== 2 && ((num1 + 252) & 255) > 4) return value3;
+if (num3===1||num3===3) value3|=128; else value3&=127;
+if (num4===1||num4===3) value3|=32; else value3&=223;
+if (num6===1||num6===3) value3|=8; else value3&=247;
+if (num8===1||num8===3) value3|=2; else value3&=253;
+if (num2===1||num2===3) value3|=224; else value3&=191;
+if (num5===1||num5===3) value3|=56; else value3&=239;
+if (num7===1||num7===3) value3|=14; else value3&=251;
+if (num9===1||num9===3) value3|=131; else value3&=254;
+return value3;
+}
 
-  // --- routineG: corridor generation ---
-  routineG(floor, address) {
-    const d = this.di[floor];
-    const address3 = address;
-    if (d[address3+12] === 1) {
-      const parentAddr = this._readI32(floor, address3+4);
-      const address1 = this._readI32(floor, parentAddr+8);
-      const siblingAddr = this._readI32(floor, address3+8);
-      const address2 = this._readI32(floor, siblingAddr+8);
-      const num1 = this.gRNGRange(0,7)===0 ? 1 : 0;
-      this.routineH(floor, address1, 16, address2, 12, address3, num1);
-      const num2 = this.gRNGRange(0,7)===0 ? 1 : 0;
-      this.routineH(floor, address1, 18, address2, 12, address3, num2);
-      const num3 = this.gRNGRange(0,7)===0 ? 1 : 0;
-      this.routineH(floor, address1, 16, address2, 14, address3, num3);
-      const num4 = this.gRNGRange(0,7)===0 ? 1 : 0;
-      this.routineH(floor, address1, 18, address2, 14, address3, num4);
-    } else if (d[address3+12] === 2) {
-      const parentAddr = this._readI32(floor, address3+4);
-      const address1 = this._readI32(floor, parentAddr+8);
-      const siblingAddr = this._readI32(floor, address3+8);
-      const address2 = this._readI32(floor, siblingAddr+8);
-      const num5 = this.gRNGRange(0,7)===0 ? 1 : 0;
-      this.routineH(floor, address1, 8, address2, 4, address3, num5);
-      const num6 = this.gRNGRange(0,7)===0 ? 1 : 0;
-      this.routineH(floor, address1, 10, address2, 4, address3, num6);
-      const num7 = this.gRNGRange(0,7)===0 ? 1 : 0;
-      this.routineH(floor, address1, 8, address2, 6, address3, num7);
-      const num8 = this.gRNGRange(0,7)===0 ? 1 : 0;
-      this.routineH(floor, address1, 10, address2, 6, address3, num8);
-    }
-    return 1;
-  }
+// --- routineG: corridor generation ---
+routineG(floor, address) {
+const d = this.di[floor];
+const address3 = address;
+if (d[address3+12] === 1) {
+const parentAddr = this._readI32(floor, address3+4);
+const address1 = this._readI32(floor, parentAddr+8);
+const siblingAddr = this._readI32(floor, address3+8);
+const address2 = this._readI32(floor, siblingAddr+8);
+const num1 = this.gRNGRange(0,7)===0 ? 1 : 0;
+this.routineH(floor, address1, 16, address2, 12, address3, num1);
+const num2 = this.gRNGRange(0,7)===0 ? 1 : 0;
+this.routineH(floor, address1, 18, address2, 12, address3, num2);
+const num3 = this.gRNGRange(0,7)===0 ? 1 : 0;
+this.routineH(floor, address1, 16, address2, 14, address3, num3);
+const num4 = this.gRNGRange(0,7)===0 ? 1 : 0;
+this.routineH(floor, address1, 18, address2, 14, address3, num4);
+} else if (d[address3+12] === 2) {
+const parentAddr = this._readI32(floor, address3+4);
+const address1 = this._readI32(floor, parentAddr+8);
+const siblingAddr = this._readI32(floor, address3+8);
+const address2 = this._readI32(floor, siblingAddr+8);
+const num5 = this.gRNGRange(0,7)===0 ? 1 : 0;
+this.routineH(floor, address1, 8, address2, 4, address3, num5);
+const num6 = this.gRNGRange(0,7)===0 ? 1 : 0;
+this.routineH(floor, address1, 10, address2, 4, address3, num6);
+const num7 = this.gRNGRange(0,7)===0 ? 1 : 0;
+this.routineH(floor, address1, 8, address2, 6, address3, num7);
+const num8 = this.gRNGRange(0,7)===0 ? 1 : 0;
+this.routineH(floor, address1, 10, address2, 6, address3, num8);
+}
+return 1;
+}
 
-  // --- routineH: draw corridor between rooms ---
-  routineH(floor, address1, value1, address2, value2, address3, value3) {
-    const d = this.di[floor];
-    const index1 = address3;
-    const num1 = d[address1+value1];
-    const num2 = d[address1+value1+1];
-    const num3 = d[address2+value2];
-    const num4 = d[address2+value2+1];
-    if (num1===0||num2===0||num3===0||num4===0) return false;
+// --- routineH: draw corridor between rooms ---
+routineH(floor, address1, value1, address2, value2, address3, value3) {
+const d = this.di[floor];
+const index1 = address3;
+const num1 = d[address1+value1];
+const num2 = d[address1+value1+1];
+const num3 = d[address2+value2];
+const num4 = d[address2+value2+1];
+if (num1===0||num2===0||num3===0||num4===0) return false;
 
-    // Helper: One-way extend corridor to the wall or non-corridor
-    const drawExt = (start, step, isHoriz, fixedCoord) => {
-      for (let i = start+step; i>=0 && i<16; i+=step) {
-        const idx = isHoriz ? (i+(fixedCoord<<4)+792) : ((i<<4)+792+fixedCoord);
-        const v = d[idx];
-        if (v === 1 || v === 3) continue; // Wall
-        for (let j = start+step; j !== i; j+=step) {
-          const fillIdx = isHoriz ? (j+(fixedCoord<<4)+792) : ((j<<4)+792+fixedCoord);
-          d[fillIdx] = 2; // Corridor
-        }
-        break;
-      }
-    };
+// Helper: One-way extend corridor to the wall or non-corridor
+const drawExt = (start, step, isHoriz, fixedCoord) => {
+for (let i = start+step; i>=0 && i<16; i+=step) {
+const idx = isHoriz ? (i+(fixedCoord<<4)+792) : ((i<<4)+792+fixedCoord);
+const v = d[idx];
+if (v === 1 || v === 3) continue; // Wall
+for (let j = start+step; j !== i; j+=step) {
+const fillIdx = isHoriz ? (j+(fixedCoord<<4)+792) : ((j<<4)+792+fixedCoord);
+d[fillIdx] = 2; // Corridor
+}
+break;
+}
+};
 
-    if (d[address3+12] === 1) {
-      // Horizontal split - vertical corridors
-      for (let i = num2+1; i < d[index1+1]+1; i++)
-        d[(i<<4)+792+num1] = 2;
-      for (let i = num4-1; i > d[index1+1]; i--)
-        d[(i<<4)+792+num3] = 2;
-      if (num1 < num3)
-        for (let i = num1; i < num3+1; i++)
-          d[i+(d[index1+1]<<4)+792] = 2;
-      else if (num1 > num3)
-        for (let i = num3; i < num1+1; i++)
-          d[i+(d[index1+1]<<4)+792] = 2;
+if (d[address3+12] === 1) {
+// Horizontal split - vertical corridors
+for (let i = num2+1; i < d[index1+1]+1; i++)
+d[(i<<4)+792+num1] = 2;
+for (let i = num4-1; i > d[index1+1]; i--)
+d[(i<<4)+792+num3] = 2;
+if (num1 < num3)
+for (let i = num1; i < num3+1; i++)
+d[i+(d[index1+1]<<4)+792] = 2;
+else if (num1 > num3)
+for (let i = num3; i < num1+1; i++)
+d[i+(d[index1+1]<<4)+792] = 2;
 
-      if (value3 === 0) return true;
-          
-      if (num1<num3) {
-        drawExt(num3,1,true,d[index1+1]); // ext1
-        drawExt(num1,-1,true,d[index1+1]);
-      } else {
-        drawExt(num1,1,true,d[index1+1]); // ext2
-        drawExt(num3,-1,true,d[index1+1]);
-      }
+if (value3 === 0) return true;
 
-    } else if (d[address3+12] === 2) {
-      // Vertical split - horizontal corridors
-      for (let i=num1+1; i<d[index1]+1; i++)
-        d[i+(num2<<4)+792] = 2;
-      for (let i=num3-1; i>d[index1]; i--)
-        d[i+(num4<<4)+792] = 2;
-      if (num2<num4)
-        for (let i=num2; i<num4+1; i++)
-          d[(i<<4)+792+d[index1]] = 2;
-      else if (num2>num4)
-        for (let i=num4; i<num2+1; i++)
-          d[(i<<4)+792+d[index1]] = 2;
+if (num1<num3) {
+drawExt(num3,1,true,d[index1+1]); // ext1
+drawExt(num1,-1,true,d[index1+1]);
+} else {
+drawExt(num1,1,true,d[index1+1]); // ext2
+drawExt(num3,-1,true,d[index1+1]);
+}
 
-      if (value3 === 0) return true;
+} else if (d[address3+12] === 2) {
+// Vertical split - horizontal corridors
+for (let i=num1+1; i<d[index1]+1; i++)
+d[i+(num2<<4)+792] = 2;
+for (let i=num3-1; i>d[index1]; i--)
+d[i+(num4<<4)+792] = 2;
+if (num2<num4)
+for (let i=num2; i<num4+1; i++)
+d[(i<<4)+792+d[index1]] = 2;
+else if (num2>num4)
+for (let i=num4; i<num2+1; i++)
+d[(i<<4)+792+d[index1]] = 2;
 
-      if (num2<num4) {
-        drawExt(num4,1,false,d[index1]); // ext3
-        drawExt(num2,-1,false,d[index1]);
-      } else {
-        drawExt(num2,1,false,d[index1]); // ext4
-        drawExt(num4,-1,false,d[index1]);
-      }
-    }
-    return true;
-  }
+if (value3 === 0) return true;
 
-  // --- routineJ: place stairs ---
-  routineJ(floor) {
-    const d = this.di[floor];
-    let num1 = 0, num2 = 0;
-    let random1 = 0, random2 = 0;
-    let random3, random4, random5;
-    while (true) {
-      random3 = this.gRNGRange(0, d[23]-1);
-      const idx1 = random3 * 20 + 472;
-      random4 = this.gRNGRange(d[idx1], d[idx1+2]);
-      random5 = this.gRNGRange(d[idx1+1], d[idx1+3]);
-      if (num2 < 100) {
-        const n3 = d[((random5-1)<<4)+random4+792];
-        const n4 = d[((random5+1)<<4)+random4+792];
-        const n5 = d[(random5<<4)+792+random4-1];
-        const n6 = d[(random5<<4)+792+random4+1];
-        const w7 = (n3===1||n3===3)?1:0;
-        const w8 = (n4===1||n4===3)?1:0;
-        const w9 = (n5===1||n5===3)?1:0;
-        const w10 = (n6===1||n6===3)?1:0;
-        if ((w7||w8) && (w9||w10)) {num2++; continue;}
-        const ri = this.routineI(floor, random4, random5, 0) & 255;
-        if ([46,58,139,142,163,171,174,184,186,226,232,234].includes(ri)){num2++; continue;}
-      }
-      d[random4+(random5<<4)+792] = 4;
-      d[4] = random4; d[5] = random5;
+if (num2<num4) {
+drawExt(num4,1,false,d[index1]); // ext3
+drawExt(num2,-1,false,d[index1]);
+} else {
+drawExt(num2,1,false,d[index1]); // ext4
+drawExt(num4,-1,false,d[index1]);
+}
+}
+return true;
+}
 
-      if (num2 >= 100){num1 = 0; num2 = 0;}
+// --- routineJ: place stairs ---
+routineJ(floor) {
+const d = this.di[floor];
+let num1 = 0, num2 = 0;
+let random1 = 0, random2 = 0;
+let random3, random4, random5;
+while (true) {
+random3 = this.gRNGRange(0, d[23]-1);
+const idx1 = random3 * 20 + 472;
+random4 = this.gRNGRange(d[idx1], d[idx1+2]);
+random5 = this.gRNGRange(d[idx1+1], d[idx1+3]);
+if (num2 < 100) {
+const n3 = d[((random5-1)<<4)+random4+792];
+const n4 = d[((random5+1)<<4)+random4+792];
+const n5 = d[(random5<<4)+792+random4-1];
+const n6 = d[(random5<<4)+792+random4+1];
+const w7 = (n3===1||n3===3)?1:0;
+const w8 = (n4===1||n4===3)?1:0;
+const w9 = (n5===1||n5===3)?1:0;
+const w10 = (n6===1||n6===3)?1:0;
+if ((w7||w8) && (w9||w10)) {num2++; continue;}
+const ri = this.routineI(floor, random4, random5, 0) & 255;
+if ([46,58,139,142,163,171,174,184,186,226,232,234].includes(ri)){num2++; continue;}
+}
+d[random4+(random5<<4)+792] = 4;
+d[4] = random4; d[5] = random5;
 
-      random1 = random4; random2 = random5; let num13 = random3;
-      do {
-        const random6 = this.gRNGRange(0, d[23]-1);
-        if (random6 === (random3 & 255) && (num1 & 255) < 25) {
-          num1++;
-        } else {
-          const idx2 = random6*20+472;
-          random1 = this.gRNGRange(d[idx2],d[idx2+2]);
-          num13 = random6;
-          random2 = this.gRNGRange(d[idx2+1],d[idx2+3]);
-        }
-      } while ((random3 & 255) === num13 && random1 === (random4 & 0xFFFF) && random2 === (random5 & 0xFFFF));
+// ========================================================
+// Ghost stair fix: on overflow (num2>=100), game resets counters
+// but still runs do-while DOWN search. If DOWN rejected, num2
+// becomes 1, then 99 more rejects before next overflow.
+// ========================================================
+if (num2 >= 100){num1 = 0; num2 = 0;}
 
-      const n14 = d[random1+((random2-1)<<4)+792];
-      const n15 = d[random1+((random2+1)<<4)+792];
-      const n16 = d[random1+(random2<<4)+792-1];
-      const n17 = d[random1+(random2<<4)+792+1];
-      const w18 = (n14===1||n14===3)?1:0;
-      const w19 = (n15===1||n15===3)?1:0;
-      const w20 = (n16===1||n16===3)?1:0;
-      const w21 = (n17===1||n17===3)?1:0;
-      if ((w18||w19) && (w20||w21)) {num2++;}
-      else break;
-    }
-    d[random1+(random2<<4)+792] = 5;
-    d[6] = random1; d[7] = random2;
-  }
+// =================================================================
+// Original reverse-engineered C# was considered wrong. Its num13 = 0 made the stairs wrongly placed
+// =================================================================
+random1 = random4; random2 = random5; let num13 = random3;
+do {
+const random6 = this.gRNGRange(0, d[23]-1);
+if (random6 === (random3 & 255) && (num1 & 255) < 25) {
+num1++;
+} else {
+const idx2 = random6*20+472;
+random1 = this.gRNGRange(d[idx2],d[idx2+2]);
+num13 = random6;
+random2 = this.gRNGRange(d[idx2+1],d[idx2+3]);
+}
+} while ((random3 & 255) === num13 && random1 === (random4 & 0xFFFF) && random2 === (random5 & 0xFFFF));
 
-  // --- routineK: place treasure boxes ---
-  routineK(floor) {
-    const d = this.di[floor];
-    const random1 = this.gRNGRange(1, 3);
-    d[8] = random1;
-    let num1 = 0, num2 = 0;
-    do {
-      const idx = this.gRNGRange(0, d[23]-1)*20+472;
-      const random2 = this.gRNGRange(d[idx], d[idx+2]);
-      const random3 = this.gRNGRange(d[idx+1], d[idx+3]);
-      // 取得該座標目前的狀態 (num3)
-      const num3 = d[random2+((random3 & 255)<<4)+792];
-      // 致命的防呆邏輯
-      if (num1<100 && (d[0] === 3 || d[0] === 1)) {
-        num1++;
-      } else if (num3 === 6 || num3 === 4 || num3 === 5) {
-        // 如果踩到別人已經放的寶箱(6)、上樓梯(4)、下樓梯(5)，就重新骰一次
-        num1++;
-      } else {
-        // 否則，管他是什麼東西，直接填上寶箱(6)
-        d[random2+((random3 & 255)<<4)+792] = 6;
-        d[num2*2+13] = random2;
-        d[num2*2+14] = random3;
-        num2++;
-      }
-    } while (num2 < (random1 & 255));
-    return 1;
-  }
+const n14 = d[random1+((random2-1)<<4)+792];
+const n15 = d[random1+((random2+1)<<4)+792];
+const n16 = d[random1+(random2<<4)+792-1];
+const n17 = d[random1+(random2<<4)+792+1];
+const w18 = (n14===1||n14===3)?1:0;
+const w19 = (n15===1||n15===3)?1:0;
+const w20 = (n16===1||n16===3)?1:0;
+const w21 = (n17===1||n17===3)?1:0;
+if ((w18||w19) && (w20||w21)) {num2++;}
+else break;
+}
+d[random1+(random2<<4)+792] = 5;
+d[6] = random1; d[7] = random2;
+}
 
-  // --- Main calculation ---
-  calculateDetail(){
-    for (let i = 0; i < 16; i++) {
-      this.di[i].fill(0);
-    }
-    this._details.fill(0);
-    if (this.MapRank < 2 || this.MapRank > 248) return;
+// --- routineK: place treasure boxes ---
+routineK(floor) {
+const d = this.di[floor];
+const random1 = this.gRNGRange(1, 3);
+d[8] = random1;
+let num1 = 0, num2 = 0;
+do {
+const idx = this.gRNGRange(0, d[23]-1)*20+472;
+const random2 = this.gRNGRange(d[idx], d[idx+2]);
+const random3 = this.gRNGRange(d[idx+1], d[idx+3]);
+// 取得該座標目前的狀態 (num3)
+const num3 = d[random2+((random3 & 255)<<4)+792];
+// 致命的防呆邏輯
+if (num1<100 && (d[0] === 3 || d[0] === 1)) {
+num1++;
+} else if (num3 === 6 || num3 === 4 || num3 === 5) {
+// 如果踩到別人已經放的寶箱(6)、上樓梯(4)、下樓梯(5)，就重新骰一次
+num1++;
+} else {
+// 否則，管他是什麼東西，直接填上寶箱(6)
+d[random2+((random3 & 255)<<4)+792] = 6;
+d[num2*2+13] = random2;
+d[num2*2+14] = random3;
+num2++;
+}
+} while (num2 < (random1 & 255));
+return 1;
+}
 
-    this._seed = this.MapSeed;
+// --- Main calculation ---
+calculateDetail(){
+for (let i = 0; i < 16; i++) {
+this.di[i].fill(0);
+}
+this._details.fill(0);
+if (this.MapRank < 2 || this.MapRank > 248) return;
 
-    // Skip 12 random calls
-    for (let i=0; i<12; i++) this.gRNGDiv(100);
+this._seed = this.MapSeed;
 
-    this._details[3] = this.seek1(TableA, 5);
-    this._details[1] = this.seek2(TableB, this.MapRank, 9);
+// Skip 12 random calls
+for (let i=0; i<12; i++) this.gRNGDiv(100);
 
-    // Back to original code
-    this._details[2] = this.seek2(TableC, this.MapRank, 8);
-    this._details[0] = this.seek4(TableD, TableE, 9);
-    for (let i = 0; i < 12; i++)
-    this._details[i+1+7] = this.seek3(TableF[i*4+1], TableF[i*4+2]);
-    this._details[5] = this.seek2(TableH, this._details[2], 5);
-    this._details[6] = this.seek2(TableI, this._details[0], 4);
-    this._details[7] = this.seek2(TableG, this._details[1], 8);
-    let num1 = (this._details[0]+this._details[1]+this._details[2]-4)*3 + (this.gRNGDiv(11)-5);
-    if (num1<1) num1 = 1;
-    if (num1>99) num1 = 99;
-    this._details[4] = num1;
+this._details[3] = this.seek1(TableA, 5);
+this._details[1] = this.seek2(TableB, this.MapRank, 9);
+this._details[2] = this.seek2(TableC, this.MapRank, 8);
+this._details[0] = this.seek4(TableD, TableE, 9);
+for (let i = 0; i < 12; i++)
+this._details[i+1+7] = this.seek3(TableF[i*4+1], TableF[i*4+2]);
+this._details[5] = this.seek2(TableH, this._details[2], 5);
+this._details[6] = this.seek2(TableI, this._details[0], 4);
+this._details[7] = this.seek2(TableG, this._details[1], 8);
+let num1 = (this._details[0]+this._details[1]+this._details[2]-4)*3 + (this.gRNGDiv(11)-5);
+if (num1<1) num1 = 1;
+if (num1>99) num1 = 99;
+this._details[4] = num1;
 
-    // Floor dimensions
-    for (let i = 1; i < this._details[1]+1; i++) {
-      let num9;
-      if (i>12) num9 = 16;
-      else if (i>8) num9 = (this.MapSeed+i)%3+14;
-      else if (i>4) num9 = (this.MapSeed+i)%4+12;
-      else num9 = (this.MapSeed+i)%5+10;
-      this.di[i-1][2] = num9;
-      this.di[i-1][3] = num9;
-    }
+// Floor dimensions
+for (let i = 1; i < this._details[1]+1; i++) {
+let num9;
+if (i>12) num9 = 16;
+else if (i>8) num9 = (this.MapSeed+i)%3+14;
+else if (i>4) num9 = (this.MapSeed+i)%4+12;
+else num9 = (this.MapSeed+i)%5+10;
+this.di[i-1][2] = num9;
+this.di[i-1][3] = num9;
+}
 
-    this.createDungeonDetail();
-  }
+this.createDungeonDetail();
+}
 
-  createDungeonDetail() {
-    for (let index1=1; index1<this._details[1]+1; index1++) {
-      const floor = index1 - 1;
-      const d = this.di[floor];
-      d[0] = index1;
-      d[8] = 0;
-      this._seed = (this.MapSeed+index1) >>> 0;
+createDungeonDetail() {
+for (let index1=1; index1<this._details[1]+1; index1++) {
+const floor = index1 - 1;
+const d = this.di[floor];
+d[0] = index1;
+d[8] = 0;
+this._seed = (this.MapSeed+index1) >>> 0;
 
-      this.routine1(floor, 792, 1, 256);
-      d[21]=1; d[22]=0; d[23]=0; d[1]=0;
-      this.setValue(floor, 24, 1, 1, d[2]-2, d[3]-2);
-      d[28]=0; d[29]=0;
-      this.routineF(floor, 24);
+this.routine1(floor, 792, 1, 256);
+d[21]=1; d[22]=0; d[23]=0; d[1]=0;
+this.setValue(floor, 24, 1, 1, d[2]-2, d[3]-2);
+d[28]=0; d[29]=0;
+this.routineF(floor, 24);
 
-      for (let i2=0; i2<d[21]; i2++)
-        if (this.routineC(floor, i2*12+24, d[23]*20+472))
-          d[23]++;
-      for (let i3=0; i3<d[21]; i3++)
-        this.generateFloorMap(floor, i3*12+24);
-      for (let i4=0; i4<d[22]; i4++)
-        this.routineG(floor, (i4<<4)+216);
+for (let i2=0; i2<d[21]; i2++)
+if (this.routineC(floor, i2*12+24, d[23]*20+472))
+d[23]++;
+for (let i3=0; i3<d[21]; i3++)
+this.generateFloorMap(floor, i3*12+24);
+for (let i4=0; i4<d[22]; i4++)
+this.routineG(floor, (i4<<4)+216);
 
-      // Border walls
-      for (let i5=0; i5<d[2]; i5++) {
-        d[i5+792] = 1;
-        d[((d[3]-1)<<4)+i5+792] = 1;
-      }
-      for (let i6=0; i6<d[3]; i6++) {
-        d[(i6<<4)+792] = 1;
-        d[(i6<<4)+792+d[2]-1] = 1;
-      }
+// Border walls
+for (let i5=0; i5<d[2]; i5++) {
+d[i5+792] = 1;
+d[((d[3]-1)<<4)+i5+792] = 1;
+}
+for (let i6=0; i6<d[3]; i6++) {
+d[(i6<<4)+792] = 1;
+d[(i6<<4)+792+d[2]-1] = 1;
+}
 
-     this.routineJ(floor);
-     if (d[0]<=2) d[8]=0;
-     else this.routineK(floor);
-     }
+this.routineJ(floor);
+if (d[0]<=2) d[8]=0;
+else this.routineK(floor);
+}
 
-    // Treasure box ranks (floors 3+)
-    for (let i12=2; i12<this._details[1]; i12++) {
-      const d = this.di[i12];
-      this._seed = (this.MapSeed+i12+1) >>> 0;
-      for (let i13=0; i13<d[8]<<1; i13++) this.gRNG();
-      const num = this._details[2]+(i12/4|0);
-      for (let i14=0; i14<d[8]; i14++) {
-        d[i14+9] = this.getItemRank(TableF[(num-1)*4+1], TableF[(num-1)*4+2]);
-      }
-    }
-  }
+// Treasure box ranks (floors 3+)
+for (let i12=2; i12<this._details[1]; i12++) {
+const d = this.di[i12];
+this._seed = (this.MapSeed+i12+1) >>> 0;
+for (let i13=0; i13<d[8]<<1; i13++) this.gRNG();
+const num = this._details[2]+(i12/4|0);
+for (let i14=0; i14<d[8]; i14++) {
+d[i14+9] = this.getItemRank(TableF[(num-1)*4+1], TableF[(num-1)*4+2]);
+}
+}
+}
 
-  // --- Accessors ---
-  get floorCount(){return this._details[1];}
-  getBoxCount(f){return this.di[f][8];}
-  getBoxInfo(f, i) {
-    const d = this.di[f];
-    return{rank: d[9+i], x: d[i*2+13], y: d[i*2+14]};
-  }
-  getBoxItem(floor,boxIndex,second) {
-    this._seed=(this.di[floor][0]+this.MapSeed+second)>>>0;
-    for (let i1=0; i1<this.di[floor][8]; i1++) {
-      const num1=this.routineRandom(100);
-      if (i1===boxIndex) {
-        const index2=this.di[floor][i1+9];
-        const num2=TableO[index2-1], num3=TableO[index2];
-        let num4=0;
-        for (let i3=num2; i3<num3; i3++) {
-          num4+=TableP[i3];
-          if (num1<num4) return [TableR[TableQ[i3]][0], TableR[TableQ[i3]][1]];
-        }
-      }
-    }
-    return [null, null];
-  }
+// --- Accessors ---
+get floorCount(){return this._details[1];}
+getBoxCount(f){return this.di[f][8];}
+getBoxInfo(f, i) {
+const d = this.di[f];
+return{rank: d[9+i], x: d[i*2+13], y: d[i*2+14]};
+}
+getBoxItem(floor,boxIndex,second) {
+this._seed=(this.di[floor][0]+this.MapSeed+second)>>>0;
+for (let i1=0; i1<this.di[floor][8]; i1++) {
+const num1=this.routineRandom(100);
+if (i1===boxIndex) {
+const index2=this.di[floor][i1+9];
+const num2=TableO[index2-1], num3=TableO[index2];
+let num4=0;
+for (let i3=num2; i3<num3; i3++) {
+num4+=TableP[i3];
+if (num1<num4) return [TableR[TableQ[i3]][0], TableR[TableQ[i3]][1]];
+}
+}
+}
+return [null, null];
+}
 }
 
 // === Marathon Logic v4 ===
@@ -870,15 +879,15 @@ const VISIBLE_CELLS = 25;
 
 // Item highlight
 const S_WEAPONS = ['Stardust sword','Poker','Deft dagger','Bright staff','Gringham whip',
-  'Knockout rod','Dragonlord claws','Critical fan','Bad axe','Groundbreaker','Meteorang',"Angel's bow"];
+'Knockout rod','Dragonlord claws','Critical fan','Bad axe','Groundbreaker','Meteorang',"Angel's bow"];
 const MILLIONAIRE = ['Hero spear','Pruning knife','Wyrmwand','Wizardly whip','Beast claws','Attribeauty',
-  'Heavy hatchet','Megaton hammer','Pentarang','Metal slime sword','Metal slime spear'];
+'Heavy hatchet','Megaton hammer','Pentarang','Metal slime sword','Metal slime spear'];
 const ITEM_HL = {};
 ITEM_HL['Sainted soma'] = {bg:'#FFC90E',fg:'#000',bd:'#da0'};
 S_WEAPONS.forEach(w => ITEM_HL[w] = {bg:'#22B14C',fg:'#fff',bd:'#3d7'});
 ITEM_HL['Ethereal stone'] = {bg:'#EF1BBA',fg:'#fff',bd:'#f5d'};
 ['Metal slime shield','Metal slime armour','Metal slime helm','Metal slime gauntlets','Metal slime sollerets']
-  .forEach(i => ITEM_HL[i] = {bg:'#383850',fg:'#d0d8f0',bd:'#88a'});
+.forEach(i => ITEM_HL[i] = {bg:'#383850',fg:'#d0d8f0',bd:'#88a'});
 MILLIONAIRE.forEach(i => ITEM_HL[i] = {bg:'#00a2e8',fg:'#fff',bd:'#4cf'});
 ITEM_HL['Lucida shard'] = {bg:'#B5E61D',fg:'#000',bd:'#8c0'};
 ['Dangerous bustier','Fuddle bow'].forEach(i => ITEM_HL[i] = {bg:'#FFAEC9',fg:'#000',bd:'#f8a'});
@@ -887,26 +896,34 @@ let displayLang = 'jp'; // 'en' or 'jp'
 
 // Presets: custom = { floorNum: [boxIndices (0-based)] }
 const PRESETS_DATA = {
-  'DD,263C': {
-    label: 'あら風73 DD 263C',
-    // S8A4 (excl B5F): A=B3#0,B4#0,B7#0,B8#1  S=B9#0,B10-16#0
-    custom: {3:[0],4:[0],7:[0],8:[1],9:[0],10:[0],11:[0],12:[0],13:[0],14:[0],15:[0],16:[0]}
-  },
-  'B5,3CA2': {
-    label: '川崎ロッカー B5 3CA2',
-    // S4A5B1: A=B4#0,B5#0,B6#0,B7#0,B8#2  B=B8#0  S=B9#0,B10#1,B13#0,B14#0
-    custom: {4:[0],5:[0],6:[0],7:[0],8:[0,2],9:[0],10:[1],13:[0],14:[0]}
-  },
-  'C9,7FE0': {
-    label: 'ゆりっぺ C9 7FE0',
-    // S4A5B1: A=B3#0,B4#0,B4#2,B5#0,B8#0  B=B9#1  S=B10#0,B11#0,B12#0,B13#0
-    custom: {3:[0],4:[0,2],5:[0],8:[0],9:[1],10:[0],11:[0],12:[0],13:[0]}
-  },
-  'C9,2AC6': {
-    label: 'ゆりっぺ大富豪 C9 2AC6',
-    // B2: B=B3#0,B3#1
-    custom: {3:[0,1]}
-  }
+'DD,263C': {
+label: '【あら風73】あらぶる風の巣Lv73（DD 263C）',
+custom: {3:[0],4:[0],7:[0],8:[1],9:[0],10:[0],11:[0],12:[0],13:[0],14:[0],15:[0],16:[0]}
+},
+'B5,3CA2': {
+label: '【川崎ロッカー】あらぶる光の世界Lv86（B5 3CA2）',
+custom: {4:[0],5:[0],6:[0],7:[0],8:[0,2],9:[0],10:[1],13:[0],14:[0]}
+},
+'DD,2E7A': {
+label: '【ましゃ725ソーマ】残された空の道Lv70（DD 2E7A）',
+custom: {3:[0],4:[0],6:[0],9:[0],10:[0],11:[0,2],12:[1]}
+},
+'C9,7FE0': {
+label: '【ゆりっぺ】あらぶる夢の水脈Lv64（C9 7FE0）',
+custom: {3:[0],4:[0,2],5:[0],8:[0],9:[1],10:[0],11:[0],12:[0],13:[0]}
+},
+'C9,2AC6': {
+label: '【ゆりっぺ大富豪】見えざる獣の墓場Lv73（C9 2AC6）',
+custom: {3:[0,1]}
+},
+'DD,32BB': {
+label: '【ジャギ大富豪】大いなる岩の世界Lv63（DD 32BB）',
+custom: {3:[0,1,2],4:[0,1]}
+},
+'DD,47D0': {
+label: '【御柱げんま】とどろく花のじごくLv67（DD 47D0）',
+custom: {3:[0,1],5:[0],6:[0],7:[0,1,2],8:[0]}
+},
 };
 
 let engine = null;
@@ -921,197 +938,198 @@ let realSec = 0;
 function internalSec() { return realSec - 5; }
 
 function timerLoop() {
-  if (!timerRunning) return;
-  const elapsed = Date.now() - timerOrigin;
-  const newSec = Math.floor(elapsed / 1000);
-  updateStopwatch(elapsed);
-  if (newSec !== realSec) { realSec = newSec; renderCells(); }
-  timerRAF = requestAnimationFrame(timerLoop);
+if (!timerRunning) return;
+const elapsed = Date.now() - timerOrigin;
+const newSec = Math.floor(elapsed / 1000);
+updateStopwatch(elapsed);
+if (newSec !== realSec) { realSec = newSec; renderCells(); }
+timerRAF = requestAnimationFrame(timerLoop);
 }
 
 function updateStopwatch(elapsedMs) {
-  const totalSec = elapsedMs / 1000;
-  const s = Math.floor(totalSec);
-  const cs = Math.floor((totalSec - s) * 100);
-  document.getElementById('timerText').textContent = String(s).padStart(3, '0') + '.' + String(cs).padStart(2, '0');
-  document.getElementById('timerDisp').style.color = (s < 5) ? '#f88' : '#0f0';
-  const prep = document.getElementById('prepLabel');
-  if (s < 5) { prep.textContent = `▸${5-s}`; prep.style.display = ''; }
-  else { prep.style.display = 'none'; }
+const totalSec = elapsedMs / 1000;
+const s = Math.floor(totalSec);
+const cs = Math.floor((totalSec - s) * 100);
+document.getElementById('timerText').textContent = String(s).padStart(3, '0') + '.' + String(cs).padStart(2, '0');
+document.getElementById('timerDisp').style.color = (s < 5) ? '#f88' : '#0f0';
+const prep = document.getElementById('prepLabel');
+if (s < 5) { prep.textContent = `▸${5-s}`; prep.style.display = ''; }
+else { prep.style.display = 'none'; }
 }
 
 function getItemAtSec(floorIdx, boxIdx, sec) {
-  if (sec < 0) return [null, null];
-  return engine.getBoxItem(floorIdx, boxIdx, sec);
+if (sec < 0) return [null, null];
+return engine.getBoxItem(floorIdx, boxIdx, sec);
 }
 
 function compute() {
-  const rankStr = document.getElementById('inRank').value;
-  const seedStr = document.getElementById('inSeed').value.trim();
-  const seed = parseInt(seedStr, 16);
-  if (isNaN(seed) || seed < 0 || seed > 0xFFFF) {
-    document.getElementById('mainArea').innerHTML='<p style="color:#f44;padding:20px;">Invalid Seed</p>';
-    return;
-  }
-  engine = new GrottoDetail();
-  engine.MapSeed = seed;
-  engine.MapRank = parseInt(rankStr, 16);
-  engine.calculateDetail();
+const rankStr = document.getElementById('inRank').value;
+const seedStr = document.getElementById('inSeed').value.trim();
+const seed = parseInt(seedStr, 16);
+if (isNaN(seed) || seed < 0 || seed > 0xFFFF) {
+document.getElementById('mainArea').innerHTML='<p style="color:#f44;padding:20px;">Invalid Seed</p>';
+return;
+}
+engine = new GrottoDetail();
+engine.MapSeed = seed;
+engine.MapRank = parseInt(rankStr, 16);
+engine.calculateDetail();
 
-  chestList = [];
-  for (let f = 0; f < engine.floorCount; f++) {
-    const d = engine.di[f];
-    for (let b = 0; b < d[8]; b++) {
-      const info = engine.getBoxInfo(f, b);
-      chestList.push({
-        floor: f, floorNum: f + 1, floorLabel: `B${f+1}F`,
-        box: b, rank: info.rank, rankName: RANK_NAMES[info.rank] || '?'
-      });
-    }
-  }
-  buildRows();
-  refreshVisibility();
-  renderCells();
+chestList = [];
+for (let f = 0; f < engine.floorCount; f++) {
+const d = engine.di[f];
+for (let b = 0; b < d[8]; b++) {
+const info = engine.getBoxInfo(f, b);
+chestList.push({
+floor: f, floorNum: f + 1, floorLabel: `B${f+1}F`,
+box: b, rank: info.rank, rankName: RANK_NAMES[info.rank] || '?'
+});
+}
+}
+buildRows();
+refreshVisibility();
+renderCells();
 }
 
 function isVisible(cd) {
-  if (currentFilter === 'CUSTOM' && customFilter) {
-    const allowed = customFilter[cd.floorNum];
-    return allowed ? allowed.includes(cd.box) : false;
-  }
-  if (currentFilter === 'SA') return cd.rank >= 9;
-  if (currentFilter === 'AB') return cd.rank === 9 || cd.rank === 8;
-  return true;
+if (currentFilter === 'CUSTOM' && customFilter) {
+const allowed = customFilter[cd.floorNum];
+return allowed ? allowed.includes(cd.box) : false;
+}
+if (currentFilter === 'SA') return cd.rank >= 9;
+if (currentFilter === 'AB') return cd.rank === 9 || cd.rank === 8;
+return true;
 }
 
 function buildRows() {
-  const area = document.getElementById('mainArea');
-  let html = '', lastFloor = -1;
-  chestList.forEach((cd, idx) => {
-    const vis = isVisible(cd);
-    if (cd.floor !== lastFloor) {
-      lastFloor = cd.floor;
-      html += `<div class="floor-label${vis?'':' hidden'}" data-floor="${cd.floor}">${cd.floorLabel}</div>`;
-    }
-    html += `<div class="chest-row${vis?'':' hidden'}" data-idx="${idx}">
-      <div class="chest-hdr"><span class="rk" style="color:${RANK_COLORS[cd.rank]||'#888'}">${cd.rankName}${cd.box+1}</span></div>
-      <div class="strip-wrap"><div class="strip" id="strip-${idx}"></div></div>
-    </div>`;
-  });
-  area.innerHTML = html || '<p style="color:#555;padding:20px;text-align:center;">No chests</p>';
+const area = document.getElementById('mainArea');
+let html = '', lastFloor = -1;
+chestList.forEach((cd, idx) => {
+const vis = isVisible(cd);
+if (cd.floor !== lastFloor) {
+lastFloor = cd.floor;
+html += `<div class="floor-label${vis?'':' hidden'}" data-floor="${cd.floor}">${cd.floorLabel}</div>`;
+}
+html += `<div class="chest-row${vis?'':' hidden'}" data-idx="${idx}">
+<div class="chest-hdr"><span class="rk" style="color:${RANK_COLORS[cd.rank]||'#888'}">${cd.rankName}${cd.box+1}</span></div>
+<div class="strip-wrap"><div class="strip" id="strip-${idx}"></div></div>
+</div>`;
+});
+area.innerHTML = html || '<p style="color:#555;padding:20px;text-align:center;">No chests</p>';
 }
 
 function renderCells() {
-  const is = internalSec();
-  const startSec = Math.max(0, is);
-  const endSec = is + VISIBLE_CELLS;
+const is = internalSec();
+const startSec = Math.max(0, is);
+const endSec = is + VISIBLE_CELLS;
 
-  chestList.forEach((cd, idx) => {
-    if (!isVisible(cd)) return;
-    const strip = document.getElementById('strip-' + idx);
-    if (!strip) return;
-    let html = '', prevItem = null;
-    for (let s = startSec; s <= endSec; s++) {
-      const [en, jp] = (s >= 0) ? getItemAtSec(cd.floor, cd.box, s) : [null, null];
-      const realT = s + 5;
-      const isCur = (s === is);
-      const isTrans = (en !== prevItem && prevItem !== null && s > startSec);
-      prevItem = en;
+const itemFont = displayLang !== 'jp' ? 'font-family:system-ui,-apple-system,sans-serif;' : '';
+chestList.forEach((cd, idx) => {
+if (!isVisible(cd)) return;
+const strip = document.getElementById('strip-' + idx);
+if (!strip) return;
+let html = '', prevItem = null;
+for (let s = startSec; s <= endSec; s++) {
+const [en, jp] = (s >= 0) ? getItemAtSec(cd.floor, cd.box, s) : [null, null];
+const realT = s + 5;
+const isCur = (s === is);
+const isTrans = (en !== prevItem && prevItem !== null && s > startSec);
+prevItem = en;
 
-      const hl = en ? ITEM_HL[en] : null;
-      const cellStyle = hl
-        ? `background:${hl.bg};border:1px solid ${hl.bd};border-radius:3px;`
-        : '';
-      const fg = hl ? hl.fg : '#bbb';
-      const label = displayLang === 'jp' ? (jp || en || '—') : (en || '—');
+const hl = en ? ITEM_HL[en] : null;
+const cellStyle = hl
+? `background:${hl.bg};border:1px solid ${hl.bd};border-radius:3px;`
+: '';
+const fg = hl ? hl.fg : '#bbb';
+const label = displayLang === 'jp' ? (jp || en || '—') : (en || '—');
 
-      let cls = 'cell';
-      if (isCur) cls += ' cell-cur';
-      if (isTrans) cls += ' cell-trans';
-      if (s < 0) cls += ' cell-prep';
+let cls = 'cell';
+if (isCur) cls += ' cell-cur';
+if (isTrans) cls += ' cell-trans';
+if (s < 0) cls += ' cell-prep';
 
-      html += `<div class="${cls}" style="${cellStyle}min-width:${CELL_W}px;max-width:${CELL_W}px;" title="${realT}s: ${en||''}\n${jp||''}">
-        <div class="cell-time">${String(realT).padStart(3,'0')}</div>
-        <div class="cell-item" style="color:${fg}">${label}</div>
-      </div>`;
-    }
-    strip.innerHTML = html;
-    strip.style.transform = 'translateX(0)';
-  });
+html += `<div class="${cls}" style="${cellStyle}min-width:${CELL_W}px;max-width:${CELL_W}px;" title="${realT}s: ${en||''}\n${jp||''}">
+<div class="cell-time">${String(realT).padStart(3,'0')}</div>
+<div class="cell-item" style="color:${fg};${itemFont}">${label}</div>
+</div>`;
+}
+strip.innerHTML = html;
+strip.style.transform = 'translateX(0)';
+});
 }
 
 function toggleTimer() {
-  if (timerRunning) {
-    timerRunning = false;
-    if (timerRAF) { cancelAnimationFrame(timerRAF); timerRAF = null; }
-    document.getElementById('btnStart').textContent = '▶';
-    document.getElementById('btnStart').classList.remove('running');
-  } else {
-    timerOrigin = Date.now() - realSec * 1000;
-    timerRunning = true;
-    document.getElementById('btnStart').textContent = '⏸';
-    document.getElementById('btnStart').classList.add('running');
-    timerLoop();
-  }
+if (timerRunning) {
+timerRunning = false;
+if (timerRAF) { cancelAnimationFrame(timerRAF); timerRAF = null; }
+document.getElementById('btnStart').textContent = '▶';
+document.getElementById('btnStart').classList.remove('running');
+} else {
+timerOrigin = Date.now() - realSec * 1000;
+timerRunning = true;
+document.getElementById('btnStart').textContent = '⏸';
+document.getElementById('btnStart').classList.add('running');
+timerLoop();
+}
 }
 
 function resetTimer() {
-  if (timerRunning) { cancelAnimationFrame(timerRAF); timerRAF = null; timerRunning = false; }
-  realSec = 0;
-  document.getElementById('btnStart').textContent = '▶';
-  document.getElementById('btnStart').classList.remove('running');
-  updateStopwatch(0);
-  renderCells();
+if (timerRunning) { cancelAnimationFrame(timerRAF); timerRAF = null; timerRunning = false; }
+realSec = 0;
+document.getElementById('btnStart').textContent = '▶';
+document.getElementById('btnStart').classList.remove('running');
+updateStopwatch(0);
+renderCells();
 }
 
 function setFilter(f) {
-  currentFilter = f;
-  customFilter = null;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
-  refreshVisibility();
-  renderCells();
+currentFilter = f;
+customFilter = null;
+document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+refreshVisibility();
+renderCells();
 }
 
 function toggleLang() {
-  displayLang = displayLang === 'en' ? 'jp' : 'en';
-  document.getElementById('btnLang').textContent = displayLang.toUpperCase();
-  renderCells();
+displayLang = displayLang === 'en' ? 'jp' : 'en';
+document.getElementById('btnLang').textContent = displayLang.toUpperCase();
+renderCells();
 }
 
 function refreshVisibility() {
-  document.querySelectorAll('.chest-row').forEach(el => {
-    const cd = chestList[parseInt(el.dataset.idx)];
-    el.classList.toggle('hidden', !isVisible(cd));
-  });
-  document.querySelectorAll('.floor-label').forEach(el => {
-    const floor = parseInt(el.dataset.floor);
-    el.classList.toggle('hidden', !chestList.some(cd => cd.floor === floor && isVisible(cd)));
-  });
+document.querySelectorAll('.chest-row').forEach(el => {
+const cd = chestList[parseInt(el.dataset.idx)];
+el.classList.toggle('hidden', !isVisible(cd));
+});
+document.querySelectorAll('.floor-label').forEach(el => {
+const floor = parseInt(el.dataset.floor);
+el.classList.toggle('hidden', !chestList.some(cd => cd.floor === floor && isVisible(cd)));
+});
 }
 
 function applyPreset() {
-  const sel = document.getElementById('presets');
-  if (!sel.value) return;
-  const [rank, seed] = sel.value.split(',');
-  document.getElementById('inRank').value = rank;
-  document.getElementById('inSeed').value = seed;
-  const pd = PRESETS_DATA[sel.value];
-  if (pd && pd.custom) {
-    currentFilter = 'CUSTOM';
-    customFilter = pd.custom;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  }
-  resetTimer();
-  compute();
-  sel.selectedIndex = 0;
+const sel = document.getElementById('presets');
+if (!sel.value) return;
+const [rank, seed] = sel.value.split(',');
+document.getElementById('inRank').value = rank;
+document.getElementById('inSeed').value = seed;
+const pd = PRESETS_DATA[sel.value];
+if (pd && pd.custom) {
+currentFilter = 'CUSTOM';
+customFilter = pd.custom;
+document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+}
+resetTimer();
+compute();
+sel.selectedIndex = 0;
 }
 
 function onInputChange() {
-  customFilter = null;
-  currentFilter = 'ALL';
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === 'ALL'));
-  resetTimer();
-  compute();
+customFilter = null;
+currentFilter = 'ALL';
+document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === 'ALL'));
+resetTimer();
+compute();
 }
 
 window.addEventListener('DOMContentLoaded', () => { compute(); updateStopwatch(0); });
