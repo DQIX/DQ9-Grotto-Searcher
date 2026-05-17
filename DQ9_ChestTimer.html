@@ -6,8 +6,8 @@
 <title>DQ9 Chest Timer (for Marathon)</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0a0a1a;color:#ccc;font-family:'Courier New',monospace;overflow:hidden;height:100vh;display:flex;flex-direction:column}
-.topbar{background:#111128;padding:8px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;border-bottom:2px solid #333;z-index:10}
+body{background:#0a0a1a;color:#ccc;font-family:'Courier New',monospace;margin:0;overflow:hidden}
+.topbar{background:#111128;padding:8px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;border-bottom:2px solid #333}
 .topbar label{color:#88b;font-size:12px}
 .topbar input,.topbar select{background:#000;color:#ffd700;border:1px solid #555;padding:4px 6px;font-size:13px;font-family:inherit;border-radius:3px}
 .topbar input{width:60px;text-align:center}
@@ -16,35 +16,33 @@ body{background:#0a0a1a;color:#ccc;font-family:'Courier New',monospace;overflow:
 .filter-btn{padding:4px 10px;border:1px solid #555;background:#1a1a2e;color:#aaa;cursor:pointer;font-size:12px;border-radius:3px;font-family:inherit}
 .filter-btn.active{background:#2a2a4a;color:#ffd700;border-color:#ffd700}
 .timer-box{display:flex;align-items:center;gap:6px;margin-left:auto}
-.timer-display{background:#0f0f2a;padding:4px 10px;border:2px solid #333;border-radius:6px;font-size:26px;font-weight:bold;color:#0f0;min-width:130px;text-align:center;letter-spacing:2px;position:relative}
-#prepLabel{position:absolute;top:-2px;right:-8px;font-size:14px;color:#f88;font-weight:bold}
+.timer-display{background:#0f0f2a;padding:4px 10px;border:2px solid #333;border-radius:6px;font-size:26px;font-weight:bold;color:#f88;min-width:130px;text-align:center;letter-spacing:2px}
 .ctrl-btn{width:44px;height:44px;border:none;border-radius:6px;font-size:20px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}
 .ctrl-btn.start{background:#060;color:#0f0;border:2px solid #0a0}
 .ctrl-btn.start:active{background:#080}
 .ctrl-btn.start.running{background:#600;color:#f88;border-color:#a00}
 .ctrl-btn.reset{background:#333;color:#888;border:2px solid #555;font-size:16px}
 .ctrl-btn.reset:active{background:#444}
-.main{flex:1;overflow-y:auto;overflow-x:hidden}
-.floor-label{color:#0ca;font-size:11px;font-weight:bold;padding:2px 8px;background:#0a0a2a;border-left:3px solid #0ca;position:sticky;left:0}
-.chest-row{display:flex;align-items:stretch;height:44px;border-bottom:1px solid #1a1a2a}
-.chest-hdr{width:36px;min-width:36px;padding:2px 4px;font-size:12px;display:flex;align-items:center;justify-content:center;background:#111;border-right:1px solid #333;position:sticky;left:0;z-index:2;font-weight:bold}
-.strip-wrap{flex:1;overflow:hidden;position:relative}
-.strip{display:flex;transition:transform 0.35s linear;will-change:transform}
-.cell{display:flex;flex-direction:column;justify-content:center;align-items:center;border-right:1px solid #1a1a30;padding:1px 3px;flex-shrink:0}
-.cell-time{font-size:9px;color:#556;line-height:1}
-.cell-item{font-size:10px;line-height:1.2;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;color:#bbb}
-.cell-cur{border-left:3px solid #4f4}
-.cell-cur .cell-time{color:#4f4;font-weight:bold}
-.cell-trans{border-left:2px solid #fa0}
-.cell-trans .cell-item{color:#ffd700}
-.cell-prep{opacity:0.3}
+#mainArea{display:block;clear:both;width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+.vgrid{display:grid;width:max-content}
+.vhdr{position:sticky;top:0;z-index:4;background:#111128;padding:5px 6px;font-weight:bold;font-size:11px;white-space:nowrap;text-align:center;color:#88b;border-bottom:2px solid #333}
+.vhdr-rk{font-size:13px;font-weight:bold}
+.vhdr-floor{font-size:10px;color:#0ca}
+.vhdr-time{position:sticky;top:0;left:0;z-index:6;background:#111128;color:#99b;min-width:42px;padding:5px 4px;text-align:center;border-bottom:2px solid #333}
+.vcell{padding:3px 5px;font-size:11px;white-space:nowrap;border-bottom:1px solid #151525;text-align:center;color:#ddd;min-width:80px}
+.vtime{position:sticky;left:0;z-index:2;background:#0a0a1a;color:#aab;font-size:10px;min-width:42px;text-align:center;font-weight:normal;padding:3px 4px;border-bottom:1px solid #151525}
+.vtime.vrow-cur{background:#0a1a0a;color:#4f4;font-weight:bold}
+.vcell.vrow-cur{background:#0a1a0a}
+.vcell-en{font-family:system-ui,-apple-system,sans-serif}
 .hidden{display:none!important}
 @media(max-width:600px){
-.chest-hdr{width:32px;min-width:32px;font-size:11px}
-.cell-item{font-size:9px}
+.vcell,.vhdr{padding:3px 3px;font-size:10px}
+.vtime{font-size:9px;min-width:36px}
 }
 </style>
 </head>
+<body>
+<div class="topbar">
 <body>
 <div class="topbar">
 <label>Rank</label>
@@ -73,7 +71,7 @@ body{background:#0a0a1a;color:#ccc;font-family:'Courier New',monospace;overflow:
 <button class="filter-btn" id="btnLang" onclick="toggleLang()" style="color:#0ca;border-color:#0ca;">JP</button>
 <span class="sep"></span>
 <div class="timer-box">
-<div class="timer-display" id="timerDisp"><span id="timerText">000.00</span><span id="prepLabel" style="display:none"></span></div>
+<div class="timer-display" id="timerDisp"><span id="timerText">-03.00</span></div>
 <button class="ctrl-btn start" id="btnStart" onclick="toggleTimer()">▶</button>
 <button class="ctrl-btn reset" id="btnReset" onclick="resetTimer()">⟲</button>
 </div>
@@ -872,10 +870,10 @@ return [null, null];
 }
 
 // === Marathon Logic v4 ===
+// === Marathon Logic v5 (Vertical) ===
 const RANK_COLORS = {10:'#f4f',9:'#fa0',8:'#4cf',7:'#8f8',6:'#ff8',5:'#aaa',4:'#888',3:'#666',2:'#555',1:'#444'};
 const RANK_NAMES = {10:'S',9:'A',8:'B',7:'C',6:'D',5:'E',4:'F',3:'G',2:'H',1:'I'};
-const CELL_W = 110;
-const VISIBLE_CELLS = 25;
+const PREVIEW_ROWS = 80;
 
 // Item highlight
 const S_WEAPONS = ['Stardust sword','Poker','Deft dagger','Bright staff','Gringham whip',
@@ -884,255 +882,222 @@ const MILLIONAIRE = ['Hero spear','Pruning knife','Wyrmwand','Wizardly whip','Be
 'Heavy hatchet','Megaton hammer','Pentarang','Metal slime sword','Metal slime spear'];
 const ITEM_HL = {};
 ITEM_HL['Sainted soma'] = {bg:'#FFC90E',fg:'#000',bd:'#da0'};
-S_WEAPONS.forEach(w => ITEM_HL[w] = {bg:'#22B14C',fg:'#fff',bd:'#3d7'});
-ITEM_HL['Ethereal stone'] = {bg:'#EF1BBA',fg:'#fff',bd:'#f5d'};
+S_WEAPONS.forEach(w => ITEM_HL[w] = {bg:'#1a8a3c',fg:'#fff',bd:'#2a4'});
+ITEM_HL['Ethereal stone'] = {bg:'#c018a0',fg:'#fff',bd:'#e4c'};
 ['Metal slime shield','Metal slime armour','Metal slime helm','Metal slime gauntlets','Metal slime sollerets']
 .forEach(i => ITEM_HL[i] = {bg:'#383850',fg:'#d0d8f0',bd:'#88a'});
-MILLIONAIRE.forEach(i => ITEM_HL[i] = {bg:'#00a2e8',fg:'#fff',bd:'#4cf'});
+MILLIONAIRE.forEach(i => ITEM_HL[i] = {bg:'#0080c0',fg:'#fff',bd:'#4af'});
 ITEM_HL['Lucida shard'] = {bg:'#B5E61D',fg:'#000',bd:'#8c0'};
 ['Dangerous bustier','Fuddle bow'].forEach(i => ITEM_HL[i] = {bg:'#FFAEC9',fg:'#000',bd:'#f8a'});
 
-let displayLang = 'jp'; // 'en' or 'jp'
+let displayLang = 'jp';
 
-// Presets: custom = { floorNum: [boxIndices (0-based)] }
 const PRESETS_DATA = {
-'DD,263C': {
-label: '【あら風73】あらぶる風の巣Lv73（DD 263C）',
-custom: {3:[0],4:[0],7:[0],8:[1],9:[0],10:[0],11:[0],12:[0],13:[0],14:[0],15:[0],16:[0]}
-},
-'B5,3CA2': {
-label: '【川崎ロッカー】あらぶる光の世界Lv86（B5 3CA2）',
-custom: {4:[0],5:[0],6:[0],7:[0],8:[0,2],9:[0],10:[1],13:[0],14:[0]}
-},
-'DD,2E7A': {
-label: '【ましゃ725ソーマ】残された空の道Lv70（DD 2E7A）',
-custom: {3:[0],4:[0],6:[0],9:[0],10:[0],11:[0,2],12:[1]}
-},
-'C9,7FE0': {
-label: '【ゆりっぺ】あらぶる夢の水脈Lv64（C9 7FE0）',
-custom: {3:[0],4:[0,2],5:[0],8:[0],9:[1],10:[0],11:[0],12:[0],13:[0]}
-},
-'C9,2AC6': {
-label: '【ゆりっぺ大富豪】見えざる獣の墓場Lv73（C9 2AC6）',
-custom: {3:[0,1]}
-},
-'DD,32BB': {
-label: '【ジャギ大富豪】大いなる岩の世界Lv63（DD 32BB）',
-custom: {3:[0,1,2],4:[0,1]}
-},
-'DD,47D0': {
-label: '【御柱げんま】とどろく花のじごくLv67（DD 47D0）',
-custom: {3:[0,1],5:[0],6:[0],7:[0,1,2],8:[0]}
-},
+'DD,263C': {label:'あら風73',custom:{3:[0],4:[0],7:[0],8:[1],9:[0],10:[0],11:[0],12:[0],13:[0],14:[0],15:[0],16:[0]}},
+'B5,3CA2': {label:'川崎ロッカー',custom:{4:[0],5:[0],6:[0],7:[0],8:[0,2],9:[0],10:[1],13:[0],14:[0]}},
+'DD,2E7A': {label:'ましゃ725ソーマ',custom:{3:[0],4:[0],6:[0],7:[1],9:[0],10:[0],11:[0,2],12:[1]}},
+'C9,7FE0': {label:'ゆりっぺ',custom:{3:[0],4:[0,2],5:[0],8:[0],9:[1],10:[0],11:[0],12:[0],13:[0]}},
+'C9,2AC6': {label:'ゆりっぺ大富豪',custom:{3:[0,1]}},
+'DD,32BB': {label:'ジャギ大富豪',custom:{3:[0,1,2],4:[0,1]}},
+'DD,47D0': {label:'御柱げんま',custom:{3:[0,1],4:[1],5:[0],6:[0],7:[0,1,2],8:[0]}},
 };
 
 let engine = null;
 let chestList = [];
-let currentFilter = 'ALL'; // 'ALL','SA','AB','CUSTOM'
-let customFilter = null; // { floorNum: [ranks] } or null
+let visibleChests = [];
+let currentFilter = 'ALL';
+let customFilter = null;
 let timerRunning = false;
 let timerRAF = null;
 let timerOrigin = 0;
-let realSec = 0;
+let realSec = -3;
 
 function internalSec() { return realSec - 5; }
 
 function timerLoop() {
-if (!timerRunning) return;
-const elapsed = Date.now() - timerOrigin;
-const newSec = Math.floor(elapsed / 1000);
-updateStopwatch(elapsed);
-if (newSec !== realSec) { realSec = newSec; renderCells(); }
-timerRAF = requestAnimationFrame(timerLoop);
+  if (!timerRunning) return;
+  const elapsed = Date.now() - timerOrigin;
+  const newSec = Math.floor(elapsed / 1000);
+  updateStopwatch(elapsed);
+  if (newSec !== realSec) { realSec = newSec; renderRows(); }
+  timerRAF = requestAnimationFrame(timerLoop);
 }
 
 function updateStopwatch(elapsedMs) {
-const totalSec = elapsedMs / 1000;
-const s = Math.floor(totalSec);
-const cs = Math.floor((totalSec - s) * 100);
-document.getElementById('timerText').textContent = String(s).padStart(3, '0') + '.' + String(cs).padStart(2, '0');
-document.getElementById('timerDisp').style.color = (s < 5) ? '#f88' : '#0f0';
-const prep = document.getElementById('prepLabel');
-if (s < 5) { prep.textContent = `▸${5-s}`; prep.style.display = ''; }
-else { prep.style.display = 'none'; }
+  const isPrep = elapsedMs < 0;
+  const absMs = Math.abs(elapsedMs);
+  const totalSec = absMs / 1000;
+  const s = Math.floor(totalSec);
+  const cs = Math.floor((totalSec - s) * 100);
+  const text = isPrep
+    ? '-' + String(s).padStart(2, '0') + '.' + String(cs).padStart(2, '0')
+    : String(s).padStart(3, '0') + '.' + String(cs).padStart(2, '0');
+  document.getElementById('timerText').textContent = text;
+  document.getElementById('timerDisp').style.color = isPrep ? '#f88' : '#0f0';
 }
 
 function getItemAtSec(floorIdx, boxIdx, sec) {
-if (sec < 0) return [null, null];
-return engine.getBoxItem(floorIdx, boxIdx, sec);
+  if (sec < 0) return [null, null];
+  return engine.getBoxItem(floorIdx, boxIdx, sec);
 }
 
 function compute() {
-const rankStr = document.getElementById('inRank').value;
-const seedStr = document.getElementById('inSeed').value.trim();
-const seed = parseInt(seedStr, 16);
-if (isNaN(seed) || seed < 0 || seed > 0xFFFF) {
-document.getElementById('mainArea').innerHTML='<p style="color:#f44;padding:20px;">Invalid Seed</p>';
-return;
-}
-engine = new GrottoDetail();
-engine.MapSeed = seed;
-engine.MapRank = parseInt(rankStr, 16);
-engine.calculateDetail();
+  const rankStr = document.getElementById('inRank').value;
+  const seedStr = document.getElementById('inSeed').value.trim();
+  const seed = parseInt(seedStr, 16);
+  if (isNaN(seed) || seed < 0 || seed > 0xFFFF) {
+    document.getElementById('mainArea').innerHTML='<p style="color:#f44;padding:20px;">Invalid Seed</p>';
+    return;
+  }
+  engine = new GrottoDetail();
+  engine.MapSeed = seed;
+  engine.MapRank = parseInt(rankStr, 16);
+  engine.calculateDetail();
 
-chestList = [];
-for (let f = 0; f < engine.floorCount; f++) {
-const d = engine.di[f];
-for (let b = 0; b < d[8]; b++) {
-const info = engine.getBoxInfo(f, b);
-chestList.push({
-floor: f, floorNum: f + 1, floorLabel: `B${f+1}F`,
-box: b, rank: info.rank, rankName: RANK_NAMES[info.rank] || '?'
-});
-}
-}
-buildRows();
-refreshVisibility();
-renderCells();
+  chestList = [];
+  for (let f = 0; f < engine.floorCount; f++) {
+    const d = engine.di[f];
+    for (let b = 0; b < d[8]; b++) {
+      const info = engine.getBoxInfo(f, b);
+      chestList.push({
+        floor: f, floorNum: f + 1, floorLabel: 'B' + (f+1) + 'F',
+        box: b, rank: info.rank, rankName: RANK_NAMES[info.rank] || '?'
+      });
+    }
+  }
+  buildTable();
+  renderRows();
 }
 
 function isVisible(cd) {
-if (currentFilter === 'CUSTOM' && customFilter) {
-const allowed = customFilter[cd.floorNum];
-return allowed ? allowed.includes(cd.box) : false;
-}
-if (currentFilter === 'SA') return cd.rank >= 9;
-if (currentFilter === 'AB') return cd.rank === 9 || cd.rank === 8;
-return true;
-}
-
-function buildRows() {
-const area = document.getElementById('mainArea');
-let html = '', lastFloor = -1;
-chestList.forEach((cd, idx) => {
-const vis = isVisible(cd);
-if (cd.floor !== lastFloor) {
-lastFloor = cd.floor;
-html += `<div class="floor-label${vis?'':' hidden'}" data-floor="${cd.floor}">${cd.floorLabel}</div>`;
-}
-html += `<div class="chest-row${vis?'':' hidden'}" data-idx="${idx}">
-<div class="chest-hdr"><span class="rk" style="color:${RANK_COLORS[cd.rank]||'#888'}">${cd.rankName}${cd.box+1}</span></div>
-<div class="strip-wrap"><div class="strip" id="strip-${idx}"></div></div>
-</div>`;
-});
-area.innerHTML = html || '<p style="color:#555;padding:20px;text-align:center;">No chests</p>';
+  if (currentFilter === 'CUSTOM' && customFilter) {
+    const allowed = customFilter[cd.floorNum];
+    return allowed ? allowed.includes(cd.box) : false;
+  }
+  if (currentFilter === 'SA') return cd.rank >= 9;
+  if (currentFilter === 'AB') return cd.rank === 9 || cd.rank === 8;
+  return true;
 }
 
-function renderCells() {
-const is = internalSec();
-const startSec = Math.max(0, is);
-const endSec = is + VISIBLE_CELLS;
-
-const itemFont = displayLang !== 'jp' ? 'font-family:system-ui,-apple-system,sans-serif;' : '';
-chestList.forEach((cd, idx) => {
-if (!isVisible(cd)) return;
-const strip = document.getElementById('strip-' + idx);
-if (!strip) return;
-let html = '', prevItem = null;
-for (let s = startSec; s <= endSec; s++) {
-const [en, jp] = (s >= 0) ? getItemAtSec(cd.floor, cd.box, s) : [null, null];
-const realT = s + 5;
-const isCur = (s === is);
-const isTrans = (en !== prevItem && prevItem !== null && s > startSec);
-prevItem = en;
-
-const hl = en ? ITEM_HL[en] : null;
-const cellStyle = hl
-? `background:${hl.bg};border:1px solid ${hl.bd};border-radius:3px;`
-: '';
-const fg = hl ? hl.fg : '#bbb';
-const label = displayLang === 'jp' ? (jp || en || '—') : (en || '—');
-
-let cls = 'cell';
-if (isCur) cls += ' cell-cur';
-if (isTrans) cls += ' cell-trans';
-if (s < 0) cls += ' cell-prep';
-
-html += `<div class="${cls}" style="${cellStyle}min-width:${CELL_W}px;max-width:${CELL_W}px;" title="${realT}s: ${en||''}\n${jp||''}">
-<div class="cell-time">${String(realT).padStart(3,'0')}</div>
-<div class="cell-item" style="color:${fg};${itemFont}">${label}</div>
-</div>`;
+function buildTable() {
+  const area = document.getElementById('mainArea');
+  area.scrollLeft = 0;
+  area.scrollTop = 0;
+  visibleChests = chestList.filter(cd => isVisible(cd));
+  if (visibleChests.length === 0) {
+    area.innerHTML = '<p style="color:#555;padding:20px;text-align:center;">No chests</p>';
+    return;
+  }
+  const cols = visibleChests.length;
+  const gridCols = '42px repeat(' + cols + ', minmax(80px, auto))';
+  let hdr = '<div class="vhdr-time">sec</div>';
+  for (const cd of visibleChests) {
+    const clr = RANK_COLORS[cd.rank] || '#888';
+    hdr += '<div class="vhdr"><span class="vhdr-floor">' + cd.floorLabel + '</span><br><span class="vhdr-rk" style="color:' + clr + '">' + cd.rankName + (cd.box+1) + '</span></div>';
+  }
+  area.innerHTML = '<div class="vgrid" id="vgrid" style="grid-template-columns:' + gridCols + '">' + hdr + '<div id="vbody" style="display:contents"></div></div>';
 }
-strip.innerHTML = html;
-strip.style.transform = 'translateX(0)';
-});
+
+function renderRows() {
+  const vbody = document.getElementById('vbody');
+  if (!vbody || visibleChests.length === 0) return;
+  const is = internalSec();
+  const startSec = Math.max(0, is);
+  const endSec = Math.max(startSec + PREVIEW_ROWS, is + PREVIEW_ROWS);
+  const isEN = displayLang !== 'jp';
+  const cellCls = isEN ? 'vcell vcell-en' : 'vcell';
+
+  let html = '';
+  for (let s = startSec; s <= endSec; s++) {
+    const isCur = (s === is);
+    const rCls = isCur ? ' vrow-cur' : '';
+    html += '<div class="vtime' + rCls + '">' + String(s + 5).padStart(3, '0') + '</div>';
+    for (const cd of visibleChests) {
+      const [en, jp] = (s >= 0) ? getItemAtSec(cd.floor, cd.box, s) : [null, null];
+      const hl = en ? ITEM_HL[en] : null;
+      const style = hl ? ' style="background:' + hl.bg + ';color:' + hl.fg + '"' : '';
+      const label = displayLang === 'jp' ? (jp || en || '\u2014') : (en || '\u2014');
+      html += '<div class="' + cellCls + rCls + '"' + style + '>' + label + '</div>';
+    }
+  }
+  vbody.innerHTML = html;
 }
 
 function toggleTimer() {
-if (timerRunning) {
-timerRunning = false;
-if (timerRAF) { cancelAnimationFrame(timerRAF); timerRAF = null; }
-document.getElementById('btnStart').textContent = '▶';
-document.getElementById('btnStart').classList.remove('running');
-} else {
-timerOrigin = Date.now() - realSec * 1000;
-timerRunning = true;
-document.getElementById('btnStart').textContent = '⏸';
-document.getElementById('btnStart').classList.add('running');
-timerLoop();
-}
+  if (timerRunning) {
+    timerRunning = false;
+    if (timerRAF) { cancelAnimationFrame(timerRAF); timerRAF = null; }
+    document.getElementById('btnStart').textContent = '\u25B6';
+    document.getElementById('btnStart').classList.remove('running');
+  } else {
+    timerOrigin = Date.now() - realSec * 1000;
+    timerRunning = true;
+    document.getElementById('btnStart').textContent = '\u23F8';
+    document.getElementById('btnStart').classList.add('running');
+    timerLoop();
+  }
 }
 
 function resetTimer() {
-if (timerRunning) { cancelAnimationFrame(timerRAF); timerRAF = null; timerRunning = false; }
-realSec = 0;
-document.getElementById('btnStart').textContent = '▶';
-document.getElementById('btnStart').classList.remove('running');
-updateStopwatch(0);
-renderCells();
+  if (timerRunning) { cancelAnimationFrame(timerRAF); timerRAF = null; timerRunning = false; }
+  realSec = -3;
+  document.getElementById('btnStart').textContent = '\u25B6';
+  document.getElementById('btnStart').classList.remove('running');
+  updateStopwatch(-3000);
+  renderRows();
 }
 
 function setFilter(f) {
-currentFilter = f;
-customFilter = null;
-document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
-refreshVisibility();
-renderCells();
+  currentFilter = f;
+  customFilter = null;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+  buildTable();
+  renderRows();
 }
 
 function toggleLang() {
-displayLang = displayLang === 'en' ? 'jp' : 'en';
-document.getElementById('btnLang').textContent = displayLang.toUpperCase();
-renderCells();
-}
-
-function refreshVisibility() {
-document.querySelectorAll('.chest-row').forEach(el => {
-const cd = chestList[parseInt(el.dataset.idx)];
-el.classList.toggle('hidden', !isVisible(cd));
-});
-document.querySelectorAll('.floor-label').forEach(el => {
-const floor = parseInt(el.dataset.floor);
-el.classList.toggle('hidden', !chestList.some(cd => cd.floor === floor && isVisible(cd)));
-});
+  displayLang = displayLang === 'en' ? 'jp' : 'en';
+  document.getElementById('btnLang').textContent = displayLang.toUpperCase();
+  buildTable();
+  renderRows();
 }
 
 function applyPreset() {
-const sel = document.getElementById('presets');
-if (!sel.value) return;
-const [rank, seed] = sel.value.split(',');
-document.getElementById('inRank').value = rank;
-document.getElementById('inSeed').value = seed;
-const pd = PRESETS_DATA[sel.value];
-if (pd && pd.custom) {
-currentFilter = 'CUSTOM';
-customFilter = pd.custom;
-document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-}
-resetTimer();
-compute();
-sel.selectedIndex = 0;
+  const sel = document.getElementById('presets');
+  if (!sel.value) return;
+  const [rank, seed] = sel.value.split(',');
+  document.getElementById('inRank').value = rank;
+  document.getElementById('inSeed').value = seed;
+  const pd = PRESETS_DATA[sel.value];
+  if (pd && pd.custom) {
+    currentFilter = 'CUSTOM';
+    customFilter = pd.custom;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  }
+  resetTimer();
+  compute();
+  sel.selectedIndex = 0;
 }
 
 function onInputChange() {
-customFilter = null;
-currentFilter = 'ALL';
-document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === 'ALL'));
-resetTimer();
-compute();
+  customFilter = null;
+  currentFilter = 'ALL';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === 'ALL'));
+  resetTimer();
+  compute();
 }
 
-window.addEventListener('DOMContentLoaded', () => { compute(); updateStopwatch(0); });
+function resizeMain() {
+  const tb = document.querySelector('.topbar');
+  const ma = document.getElementById('mainArea');
+  ma.style.height = (window.innerHeight - tb.offsetHeight) + 'px';
+}
+window.addEventListener('DOMContentLoaded', () => {
+  resizeMain();
+  window.addEventListener('resize', resizeMain);
+  compute();
+  updateStopwatch(-3000);
+});
 </script>
 </body>
 </html>
